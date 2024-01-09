@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="MySql.EntityFrameworkCore" Version="7.0.10" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\lfvb.secure.common\lfvb.secure.common.csproj" />
+    <ProjectReference Include="..\..\Core\lfvb.secure.aplication\lfvb.secure.aplication.csproj" />
+    <ProjectReference Include="..\..\Infraestructure\lfvb.secure.external\lfvb.secure.external.csproj" />
+    <ProjectReference Include="..\..\Infraestructure\lfvb.secure.persistence\lfvb.secure.persistence.csproj" />
+  </ItemGroup>
+
+</Project>
