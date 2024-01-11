@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario;
+using lfvb.secure.domain.Entities.Usuario;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +11,10 @@ namespace lfvb.secure.aplication.Configurations
 {
     public class MapperProfile:Profile
     {
-        public MapperProfile() { 
+        public MapperProfile() {
             //Esto es para mapear objetos
+
+            //CreateMap<UsuarioEntity, CreateUsuarioModel>().ReverseMap();
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using lfvb.secure.domain.Entities.Credencial;
+using lfvb.secure.domain.Entities.PasswordCredencial;
 using lfvb.secure.domain.Entities.TipoCredencial;
+using lfvb.secure.domain.Entities.TokenCredencial;
 using lfvb.secure.domain.Entities.Usuario;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,6 +17,8 @@ namespace lfvb.secure.aplication.Interfaces
         DbSet<UsuarioEntity> Usuarios { get; set; }
         DbSet<TipoCredencialEntity> TiposCredenciales { get; set; }
         DbSet<CredencialEntity> Credenciales { get; set; }
+        DbSet<PasswordCredencialEntity> Passwords { get; set; }
+        DbSet<TokenCredencialEntity> Tokens { get; set; }
 
         Task<bool> SaveAsync();
     }

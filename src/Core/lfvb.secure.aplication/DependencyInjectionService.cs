@@ -1,4 +1,5 @@
 ﻿using lfvb.secure.aplication.Configurations;
+using lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -22,6 +23,9 @@ namespace lfvb.secure.aplication
             });
 
             services.AddSingleton(mapper);
+
+            //Registramos los commands y los querys
+            services.AddTransient<ICreateUsuarioCommand, CreateUsuarioCommand>();
 
             return services;
         }

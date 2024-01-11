@@ -1,5 +1,6 @@
 using lfvb.secure.api;
 using lfvb.secure.aplication;
+using lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario;
 using lfvb.secure.aplication.Interfaces;
 using lfvb.secure.common;
 using lfvb.secure.external;
@@ -77,22 +78,48 @@ app.MapControllers();
 
 #region "Minimal api para pruebas"
 
-app.MapPost("/addUsuario", async (IDataBaseService db) =>
+app.MapPost("/addUsuario", async (ICreateUsuarioCommand cm) =>
 {
-    var entitity = new lfvb.secure.domain.Entities.Usuario.UsuarioEntity
+    List<CreateUsuarioModel> lista = new List<CreateUsuarioModel>();
+    CreateUsuarioModel modelo = new CreateUsuarioModel
     {
-        Id=Guid.NewGuid(),
         Nombre="Luis Fernando",
         Apellido1="Valera",
         Apellido2="Bernal",
-        Usuario="lvalera"
+        Usuario="lvalerab2",
+        Password="123456"
     };
 
-    await db.Usuarios.AddAsync(entitity);
+    modelo = await cm.Execute(modelo);
+    lista.Add(modelo);
 
-    await db.SaveAsync();
+    
+    modelo = new CreateUsuarioModel
+    {
+        Nombre = "Luis Fernando",
+        Apellido1 = "Valera",
+        Apellido2 = "Bernal",
+        Usuario = "lvalerab3",
+        Token = Guid.NewGuid().ToString()
+    };
 
-    return entitity;
+    modelo = await cm.Execute(modelo);
+    lista.Add(modelo);
+
+    modelo = new CreateUsuarioModel
+    {
+        Nombre = "Luis Fernando",
+        Apellido1 = "Valera",
+        Apellido2 = "Bernal",
+        Usuario = "lvalerab4",
+        Password="HolaDonPepito",
+        Token = Guid.NewGuid().ToString()
+    };
+
+    modelo = await cm.Execute(modelo);
+    lista.Add(modelo);
+
+    return modelo;
 });
 
 app.MapGet("/usuarios", async (IDataBaseService db) =>
