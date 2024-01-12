@@ -14,7 +14,7 @@ namespace lfvb.secure.aplication.Configurations
         public MapperProfile() {
             //Esto es para mapear objetos
 
-            //CreateMap<UsuarioEntity, CreateUsuarioModel>().ReverseMap();
+            CreateMap<UsuarioEntity, CreateUsuarioModel>().ReverseMap();
         }
     }
 }

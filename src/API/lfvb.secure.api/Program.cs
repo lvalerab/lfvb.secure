@@ -5,9 +5,7 @@ using lfvb.secure.aplication.Interfaces;
 using lfvb.secure.common;
 using lfvb.secure.external;
 using lfvb.secure.persistence;
-using lfvb.secure.persistence.DataBase;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -49,9 +47,9 @@ builder.Services.AddSwaggerGen(options=>
 
 builder.Services.AddWebApi()
         .AddCommon(builder.Configuration)
-        .AddAplication(builder.Configuration)
+        .AddPersistence(builder.Configuration)        
         .AddExternal(builder.Configuration)
-        .AddPersistence(builder.Configuration);
+        .AddAplication(builder.Configuration);
 #endregion
 
 
@@ -80,7 +78,7 @@ app.MapControllers();
 
 app.MapPost("/addUsuario", async (ICreateUsuarioCommand cm) =>
 {
-    List<CreateUsuarioModel> lista = new List<CreateUsuarioModel>();
+    List<CreateUsuarioModel> lista = new();
     CreateUsuarioModel modelo = new CreateUsuarioModel
     {
         Nombre="Luis Fernando",

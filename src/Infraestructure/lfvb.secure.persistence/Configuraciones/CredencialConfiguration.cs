@@ -24,10 +24,12 @@ namespace lfvb.secure.persistence.Configuraciones
 
             //Configuración de las columnas
 
-            entityBuilder.Property(x => x.Id).HasColumnName("ID_CRUS").ValueGeneratedOnAdd();
+            entityBuilder.Property(x => x.Id)
+                .HasColumnName("ID_CRUS")
+                .ValueGeneratedOnAdd();
             entityBuilder.Property(x => x.IdUsuario).HasColumnName("ID_USUA").IsRequired();
             entityBuilder.Property(x=>x.CodigoTipoCredencial).HasColumnName("COD_TRCR").IsRequired();
-            entityBuilder.Property(x => x.VigenteDesde).HasColumnName("VIGENTE_DESDE_CRUS").IsRequired().HasDefaultValueSql("getdate()");
+            entityBuilder.Property(x => x.VigenteDesde).HasColumnName("VIGENTE_DESDE_CRUS").IsRequired().HasDefaultValueSql("now()");
             entityBuilder.Property(x => x.VigenteHasta).HasColumnName("VIGENTE_HASTA_CRUS");
 
             //Relacion N a 1

@@ -4,6 +4,7 @@ using lfvb.secure.domain.Entities.Credencial;
 using lfvb.secure.domain.Entities.PasswordCredencial;
 using lfvb.secure.domain.Entities.TokenCredencial;
 using lfvb.secure.domain.Entities.Usuario;
+using System.Linq.Expressions;
 
 
 namespace lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario
@@ -11,9 +12,9 @@ namespace lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario
     public class CreateUsuarioCommand: ICreateUsuarioCommand
     {
         private readonly IDataBaseService _db;
-        private readonly Mapper _mapper;
+        private readonly IMapper _mapper;
 
-        public CreateUsuarioCommand(IDataBaseService db, Mapper mapper)
+        public CreateUsuarioCommand(IDataBaseService db, IMapper mapper)
         {
             this._db = db;
             this._mapper = mapper;
@@ -21,52 +22,61 @@ namespace lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario
        
         public async Task<CreateUsuarioModel> Execute(CreateUsuarioModel usuario)
         {
-            if (usuario == null)
-            {
-                throw new Exception("[DATA] Debe indicar un objeto de usuario");
-            } else
-            {
-                if(usuario.Password == null && usuario.Token ==null)
+            try { 
+                if (usuario == null)
                 {
-                    throw new Exception("[DATA] Debe indicar al menos un password o un token");
-                }
-                Guid gnew = Guid.NewGuid();
-                UsuarioEntity entity = _mapper.Map<UsuarioEntity>(usuario);
-                entity.Id = gnew;
-                await _db.Usuarios.AddAsync(entity);
-                if(usuario.Password != null)
+                    throw new Exception("[DATA] Debe indicar un objeto de usuario");
+                } else if(usuario.Usuario == String.Empty)
                 {
-                    CredencialEntity credencial = new CredencialEntity
-                    {
-                        IdUsuario = entity.Id,
-                        CodigoTipoCredencial="PASS"                    
-                    };
-                    await _db.Credenciales.AddAsync(credencial);
-                    PasswordCredencialEntity PassCredential = new PasswordCredencialEntity
-                    {
-                        Id = credencial.Id,
-                        Password = usuario.Password
-                    };
-                    await _db.Passwords.AddAsync(PassCredential);
+                    throw new Exception("[DATAFIELD] El usuario debe estar relleno");
                 }
-                if(usuario.Token!=null)
                 {
-                    CredencialEntity credencial = new CredencialEntity
+                    if(usuario.Password == null && usuario.Token ==null)
                     {
-                        IdUsuario = entity.Id,
-                        CodigoTipoCredencial = "TOKEN"
-                    };
-                    await _db.Credenciales.AddAsync(credencial);
-                    TokenCredencialEntity token = new TokenCredencialEntity
+                        throw new Exception("[DATA] Debe indicar al menos un password o un token");
+                    }
+                    Guid gnew = Guid.NewGuid();
+                    UsuarioEntity entity = _mapper.Map<UsuarioEntity>(usuario);
+                    entity.Id = gnew;
+                    await _db.Usuarios.AddAsync(entity);
+                    if(usuario.Password != null)
+                    {                    
+                        CredencialEntity credencial = new()
+                        {   
+                            IdUsuario = entity.Id,
+                            CodigoTipoCredencial="PASS"                    
+                        };
+                        await _db.Credenciales.AddAsync(credencial);
+                        PasswordCredencialEntity PassCredential = new()
+                        {
+                            Id = credencial.Id,
+                            Password = usuario.Password
+                        };
+                        await _db.Passwords.AddAsync(PassCredential);
+                    }
+                    if(usuario.Token!=null)
                     {
-                        Id = credencial.Id,
-                        Token = usuario.Token
-                    };
-                    await _db.Tokens.AddAsync(token);
+                        CredencialEntity credencial = new()
+                        {
+                            IdUsuario = entity.Id,
+                            CodigoTipoCredencial = "TOKEN"
+                        };
+                        await _db.Credenciales.AddAsync(credencial);
+                        TokenCredencialEntity token = new()
+                        {
+                            Id = credencial.Id,
+                            Token = usuario.Token
+                        };
+                        await _db.Tokens.AddAsync(token);
+                    }
+                    await _db.SaveAsync();
+                    usuario.IdNuevo = gnew;
+                    return usuario;
+                
                 }
-                await _db.SaveAsync();
-                usuario.IdNuevo = gnew;
-                return usuario;
+            }
+            catch (Exception err) {
+                return null;
             }
         }
     }
