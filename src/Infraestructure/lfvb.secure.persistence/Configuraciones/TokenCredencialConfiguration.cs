@@ -22,8 +22,9 @@ namespace lfvb.secure.persistence.Configuraciones
 
             entityBuilder
                 .HasOne(x => x.Credencial)
-                .WithOne(x => x.Token)
-                .HasForeignKey<CredencialEntity>(x => x.Id).IsRequired();
+                .WithOne(x => x.Token)                
+                .HasPrincipalKey<CredencialEntity>(x => x.Id).IsRequired();
+                
         }
     }
 }

@@ -44,30 +44,28 @@ namespace lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario
                         CredencialEntity credencial = new()
                         {   
                             IdUsuario = entity.Id,
-                            CodigoTipoCredencial="PASS"                    
+                            CodigoTipoCredencial="PASS",
+                            VigenteDesde=DateTime.Now,
+                            Password=new PasswordCredencialEntity
+                            {
+                                Password=usuario.Password
+                            }
                         };
-                        await _db.Credenciales.AddAsync(credencial);
-                        PasswordCredencialEntity PassCredential = new()
-                        {
-                            Id = credencial.Id,
-                            Password = usuario.Password
-                        };
-                        await _db.Passwords.AddAsync(PassCredential);
+                        await _db.Credenciales.AddAsync(credencial);                        
                     }
                     if(usuario.Token!=null)
                     {
                         CredencialEntity credencial = new()
-                        {
+                        {                            
                             IdUsuario = entity.Id,
-                            CodigoTipoCredencial = "TOKEN"
+                            CodigoTipoCredencial = "TOKEN",
+                            VigenteDesde= DateTime.Now,
+                            Token=new TokenCredencialEntity
+                            {
+                                Token=usuario.Token
+                            }
                         };
-                        await _db.Credenciales.AddAsync(credencial);
-                        TokenCredencialEntity token = new()
-                        {
-                            Id = credencial.Id,
-                            Token = usuario.Token
-                        };
-                        await _db.Tokens.AddAsync(token);
+                        await _db.Credenciales.AddAsync(credencial);                        
                     }
                     await _db.SaveAsync();
                     usuario.IdNuevo = gnew;

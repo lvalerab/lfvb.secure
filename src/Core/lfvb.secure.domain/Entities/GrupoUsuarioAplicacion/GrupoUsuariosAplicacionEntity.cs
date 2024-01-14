@@ -1,4 +1,6 @@
 ﻿using lfvb.secure.domain.Entities;
+using lfvb.secure.domain.Entities.Aplicacion;
+using lfvb.secure.domain.Entities.RelacionUsuarioGrupoUsuarioAplicacion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +19,13 @@ namespace lfvb.secure.domain.Entities.GrupoUsuarioAplicacion
 
         public Guid? IdPadre { get; set; }
 
-        public List<GrupoUsuariosAplicacionEntity> Descendientes { get; set; }
+        public ICollection<RelacionUsuarioGrupoUsuarioAplicacionEntity> RelacionUsuarios { get; set; }
 
         public GrupoUsuariosAplicacionEntity? Padre { get; set; }
 
-        public Aplicacion.AplicacionEntity? Aplicacion { get; set; }
+        public ICollection<GrupoUsuariosAplicacionEntity> Hijos { get; set; }
+
+        public AplicacionEntity Aplicacion { get; set; }
         
     }
 }

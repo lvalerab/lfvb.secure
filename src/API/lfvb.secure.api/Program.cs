@@ -1,6 +1,7 @@
 using lfvb.secure.api;
 using lfvb.secure.aplication;
 using lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario;
+using lfvb.secure.aplication.Database.Usuario.Queries.GetAllUsuarios;
 using lfvb.secure.aplication.Interfaces;
 using lfvb.secure.common;
 using lfvb.secure.external;
@@ -120,9 +121,9 @@ app.MapPost("/addUsuario", async (ICreateUsuarioCommand cm) =>
     return modelo;
 });
 
-app.MapGet("/usuarios", async (IDataBaseService db) =>
+app.MapGet("/usuarios", async (IGetAllUsuariosQuery query) =>
 {
-    var usuarios= await db.Usuarios.ToListAsync();
+    var usuarios = await query.Execute();
 
     return usuarios;
     

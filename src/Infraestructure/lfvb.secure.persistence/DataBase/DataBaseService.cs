@@ -1,6 +1,9 @@
 ﻿using lfvb.secure.aplication.Interfaces;
+using lfvb.secure.domain.Entities.Aplicacion;
 using lfvb.secure.domain.Entities.Credencial;
+using lfvb.secure.domain.Entities.GrupoUsuarioAplicacion;
 using lfvb.secure.domain.Entities.PasswordCredencial;
+using lfvb.secure.domain.Entities.RelacionUsuarioGrupoUsuarioAplicacion;
 using lfvb.secure.domain.Entities.TipoCredencial;
 using lfvb.secure.domain.Entities.TokenCredencial;
 using lfvb.secure.domain.Entities.Usuario;
@@ -26,7 +29,9 @@ namespace lfvb.secure.persistence.DataBase
         public DbSet<CredencialEntity> Credenciales { get; set; }
         public DbSet<PasswordCredencialEntity> Passwords { get; set; }
         public DbSet<TokenCredencialEntity> Tokens { get; set; }
-
+        public DbSet<RelacionUsuarioGrupoUsuarioAplicacionEntity> RelacionUsuariosGruposAplicaciones { get; set; }
+        public DbSet<GrupoUsuariosAplicacionEntity> Grupos { get; set; }
+        public DbSet<AplicacionEntity> Aplicaciones { get; set; }
 
         public async Task<bool> SaveAsync()
         {
@@ -42,6 +47,9 @@ namespace lfvb.secure.persistence.DataBase
             new CredencialConfiguration(modelBuilder.Entity<CredencialEntity>());
             new PasswordCredencialConfiguration(modelBuilder.Entity<PasswordCredencialEntity>());
             new TokenCredencialConfiguration(modelBuilder.Entity<TokenCredencialEntity>());
+            new RelacionUsuarioGrupoUsuarioAplicacionConfiguration(modelBuilder.Entity<RelacionUsuarioGrupoUsuarioAplicacionEntity>());
+            new GrupoUsuariosAplicacionConfiguration(modelBuilder.Entity<GrupoUsuariosAplicacionEntity>());
+            new AplicacionConfiguration(modelBuilder.Entity<AplicacionEntity>());
         }
 
 

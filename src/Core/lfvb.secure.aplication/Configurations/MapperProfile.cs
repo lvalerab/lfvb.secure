@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario;
+using lfvb.secure.aplication.Database.Usuario.Queries.GetAllUsuarios;
 using lfvb.secure.domain.Entities.Usuario;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace lfvb.secure.aplication.Configurations
             //Esto es para mapear objetos
 
             CreateMap<UsuarioEntity, CreateUsuarioModel>().ReverseMap();
+            CreateMap<GetAllUsuariosModel,UsuarioEntity>().ReverseMap();
         }
     }
 }

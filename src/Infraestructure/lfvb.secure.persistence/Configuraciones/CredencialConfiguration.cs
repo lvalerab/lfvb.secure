@@ -24,7 +24,8 @@ namespace lfvb.secure.persistence.Configuraciones
 
             //Configuración de las columnas
 
-            entityBuilder.Property(x => x.Id)
+            entityBuilder
+                .Property(x => x.Id)
                 .HasColumnName("ID_CRUS")
                 .ValueGeneratedOnAdd();
             entityBuilder.Property(x => x.IdUsuario).HasColumnName("ID_USUA").IsRequired();
@@ -49,7 +50,7 @@ namespace lfvb.secure.persistence.Configuraciones
 
             entityBuilder.HasOne(x=>x.Token)
                          .WithOne(x=>x.Credencial)
-                         .HasForeignKey<TokenCredencialEntity>(x=>x.Id)
+                         .HasForeignKey<TokenCredencialEntity>(x=>x.Id)                         
                          .IsRequired(false);
 
         }

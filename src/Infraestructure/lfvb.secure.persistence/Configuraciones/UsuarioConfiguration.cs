@@ -30,6 +30,10 @@ namespace lfvb.secure.persistence.Configuraciones
             entityBuilder.HasMany(x => x.Credenciales)
                          .WithOne(x=>x.Usuario)
                          .HasForeignKey(x=>x.IdUsuario);
+
+            entityBuilder.HasMany(x => x.RelacionGrupos)
+                         .WithOne(x => x.Usuario)
+                         .HasForeignKey(x => x.IdUsuario);
         }        
     }
 }

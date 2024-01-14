@@ -17,13 +17,13 @@ namespace lfvb.secure.persistence.Configuraciones
             entityBuilder
                 .ToTable("pwdc_password_credencial")
                 .HasKey(x => x.Id);
-            entityBuilder.Property(x => x.Id).HasColumnName("ID_CRUS").IsRequired();
+            entityBuilder.Property(x => x.Id).HasColumnName("ID_CRUS");
             entityBuilder.Property(x => x.Password).HasColumnName("PASS_PWDC").IsRequired();
 
             entityBuilder
                 .HasOne(x => x.Credencial)
-                .WithOne(x => x.Password)
-                .HasForeignKey<CredencialEntity>(x => x.Id).IsRequired();
+                .WithOne(x => x.Password)                
+                .HasPrincipalKey<CredencialEntity>(x => x.Id);
         }       
     }
 }
