@@ -1,4 +1,5 @@
-﻿using lfvb.secure.domain.Entities.GrupoUsuarioAplicacion;
+﻿using lfvb.secure.domain.Entities.ElementoAplicacion;
+using lfvb.secure.domain.Entities.GrupoUsuarioAplicacion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace lfvb.secure.domain.Entities.Aplicacion
         public string Nombre { get; set; }
 
         public ICollection<GrupoUsuariosAplicacionEntity> Grupos { get; set; }
+        
+        public ICollection<ElementoAplicacionEntity> Elementos { get; set; }
 
     }
 }

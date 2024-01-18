@@ -1,4 +1,6 @@
-﻿using System;
+﻿using lfvb.secure.domain.Entities.ElementoAplicacion;
+using lfvb.secure.domain.Entities.RelacionTipoElementoTipoPermiso;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +13,8 @@ namespace lfvb.secure.domain.Entities.TipoElementoAplicacion
         public string Codigo { get; set; }
 
         public string Nombre { get; set; }
+
+        public ICollection<ElementoAplicacionEntity> Elementos { get; set; }
+        public ICollection<RelacionTipoElementoTipoPermisoEntity> RelacionTiposPermisos { get; set; }
     }
 }

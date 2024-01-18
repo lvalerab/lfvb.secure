@@ -29,6 +29,7 @@ namespace lfvb.secure.persistence.Configuraciones
             builder.HasOne(x => x.Grupo)
                     .WithMany(x => x.RelacionUsuarios)
                     .HasForeignKey(x => x.IdGrupo);
+
                 
         }
     }

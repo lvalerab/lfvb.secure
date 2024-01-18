@@ -1,5 +1,7 @@
 ﻿using lfvb.secure.domain.Entities;
 using lfvb.secure.domain.Entities.Aplicacion;
+using lfvb.secure.domain.Entities.RelacionGrupoUsuarioElementoAplicacionTipoPermisoAplicacion;
+using lfvb.secure.domain.Entities.RelacionTipoElementoApliConTipoPermisoTipoElementoApli;
 using lfvb.secure.domain.Entities.RelacionUsuarioGrupoUsuarioAplicacion;
 using System;
 using System.Collections.Generic;
@@ -26,6 +28,8 @@ namespace lfvb.secure.domain.Entities.GrupoUsuarioAplicacion
         public ICollection<GrupoUsuariosAplicacionEntity> Hijos { get; set; }
 
         public AplicacionEntity Aplicacion { get; set; }
+
+        public ICollection<RelacionGrupoUsuarioElementoAplicacionTipoPermisoAplicacionEntity> RelacionElementosPermisos { get; set; }
         
     }
 }

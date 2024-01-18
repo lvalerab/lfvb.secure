@@ -25,6 +25,9 @@ namespace lfvb.secure.persistence.Configuraciones
                 .WithOne(x => x.Aplicacion)
                 .HasForeignKey(x => x.IdAplicacion);
 
+            buider.HasMany(x => x.Elementos)
+                .WithOne(x => x.Aplicacion)
+                .HasForeignKey(x => x.IdAplicacion);
         }
     }
 }

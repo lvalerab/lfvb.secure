@@ -1,10 +1,15 @@
 ﻿using lfvb.secure.aplication.Interfaces;
 using lfvb.secure.domain.Entities.Aplicacion;
 using lfvb.secure.domain.Entities.Credencial;
+using lfvb.secure.domain.Entities.ElementoAplicacion;
 using lfvb.secure.domain.Entities.GrupoUsuarioAplicacion;
 using lfvb.secure.domain.Entities.PasswordCredencial;
+using lfvb.secure.domain.Entities.RelacionGrupoUsuarioElementoAplicacionTipoPermisoAplicacion;
+using lfvb.secure.domain.Entities.RelacionTipoElementoTipoPermiso;
 using lfvb.secure.domain.Entities.RelacionUsuarioGrupoUsuarioAplicacion;
 using lfvb.secure.domain.Entities.TipoCredencial;
+using lfvb.secure.domain.Entities.TipoElementoAplicacion;
+using lfvb.secure.domain.Entities.TipoPermisoElementoAplicacion;
 using lfvb.secure.domain.Entities.TokenCredencial;
 using lfvb.secure.domain.Entities.Usuario;
 using lfvb.secure.persistence.Configuraciones;
@@ -32,6 +37,11 @@ namespace lfvb.secure.persistence.DataBase
         public DbSet<RelacionUsuarioGrupoUsuarioAplicacionEntity> RelacionUsuariosGruposAplicaciones { get; set; }
         public DbSet<GrupoUsuariosAplicacionEntity> Grupos { get; set; }
         public DbSet<AplicacionEntity> Aplicaciones { get; set; }
+        public DbSet<ElementoAplicacionEntity> ElementosAplicaciones { get; set; }
+        public DbSet<TipoElementoAplicacionEntity> TiposElementosAplicaciones { get; set; }
+        public DbSet<RelacionTipoElementoTipoPermisoEntity> RelacionTiposElementosConTiposPermisos { get; set; }
+        public DbSet<TipoPermisoElementoAplicacionEntity> TiposPermisosTipoElementosAplicaciones { get; set; }
+        public DbSet<RelacionGrupoUsuarioElementoAplicacionTipoPermisoAplicacionEntity> RelacionElementosConTiposPermisosConGruposUsuarios { get; set; }
 
         public async Task<bool> SaveAsync()
         {
@@ -50,6 +60,11 @@ namespace lfvb.secure.persistence.DataBase
             new RelacionUsuarioGrupoUsuarioAplicacionConfiguration(modelBuilder.Entity<RelacionUsuarioGrupoUsuarioAplicacionEntity>());
             new GrupoUsuariosAplicacionConfiguration(modelBuilder.Entity<GrupoUsuariosAplicacionEntity>());
             new AplicacionConfiguration(modelBuilder.Entity<AplicacionEntity>());
+            new ElementoAplicacionConfiguration(modelBuilder.Entity<ElementoAplicacionEntity>());
+            new TipoElementoAplicacionConfiguration(modelBuilder.Entity<TipoElementoAplicacionEntity>());
+            new RelacionTipoElementoTipoPermisoConfiguration(modelBuilder.Entity<RelacionTipoElementoTipoPermisoEntity>());
+            new TipoPermisoElementoAplicacionConfiguration(modelBuilder.Entity<TipoPermisoElementoAplicacionEntity>());
+            new RelacionGrupoUsuarioElementoAplicacionTipoPermisoAplicacionConfiguration(modelBuilder.Entity<RelacionGrupoUsuarioElementoAplicacionTipoPermisoAplicacionEntity>());
         }
 
 

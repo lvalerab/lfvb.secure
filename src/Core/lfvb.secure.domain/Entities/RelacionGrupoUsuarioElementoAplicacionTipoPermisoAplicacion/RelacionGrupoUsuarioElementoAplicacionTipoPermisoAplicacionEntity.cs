@@ -15,8 +15,8 @@ namespace lfvb.secure.domain.Entities.RelacionGrupoUsuarioElementoAplicacionTipo
         public Guid IdElemento { get; set; }
         public string CodigoTipoPermiso { get; set; }
 
-        public List<GrupoUsuariosAplicacionEntity> Grupos { get; set; }
-        public List<ElementoAplicacion.ElementoAplicacionEntity> Elementos { get; set; }
-        public List<TipoPermisoElementoAplicacion.TipoPermisoElementoAplicacionEntity> TiposPermisos { get; set; }
+        public GrupoUsuariosAplicacionEntity Grupo { get; set; }
+        public ElementoAplicacionEntity ElementoAplicacion { get; set; }
+        public TipoPermisoElementoAplicacionEntity TipoPermiso { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using lfvb.secure.domain.Entities.RelacionGrupoUsuarioElementoAplicacionTipoPermisoAplicacion;
+using lfvb.secure.domain.Entities.RelacionTipoElementoTipoPermiso;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +15,9 @@ namespace lfvb.secure.domain.Entities.TipoPermisoElementoAplicacion
         public string Nombre { get; set; }
 
         public int Prioridad { get; set; }
+
+
+        public ICollection<RelacionTipoElementoTipoPermisoEntity> RelacionTiposElementos { get; set; }
+        public ICollection<RelacionGrupoUsuarioElementoAplicacionTipoPermisoAplicacionEntity> RelacionElementosGrupos { get; set; }
     }
 }
