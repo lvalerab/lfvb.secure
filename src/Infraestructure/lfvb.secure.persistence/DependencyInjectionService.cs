@@ -16,7 +16,7 @@ namespace lfvb.secure.persistence
     {
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<DataBaseService>(options => options.UseMySQL(configuration["dbmysql"]));
+            services.AddDbContext<DataBaseService>(options => options.UseMySQL(connectionString:configuration["dbmysql"]??""));
 
             services.AddScoped<IDataBaseService, DataBaseService>();
             
