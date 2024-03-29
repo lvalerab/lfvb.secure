@@ -12,11 +12,11 @@ namespace lfvb.secure.domain.Entities.Aplicacion
     {
         public Guid Id { get; set; }
 
-        public string Nombre { get; set; }
+        public string? Nombre { get; set; }
 
-        public ICollection<GrupoUsuariosAplicacionEntity> Grupos { get; set; }
+        public virtual ICollection<GrupoUsuariosAplicacionEntity>? Grupos { get; set; }
         
-        public ICollection<ElementoAplicacionEntity> Elementos { get; set; }
+        public virtual ICollection<ElementoAplicacionEntity>? Elementos { get; set; }
 
     }
 }

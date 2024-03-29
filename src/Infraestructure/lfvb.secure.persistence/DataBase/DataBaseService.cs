@@ -25,9 +25,11 @@ namespace lfvb.secure.persistence.DataBase
     public class DataBaseService:DbContext, IDataBaseService
     {
         public DataBaseService(DbContextOptions options):base(options) { 
-        
+            
         
         }
+
+        
 
         public DbSet<UsuarioEntity> Usuarios { get; set; }
         public DbSet<TipoCredencialEntity> TiposCredenciales { get; set; }
