@@ -9,6 +9,6 @@ namespace lfvb.secure.aplication.Database.Usuario.Queries.LoginUsuarioPassword
 {
     public interface ILoginUsuarioPasswordQuery
     {
-        public Task<LoginUsuarioPasswordModel> ValidarQuery(LoginUsuarioPasswordModel parameters);
+        public Task<LoginUsuarioPasswordModel> Execute(LoginUsuarioPasswordModel parameters);
     }
 }

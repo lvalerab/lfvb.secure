@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -27,6 +28,11 @@ namespace lfvb.secure.common.JWT
             SecurityToken tokenConfig = tokenHandler.CreateToken(tokenDescriptor);
             string token = tokenHandler.WriteToken(tokenConfig);
             return token;
+        }
+
+        public Guid? GetIdFromToken(HttpContext contexto)
+        {
+            return Guid.Parse(contexto.User.Claims.First(i => i.Type == ClaimTypes.NameIdentifier).Value);
         }
     }
 }
