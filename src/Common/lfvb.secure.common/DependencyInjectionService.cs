@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using lfvb.secure.common.JWT;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace lfvb.secure.common
     {
         public static IServiceCollection AddCommon(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddTransient<IJwtTokenUtils,JwtTokenUtils>();
             return services;
         }
     }
