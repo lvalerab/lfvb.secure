@@ -9,6 +9,7 @@ using lfvb.secure.persistence;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -46,11 +47,13 @@ builder.Services.AddSwaggerGen(options=>
 
 #region "Configuracion de la inyección de dependencias"
 
-builder.Services.AddWebApi()
-        .AddCommon(builder.Configuration)
-        .AddPersistence(builder.Configuration)        
-        .AddExternal(builder.Configuration)
-        .AddAplication(builder.Configuration);
+builder.Services
+        .AddJwtSecurity(builder.Configuration) //Para insertar la configuracion de la securizacion por JWT
+        .AddWebApi() //Para los servidios de web api
+        .AddCommon(builder.Configuration) //Para incluir la capa de Common
+        .AddPersistence(builder.Configuration) //PAra incluir la capa de persistencia (Infraestructura)
+        .AddExternal(builder.Configuration) //Para incluir la capa de datos externos (Infraestrucutra)
+        .AddAplication(builder.Configuration); //PAra incluir la capa de aplicacion (Core)
 #endregion
 
 
@@ -68,6 +71,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
