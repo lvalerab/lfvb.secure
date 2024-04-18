@@ -21,7 +21,7 @@ namespace lfvb.secure.aplication.Database.Usuario.Queries.LoginUsuarioPassword
             this._mapper=mapper;
         }
 
-        public async Task<LoginUsuarioPasswordModel> ValidarQuery(LoginUsuarioPasswordModel parameters)
+        public async Task<LoginUsuarioPasswordModel> Execute(LoginUsuarioPasswordModel parameters)
         {   
             LoginUsuarioPasswordModel encontrado = await (from us in this._db.Usuarios
                                               join cr in this._db.Credenciales on us.Id equals cr.IdUsuario

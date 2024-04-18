@@ -3,6 +3,7 @@ using lfvb.secure.aplication.Configurations;
 using lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario;
 using lfvb.secure.aplication.Database.Usuario.Commands.UpdateUsuario;
 using lfvb.secure.aplication.Database.Usuario.Queries.GetAllUsuarios;
+using lfvb.secure.aplication.Database.Usuario.Queries.LoginToken;
 using lfvb.secure.aplication.Database.Usuario.Queries.LoginUsuarioPassword;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,6 +34,7 @@ namespace lfvb.secure.aplication
             services.AddTransient<IUpdateUsuarioCommand, UpdateUsuarioCommand>();
             services.AddTransient<IGetAllUsuariosQuery, GetAllUsuriosQuery>();
             services.AddTransient<ILoginUsuarioPasswordQuery,LoginUsuarioPasswordQuery>();
+            services.AddTransient<ILoginTokenQuery, LoginTokenQuery>();
 
             return services;
         }
