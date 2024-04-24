@@ -13,21 +13,31 @@ using System.Text;
 
 namespace lfvb.secure.api.Controllers
 {
+    /// <summary>
+    /// Controlador para identificar los usuarios y obtener el token de seguridad
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
     {
+        private ILogger<LoginController> _logger;
         private ILoginUsuarioPasswordQuery _qryLoginUsPw;
         private ILoginTokenQuery _qryLoginToken;
         private IJwtTokenUtils _jwtTokenUtils;
         private readonly string secret;
+        private readonly int expires;
 
-        public LoginController(ILoginUsuarioPasswordQuery qryLoginUsPw, ILoginTokenQuery qryLoginToken, IJwtTokenUtils jwtUtils, IConfiguration config)
+        public LoginController(ILogger<LoginController> logger, ILoginUsuarioPasswordQuery qryLoginUsPw, ILoginTokenQuery qryLoginToken, IJwtTokenUtils jwtUtils, IConfiguration config)
         {
+            this._logger = logger;
             this._qryLoginUsPw = qryLoginUsPw;
             this._qryLoginToken = qryLoginToken;
             this._jwtTokenUtils = jwtUtils;
-            secret = config.GetSection("jwt").GetSection("secret").ToString();
+            secret = config.GetSection("jwt").GetSection("secret").ToString()??"";
+            if(!Int32.TryParse(config.GetSection("jwt").GetSection("expires_minutes").ToString(),out expires))
+            {
+                expires = 5;
+            }
         }
 
         /// <summary>
@@ -50,10 +60,13 @@ namespace lfvb.secure.api.Controllers
                 login=await this._qryLoginUsPw.Execute(login);
                 if(login!=null)
                 {
-                    string token = this._jwtTokenUtils.GetToken(login.Id.ToString(), this.secret, 5);                  
-                    return StatusCode(StatusCodes.Status200OK, new { token=token});
+                    string token = this._jwtTokenUtils.GetToken((login.Id??Guid.Empty).ToString(), this.secret, this.expires);
+                    string token2 = this._jwtTokenUtils.GetToken((login.Id??Guid.Empty).ToString() + "RF", this.secret, this.expires + 1);
+                    this._logger.LogInformation("Acceso autorizado",login);
+                    return StatusCode(StatusCodes.Status200OK, new { token = token, tokenrf = token2 });
                 } else
                 {
+                    this._logger.LogWarning("Fallo en la validacion del usuario", login);
                     //Si no ha devuelto nada, no esta autorizado
                     return Unauthorized();
                 }
@@ -80,8 +93,9 @@ namespace lfvb.secure.api.Controllers
                 login = await this._qryLoginToken.Execute(login);
                 if(login!=null)
                 {
-                    string token = this._jwtTokenUtils.GetToken(login.Id.ToString(), this.secret, 5);
-                    return StatusCode(StatusCodes.Status200OK, new { token = token });
+                    string token = this._jwtTokenUtils.GetToken((login.Id??Guid.Empty).ToString(), this.secret, this.expires);
+                    string token2 = this._jwtTokenUtils.GetToken((login.Id ?? Guid.Empty).ToString()+"RF", this.secret, this.expires+1);
+                    return StatusCode(StatusCodes.Status200OK, new { token = token, tokenrf=token2 });
                 } else
                 {
                     return Unauthorized();
@@ -103,7 +117,29 @@ namespace lfvb.secure.api.Controllers
                 return StatusCode(StatusCodes.Status200OK,new { id=id});
             } catch(Exception ex)
             {
+                this._logger.LogError("Error al obtener el ID del token", ex);
                 return BadRequest();
+            }
+        }
+
+        /// <summary>
+        /// Si esta validado, obtiene un nuevo token a base del token de refresco
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Authorize]
+        [Route("refresh")]
+        public IActionResult GetNewToken()
+        {
+            Guid? id = this._jwtTokenUtils.GetIdFromToken(HttpContext,true);
+            if(id!=null)
+            {
+                string token = this._jwtTokenUtils.GetToken((id??Guid.Empty).ToString(), this.secret, this.expires);
+                string token2 = this._jwtTokenUtils.GetToken((id??Guid.Empty).ToString() + "RF", this.secret, this.expires + 1);
+                return StatusCode(StatusCodes.Status200OK, new { token = token, tokenrf = token2 });
+            } else
+            {
+                return Unauthorized();
             }
         }
     }
