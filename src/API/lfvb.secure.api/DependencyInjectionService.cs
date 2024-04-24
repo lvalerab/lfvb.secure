@@ -11,6 +11,12 @@ namespace lfvb.secure.api
             return services;
         }
 
+        /// <summary>
+        /// Añade las dependecias para usar los token JWT
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
         public static IServiceCollection AddJwtSecurity(this IServiceCollection services, IConfiguration configuration)
         {
             string? secret = configuration.GetSection("jwt")?.GetValue<string>("secret");

@@ -30,9 +30,16 @@ namespace lfvb.secure.common.JWT
             return token;
         }
 
-        public Guid? GetIdFromToken(HttpContext contexto)
+        public Guid? GetIdFromToken(HttpContext contexto, bool rf = false)
         {
-            return Guid.Parse(contexto.User.Claims.First(i => i.Type == ClaimTypes.NameIdentifier).Value);
+            if(!rf) { 
+                return Guid.Parse(contexto.User.Claims.First(i => i.Type == ClaimTypes.NameIdentifier).Value);
+            } else
+            {
+                return Guid.Parse(contexto.User.Claims.First(i => i.Type == ClaimTypes.NameIdentifier).Value.Replace("RF",""));
+            }
         }
+
+        
     }
 }
