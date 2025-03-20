@@ -85,7 +85,7 @@ namespace lfvb.secure.api.Controllers
             if(login==null)
             {
                 return BadRequest();
-            } else if(login.Token==null || login.Token.IsNullOrEmpty())
+            } else if(login.Token==null ||  string.IsNullOrEmpty(login.Token))
             {
                 return BadRequest();
             } else
