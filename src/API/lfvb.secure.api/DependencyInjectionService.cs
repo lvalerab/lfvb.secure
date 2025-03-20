@@ -19,7 +19,7 @@ namespace lfvb.secure.api
         /// <returns></returns>
         public static IServiceCollection AddJwtSecurity(this IServiceCollection services, IConfiguration configuration)
         {
-            string? secret = configuration.GetSection("jwt")?.GetValue<string>("secret");
+            string? secret = configuration.GetSection("jwt")?.GetValue<string>("secret")??"$$$_DEVELOP_SERVICE_$$$";
             byte[] aSecret=Encoding.UTF8.GetBytes(secret??"");
             services.AddAuthentication(config =>
             {
