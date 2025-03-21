@@ -7,7 +7,9 @@ using lfvb.secure.common;
 using lfvb.secure.external;
 using lfvb.secure.persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using System.Reflection;
+using System.Security.Cryptography.Xml;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,15 +24,37 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options=>
 {
-    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    options.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
         Title = "Api de seguridad y acceso usuarios",
         Description = "Esta es la api que proporciona el acceso a la seguridad de usuarios, así como los métodos de validación",
-        Contact = new Microsoft.OpenApi.Models.OpenApiContact
+        Contact = new OpenApiContact
         {
             Name = "Luis Fernando Valera Bernal",
             Url = new Uri("https://www.lfvb.es/contact/lfvb")
+        }
+    });
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description="JWT Authorization",
+        Name="Authorization",
+        In=ParameterLocation.Header,
+        Type=SecuritySchemeType.ApiKey,
+        Scheme="Bearer"
+    });
+    options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference=new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            new string[]{ }
         }
     });
     try { 

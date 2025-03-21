@@ -9,7 +9,7 @@ namespace lfvb.secure.common.JWT
 {
     public interface IJwtTokenUtils
     {
-        public string GetToken(string id, string secret, int expiresInMinutes = 5);
+        public string GetToken(string id, string usuario, string subject, string issuer, string audience, string secret, int expiresInMinutes = 60);
         public Guid? GetIdFromToken(HttpContext contexto,bool rf=false);
     }
 }
