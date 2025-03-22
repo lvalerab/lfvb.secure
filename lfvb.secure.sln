@@ -25,6 +25,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lfvb.secure.domain", "src\C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lfvb.secure.common", "src\Common\lfvb.secure.common\lfvb.secure.common.csproj", "{D035BCBA-56F5-40F0-9935-A0769773C845}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testing-api", "testing-api\testing-api.csproj", "{7B9221DB-BDC5-46D4-8768-3201BF66698E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +59,10 @@ Global
 		{D035BCBA-56F5-40F0-9935-A0769773C845}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D035BCBA-56F5-40F0-9935-A0769773C845}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D035BCBA-56F5-40F0-9935-A0769773C845}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B9221DB-BDC5-46D4-8768-3201BF66698E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B9221DB-BDC5-46D4-8768-3201BF66698E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B9221DB-BDC5-46D4-8768-3201BF66698E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B9221DB-BDC5-46D4-8768-3201BF66698E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,6 +78,8 @@ Global
 		{0EFCCA6B-F1D7-407D-8CF8-E2E7A2FCECD4} = {698B419C-ED70-455D-B4B5-676F853E5C1B}
 		{512B86A3-B2AE-4295-BF95-0A4786AB176B} = {698B419C-ED70-455D-B4B5-676F853E5C1B}
 		{D035BCBA-56F5-40F0-9935-A0769773C845} = {165F1EA9-CA60-488E-9A0F-F63997178505}
+		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {770D1903-B5F9-4EA5-A5C2-7D256390AC3B}
+		{7B9221DB-BDC5-46D4-8768-3201BF66698E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF040322-B8B8-489A-B032-4BEE4E593873}
