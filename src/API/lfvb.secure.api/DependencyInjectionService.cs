@@ -23,6 +23,7 @@ namespace lfvb.secure.api
             byte[] aSecret=Encoding.UTF8.GetBytes(secret??"");
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(config=>
             {
+                config.IncludeErrorDetails = true;
                 config.RequireHttpsMetadata = true;
                 config.SaveToken = true;
                 config.TokenValidationParameters = new TokenValidationParameters
@@ -30,9 +31,9 @@ namespace lfvb.secure.api
                     ValidateIssuerSigningKey = false,                    
                     ValidateIssuer=false, //Validar Issuer (Variable de entorno)
                     ValidateAudience= false, //Validar Audiencia (Variable de entorno)
-                    ValidateLifetime=true, //Valida el tiempo de vida
+                    ValidateLifetime=false, //Valida el tiempo de vida
                     ValidIssuer = configuration.GetSection("jwt").GetValue<string>("Issuer"),
-                    ValidAudience = configuration.GetSection("jwt").GetValue<string>("Audience"),
+                    ValidAudience = configuration.GetSection("jwt").GetValue<string>("Audience"),                    
                     IssuerSigningKey = new SymmetricSecurityKey(aSecret)
                 };
             });
