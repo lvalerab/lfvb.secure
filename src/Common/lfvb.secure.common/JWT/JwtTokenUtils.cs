@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -29,7 +30,7 @@ namespace lfvb.secure.common.JWT
             {
                 new Claim(JwtRegisteredClaimNames.Sub,subject),
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat,DateTime.UtcNow.ToString()),
+                new Claim(JwtRegisteredClaimNames.Iat, EpochTime.GetIntDate(DateTime.Now).ToString(CultureInfo.InvariantCulture),ClaimValueTypes.Integer64), //El Iat debe ser un entero
                 new Claim("ID",id.ToString()),
                 new Claim("USUARIO",usuario.ToString())
             };
@@ -55,7 +56,6 @@ namespace lfvb.secure.common.JWT
 
             return this.validarToken(identity);
         }
-
 
         public Guid? validarToken(ClaimsIdentity? identidad)
         {
