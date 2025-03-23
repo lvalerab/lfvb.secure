@@ -1,16 +1,10 @@
-﻿using lfvb.secure.aplication.Database.Usuario.Queries.LoginToken;
+﻿using lfvb.secure.aplication.Database.Grupos.Queries.GetGruposUsuario;
+using lfvb.secure.aplication.Database.Usuario.Queries.LoginToken;
 using lfvb.secure.aplication.Database.Usuario.Queries.LoginUsuarioPassword;
 using lfvb.secure.common.JWT;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authorization.Infrastructure;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using static Org.BouncyCastle.Math.EC.ECCurve;
+
 
 namespace lfvb.secure.api.Controllers
 {
@@ -71,10 +65,8 @@ namespace lfvb.secure.api.Controllers
                         this._configuration.GetSection("jwt").GetValue<string>("Audience", ""),
                         this._configuration.GetSection("jwt").GetValue<string>("secret", ""),
                         this._configuration.GetSection("jwt").GetValue<int>("expires_minutes", 0)
-                        );
-                    
-                    //string token = this._jwtTokenUtils.GetToken((login.Id??Guid.Empty).ToString(), this.secret, this.expires);
-                    //string token2 = this._jwtTokenUtils.GetToken((login.Id??Guid.Empty).ToString() + "RF", this.secret, this.expires + 1);
+                        );                   
+
                     this._logger.LogInformation("Acceso autorizado",new { login = login });
                     return StatusCode(StatusCodes.Status200OK, new { token =token });
                 } else
@@ -86,7 +78,44 @@ namespace lfvb.secure.api.Controllers
             }
         }
 
-        
+        /// <summary>
+        /// Método para validar una maquina (automatizacion) con token
+        /// </summary>
+        /// <param name="token">Token generado para identificar la maquina</param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("maquina/login")]
+        public async Task<IActionResult> ValidaUsuarioToken([FromBody] string ptoken)
+        {
+            if (ptoken == null)
+            {
+                this._logger.LogWarning("Se ha intentando obtener un token de maquina sin especificar el token de la maquina");
+                return BadRequest("Debe identificar el proceso o maquina a través de su token");
+            } else
+            {
+                LoginTokenModel login=await this._qryLoginToken.Execute(new LoginTokenModel { Token = ptoken });
+                if(login != null)
+                {
+                    string token = this._jwtTokenUtils.GetToken(
+                        login.Id.ToString(),
+                        ptoken,
+                        this._configuration.GetSection("jwt").GetValue<string>("Subject", ""),
+                        this._configuration.GetSection("jwt").GetValue<string>("Issuer", ""),
+                        this._configuration.GetSection("jwt").GetValue<string>("Audience", ""),
+                        this._configuration.GetSection("jwt").GetValue<string>("secret", ""),
+                        this._configuration.GetSection("jwt").GetValue<int>("expires_minutes", 0)
+                        );
+
+                    this._logger.LogInformation("Acceso autorizado", new { login = login });
+                    return StatusCode(StatusCodes.Status200OK, new { token = token });
+                } else
+                {
+                    this._logger.LogWarning("Fallo en la validacion del proceso/maquina", new { token=ptoken });
+                    //Si no ha devuelto nada, no esta autorizado
+                    return Unauthorized();
+                }
+            }
+        }
 
         /// <summary>
         /// Obtener el indentificador de usuario validado
@@ -111,7 +140,6 @@ namespace lfvb.secure.api.Controllers
                 return BadRequest();
             }
         }
-
         
     }
 }

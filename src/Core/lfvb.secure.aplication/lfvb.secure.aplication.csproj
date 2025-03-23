@@ -17,4 +17,9 @@
     <ProjectReference Include="..\lfvb.secure.domain\lfvb.secure.domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Database\Aplicaciones\Commands\" />
+    <Folder Include="Database\Grupos\Commands\" />
+  </ItemGroup>
+
 </Project>
