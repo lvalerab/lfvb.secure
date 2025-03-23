@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using lfvb.secure.aplication.Configurations;
+using lfvb.secure.aplication.Database;
 using lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario;
 using lfvb.secure.aplication.Database.Usuario.Commands.UpdateUsuario;
 using lfvb.secure.aplication.Database.Usuario.Queries.GetAllUsuarios;
@@ -30,11 +31,8 @@ namespace lfvb.secure.aplication
             services.AddSingleton(mapper.CreateMapper());
 
             //Registramos los commands y los querys
-            services.AddTransient<ICreateUsuarioCommand, CreateUsuarioCommand>();
-            services.AddTransient<IUpdateUsuarioCommand, UpdateUsuarioCommand>();
-            services.AddTransient<IGetAllUsuariosQuery, GetAllUsuriosQuery>();
-            services.AddTransient<ILoginUsuarioPasswordQuery,LoginUsuarioPasswordQuery>();
-            services.AddTransient<ILoginTokenQuery, LoginTokenQuery>();
+            DependecyinjectionCommands.AddCommands(services);
+            DependencyInjectionQuerys.AddQuerys(services);  
 
             return services;
         }
