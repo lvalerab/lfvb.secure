@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using lfvb.secure.aplication.Interfaces;
+using lfvb.secure.common.PASSWORD;
 using lfvb.secure.domain.Entities.Credencial;
 using lfvb.secure.domain.Entities.PasswordCredencial;
 using lfvb.secure.domain.Entities.TokenCredencial;
@@ -13,15 +14,18 @@ namespace lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario
     {
         private readonly IDataBaseService _db;
         private readonly IMapper _mapper;
+        private readonly ISecurePassword _securePassword;
 
-        public CreateUsuarioCommand(IDataBaseService db, IMapper mapper)
+        public CreateUsuarioCommand(IDataBaseService db, IMapper mapper, ISecurePassword securePassword)
         {
             this._db = db;
             this._mapper = mapper;
+            this._securePassword = securePassword;
         }
        
         public async Task<CreateUsuarioModel> Execute(CreateUsuarioModel usuario)
         {
+            //TODO: Almacenar los password y los token encriptados, o solo el hash
             try { 
                 if (usuario == null)
                 {
@@ -48,7 +52,7 @@ namespace lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario
                             VigenteDesde=DateTime.Now,
                             Password=new PasswordCredencialEntity
                             {
-                                Password=usuario.Password
+                                Password=this._securePassword.Crypt(usuario.Password)
                             }
                         };
                         await _db.Credenciales.AddAsync(credencial);                        
@@ -62,7 +66,7 @@ namespace lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario
                             VigenteDesde= DateTime.Now,
                             Token=new TokenCredencialEntity
                             {
-                                Token=usuario.Token
+                                Token=this._securePassword.Crypt(usuario.Token)
                             }
                         };
                         await _db.Credenciales.AddAsync(credencial);                        
