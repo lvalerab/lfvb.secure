@@ -18,7 +18,7 @@ namespace lfvb.secure.common.PASSWORD
         public string Crypt(string password)
         {
             MD5 md5 = MD5.Create();
-            byte[] calculate=md5.ComputeHash(Encoding.UTF8.GetBytes(password)); 
+            byte[] calculate=md5.ComputeHash(Encoding.UTF32.GetBytes(password)); 
             StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < calculate.Length; i++)
             {
