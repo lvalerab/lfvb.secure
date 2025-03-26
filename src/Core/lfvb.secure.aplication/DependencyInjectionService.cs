@@ -6,6 +6,7 @@ using lfvb.secure.aplication.Database.Usuario.Commands.UpdateUsuario;
 using lfvb.secure.aplication.Database.Usuario.Queries.GetAllUsuarios;
 using lfvb.secure.aplication.Database.Usuario.Queries.LoginToken;
 using lfvb.secure.aplication.Database.Usuario.Queries.LoginUsuarioPassword;
+using lfvb.secure.common.PASSWORD;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -32,7 +33,10 @@ namespace lfvb.secure.aplication
 
             //Registramos los commands y los querys
             DependecyinjectionCommands.AddCommands(services);
-            DependencyInjectionQuerys.AddQuerys(services);  
+            DependencyInjectionQuerys.AddQuerys(services);
+
+            //Registramos los utiles de datos
+            services.AddTransient<ISecurePassword, SecurePassword>();
 
             return services;
         }
