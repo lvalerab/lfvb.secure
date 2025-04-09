@@ -35,6 +35,9 @@ namespace lfvb.secure.aplication
             DependecyinjectionCommands.AddCommands(services);
             DependencyInjectionQuerys.AddQuerys(services);
 
+            //Configuramos el servicio de DataProtection
+            services.AddDataProtection();
+
             //Registramos los utiles de datos
             services.AddTransient<ISecurePassword, SecurePassword>();
 
