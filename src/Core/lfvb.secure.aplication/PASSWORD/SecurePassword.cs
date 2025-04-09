@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.DataProtection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime.Intrinsics.Arm;
 using System.Security.Cryptography;
 using System.Text;
@@ -10,21 +12,23 @@ namespace lfvb.secure.common.PASSWORD
 {
     public class SecurePassword : ISecurePassword
     {
+
+        private readonly IDataProtectionProvider _dataProtectionProvider;
+        private readonly IDataProtector _protector;
+
+        public SecurePassword(IDataProtectionProvider dataProtectionProvider) { 
+            this._dataProtectionProvider = dataProtectionProvider;
+            this._protector = this._dataProtectionProvider.CreateProtector("PersonalData.MainDataProtect");
+        }
+
         public bool CanDecrypt()
         {
-            return false;
+            return true;
         }
 
         public string Crypt(string password)
         {
-            MD5 md5 = MD5.Create();
-            byte[] calculate=md5.ComputeHash(Encoding.UTF32.GetBytes(password)); 
-            StringBuilder stringBuilder = new StringBuilder();
-            for (int i = 0; i < calculate.Length; i++)
-            {
-                stringBuilder.Append(calculate[i].ToString("x2"));
-            }
-            return stringBuilder.ToString();
+            return this._protector.Protect(password);
         }
 
         public string Decrypt(string hash)
@@ -35,7 +39,7 @@ namespace lfvb.secure.common.PASSWORD
             }
             {
                 //Implementar el codigo en caso de contraseñas encriptadas con algoritmos reversibles
-                return null;
+                return this._protector.Unprotect(hash);
             }
         }
     }
