@@ -39,5 +39,35 @@ namespace lfvb.secure.api
             });
             return services;
         }
+    
+        public static IServiceCollection AddCorsZones(this IServiceCollection services, IConfiguration configuration)
+        {
+            //https://learn.microsoft.com/es-es/aspnet/core/security/cors?view=aspnetcore-9.0
+
+            //Para los desarrollos en local, developemnt y stage
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "LOCAL",
+                    policy =>
+                    {
+                        policy.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    });
+            });
+
+            //Para los entornos de producción
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "PRODUCCION",
+                    policy =>
+                    {
+                        policy.WithOrigins("http://localhost", "https://localhost")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    });
+            });
+            return services;
+        }
     }
 }

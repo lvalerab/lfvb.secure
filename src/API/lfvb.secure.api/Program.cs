@@ -72,6 +72,7 @@ builder.Services.AddSwaggerGen(options=>
 #region "Configuracion de la inyección de dependencias"
 
 builder.Services
+        .AddCorsZones(builder.Configuration) //Para configurar las zonas de cors
         .AddJwtSecurity(builder.Configuration) //Para insertar la configuracion de la securizacion por JWT
         .AddWebApi() //Para los servidios de web api
         .AddCommon(builder.Configuration) //Para incluir la capa de Common
@@ -79,9 +80,6 @@ builder.Services
         .AddExternal(builder.Configuration) //Para incluir la capa de datos externos (Infraestrucutra)
         .AddAplication(builder.Configuration); //PAra incluir la capa de aplicacion (Core)
 #endregion
-
-
-
 
 
 var app = builder.Build();
@@ -93,6 +91,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+if(app.Environment.IsDevelopment())
+{
+    app.UseCors("LOCAL");
+} else
+{
+    app.UseCors("PRODUCCION");
+}
+
+
 
 app.UseHttpsRedirection();
 
