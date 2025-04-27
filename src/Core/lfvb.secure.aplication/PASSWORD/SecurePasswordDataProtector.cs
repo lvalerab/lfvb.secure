@@ -10,15 +10,15 @@ using System.Threading.Tasks;
 
 namespace lfvb.secure.common.PASSWORD
 {
-    public class SecurePassword : ISecurePassword
+    public class SecurePasswordDataProtector : ISecurePassword
     {
 
         private readonly IDataProtectionProvider _dataProtectionProvider;
         private readonly IDataProtector _protector;
 
-        public SecurePassword(IDataProtectionProvider dataProtectionProvider) { 
+        public SecurePasswordDataProtector(IDataProtectionProvider dataProtectionProvider) { 
             this._dataProtectionProvider = dataProtectionProvider;
-            this._protector = this._dataProtectionProvider.CreateProtector("PersonalData.MainDataProtect");
+            this._protector = this._dataProtectionProvider.CreateProtector("PersonalData.MainDataProtect");            
         }
 
         public bool CanDecrypt()

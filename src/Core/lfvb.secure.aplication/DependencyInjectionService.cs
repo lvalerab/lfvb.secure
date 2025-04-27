@@ -6,7 +6,9 @@ using lfvb.secure.aplication.Database.Usuario.Commands.UpdateUsuario;
 using lfvb.secure.aplication.Database.Usuario.Queries.GetAllUsuarios;
 using lfvb.secure.aplication.Database.Usuario.Queries.LoginToken;
 using lfvb.secure.aplication.Database.Usuario.Queries.LoginUsuarioPassword;
+using lfvb.secure.aplication.PASSWORD;
 using lfvb.secure.common.PASSWORD;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -36,10 +38,11 @@ namespace lfvb.secure.aplication
             DependencyInjectionQuerys.AddQuerys(services);
 
             //Configuramos el servicio de DataProtection
-            services.AddDataProtection();
+            //services.AddDataProtection().SetApplicationName("lfvb.secure.api").SetDefaultKeyLifetime(TimeSpan.FromDays(30));
 
             //Registramos los utiles de datos
-            services.AddTransient<ISecurePassword, SecurePassword>();
+            //services.AddTransient<ISecurePassword, SecurePasswordDataProtector>();
+            services.AddTransient<ISecurePassword, SecurePasswordAesMethod>();
 
             return services;
         }
