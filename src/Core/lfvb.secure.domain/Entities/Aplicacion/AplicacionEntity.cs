@@ -1,10 +1,5 @@
 ﻿using lfvb.secure.domain.Entities.ElementoAplicacion;
 using lfvb.secure.domain.Entities.GrupoUsuarioAplicacion;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace lfvb.secure.domain.Entities.Aplicacion
 {
