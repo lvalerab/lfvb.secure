@@ -20,8 +20,9 @@ namespace lfvb.secure.persistence.Configuraciones
             builder.Property(x => x.Id).HasColumnName("ID_VREP").IsRequired();
             builder.Property(x => x.IdPropiedadElemento).HasColumnName("ID_ELPR").IsRequired(); 
             builder.Property(x => x.Texto).HasColumnName("VALOR_TEXTO");
-            builder.Property(x => x.Numerico).HasColumnName("VALOR_NUMERO");
+            builder.Property(x => x.Numerico).HasColumnName("VALOR_NUMERICO");
             builder.Property(x => x.Fecha).HasColumnName("VALOR_FECHA");
+            builder.Property(x => x.Booleano).HasColumnName("VALOR_BOOLEANO");
             builder.Property(x => x.NumericoMaximo).HasColumnName("VALOR_NUMERICO_MAX");
             builder.Property(x => x.FechaMaximo).HasColumnName("VALOR_FECHA_MAX");
 

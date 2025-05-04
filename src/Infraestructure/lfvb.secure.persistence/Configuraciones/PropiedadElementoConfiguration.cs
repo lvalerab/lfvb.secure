@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using lfvb.secure.domain.Entities.PropiedadElemento;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 
 namespace lfvb.secure.persistence.Configuraciones
 {
@@ -17,7 +18,7 @@ namespace lfvb.secure.persistence.Configuraciones
                 .ToTable("elpr_elemento_propiedad")
                 .HasKey(x => new { x.Id});
 
-
+            builder.Property(x=>x.Id).HasColumnName("ID_ELPR").ValueGeneratedOnAdd().IsRequired(); 
             builder.Property(x => x.IdElemento).HasColumnName("ID_ELEM").IsRequired();
             builder.Property(x => x.CodPropiedad).HasColumnName("COD_PROP").IsRequired().HasMaxLength(10);
             builder.Property(x => x.FechaValor).HasColumnName("FECHA_VALOR").IsRequired().HasDefaultValue(DateTime.Now);
