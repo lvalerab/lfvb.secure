@@ -8,7 +8,7 @@ namespace lfvb.secure.aplication.Database.Propiedades.Queries.GetPropiedadesElem
 {
     public interface IGetPropiedadesElementoQuery
     {
-        public Task<List<PropiedadElementoModel>> Execute(Guid idElemento);
+        public Task<List<PropiedadElementoModel>> Execute(Guid idElemento, string? codigos = null);
         public Task<List<PropiedadElementoModel>> Execute(List<Guid?> idElementos);
         public Task<List<PropiedadElementoModel>> Execute(List<Guid?> idElementos, List<string> CodigoPropiedad);
     }

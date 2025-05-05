@@ -23,11 +23,17 @@ namespace lfvb.secure.aplication.Database.Propiedades.Queries.GetPropiedadesElem
         }
 
 
-        public async Task<List<PropiedadElementoModel>> Execute(Guid idElemento)
+        public async Task<List<PropiedadElementoModel>> Execute(Guid idElemento, string? codigos=null)
         {
+            List<string> prmcodigos = new List<string>();
+            if(codigos!=null)
+            {
+                prmcodigos = codigos.Split(',').ToList();
+            }
             List<PropiedadElementoModel> propiedades=await (from p in _db.PropiedadesElementos
                                                             where p.IdElemento.Equals(idElemento)
                                                             && p.Activo.Equals("S")
+                                                            && (prmcodigos.Count==0 || (prmcodigos.Count>0 && prmcodigos.Contains(p.Propiedad.Codigo)))
                                                             select new PropiedadElementoModel
                                                             {
                                                                 Id = p.Id,
