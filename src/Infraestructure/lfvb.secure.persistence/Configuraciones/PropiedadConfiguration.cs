@@ -35,6 +35,11 @@ namespace lfvb.secure.persistence.Configuraciones
                 .WithMany(x => x.Propiedades)
                 .HasForeignKey(x => x.CodTipoPropiedad);
 
+            builder
+                .HasMany(x=>x.RelacionTiposElementos)
+                .WithOne(x=>x.Propiedad)
+                .HasForeignKey(x=>x.CodigoPropiedad);
+
 
         }
     }

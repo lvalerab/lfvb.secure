@@ -7,9 +7,11 @@ using lfvb.secure.domain.Entities.PasswordCredencial;
 using lfvb.secure.domain.Entities.Propiedad;
 using lfvb.secure.domain.Entities.PropiedadElemento;
 using lfvb.secure.domain.Entities.RelacionGrupoUsuarioElementoAplicacionTipoPermisoAplicacion;
+using lfvb.secure.domain.Entities.RelacionTipoElementoPropiedad;
 using lfvb.secure.domain.Entities.RelacionTipoElementoTipoPermiso;
 using lfvb.secure.domain.Entities.RelacionUsuarioGrupoUsuarioAplicacion;
 using lfvb.secure.domain.Entities.TipoCredencial;
+using lfvb.secure.domain.Entities.TipoElemento;
 using lfvb.secure.domain.Entities.TipoElementoAplicacion;
 using lfvb.secure.domain.Entities.TipoPermisoElementoAplicacion;
 using lfvb.secure.domain.Entities.TipoPropiedad;
@@ -46,6 +48,8 @@ namespace lfvb.secure.aplication.Interfaces
         DbSet<PropiedadEntity> Propiedades { get; set; }
         DbSet<PropiedadElementoEntity> PropiedadesElementos { get; set; }
         DbSet<ValorPropiedadElementoEntity> ValoresPropiedadesElementos { get; set; }
+        DbSet<TipoElementoEntity> TiposElementos { get; set; }
+        DbSet<RelacionTipoElementoPropiedadEntity> RelacionesTiposElementosPropiedades { get; set; }
 
         Task<bool> SaveAsync();
     }

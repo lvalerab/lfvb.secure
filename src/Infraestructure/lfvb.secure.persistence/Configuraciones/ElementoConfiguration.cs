@@ -19,6 +19,11 @@ namespace lfvb.secure.persistence.Configuraciones
                 .HasKey(x => x.Id);
 
             builder.Property(x => x.Id).HasColumnName("ID_ELEM").IsRequired();
+            builder.Property(x => x.CodigoTipoElemento).HasColumnName("COD_TIEL");
+
+            builder.HasOne(x => x.TipoElemento)
+                .WithMany(x => x.Elementos)
+                .HasForeignKey(x => x.CodigoTipoElemento);   
 
         }
     }
