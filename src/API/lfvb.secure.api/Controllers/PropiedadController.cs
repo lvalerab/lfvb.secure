@@ -69,6 +69,20 @@ namespace lfvb.secure.api.Controllers
         }
 
         /// <summary>
+        /// Obtiene las propiedades de un elemento (seperado por comas) pasadas por parametro
+        /// </summary>
+        /// <param name="idElemento"></param>
+        /// <param name="codPropiedades"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("elemento/{idElemento:guid}/{codPropiedades}")]
+        [Authorize]
+        public async Task<IActionResult> GetPropiedadesElemento(Guid idElemento, string codPropiedades)
+        {
+            List<PropiedadElementoModel> propiedades = await this._getPropiedadesElementoQuery.Execute(idElemento,codPropiedades);
+            return Ok(propiedades);
+        }
+        /// <summary>
         /// Para consultar el listado de propidades de un listado de elementos
         /// </summary>
         /// <param name="idElementos"></param>

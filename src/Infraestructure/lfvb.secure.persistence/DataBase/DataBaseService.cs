@@ -8,9 +8,11 @@ using lfvb.secure.domain.Entities.PasswordCredencial;
 using lfvb.secure.domain.Entities.Propiedad;
 using lfvb.secure.domain.Entities.PropiedadElemento;
 using lfvb.secure.domain.Entities.RelacionGrupoUsuarioElementoAplicacionTipoPermisoAplicacion;
+using lfvb.secure.domain.Entities.RelacionTipoElementoPropiedad;
 using lfvb.secure.domain.Entities.RelacionTipoElementoTipoPermiso;
 using lfvb.secure.domain.Entities.RelacionUsuarioGrupoUsuarioAplicacion;
 using lfvb.secure.domain.Entities.TipoCredencial;
+using lfvb.secure.domain.Entities.TipoElemento;
 using lfvb.secure.domain.Entities.TipoElementoAplicacion;
 using lfvb.secure.domain.Entities.TipoPermisoElementoAplicacion;
 using lfvb.secure.domain.Entities.TipoPropiedad;
@@ -50,12 +52,15 @@ namespace lfvb.secure.persistence.DataBase
         public DbSet<TipoPermisoElementoAplicacionEntity> TiposPermisosTipoElementosAplicaciones { get; set; }
         public DbSet<RelacionGrupoUsuarioElementoAplicacionTipoPermisoAplicacionEntity> RelacionElementosConTiposPermisosConGruposUsuarios { get; set; }
 
+
         #region "Gestion de propiedades de los elementos"
         public DbSet<ElementoEntity> Elementos { get; set; }
         public DbSet<TipoPropiedadEntity> TiposPropiedades { get; set; }
         public DbSet<PropiedadEntity> Propiedades { get; set; }
         public DbSet<PropiedadElementoEntity> PropiedadesElementos { get; set; }
         public DbSet<ValorPropiedadElementoEntity> ValoresPropiedadesElementos { get; set; }
+        public DbSet<TipoElementoEntity> TiposElementos { get; set; }
+        public DbSet<RelacionTipoElementoPropiedadEntity> RelacionesTiposElementosPropiedades { get; set; } 
         #endregion
 
         public async Task<bool> SaveAsync()
@@ -86,6 +91,8 @@ namespace lfvb.secure.persistence.DataBase
             new PropiedadConfiguration(modelBuilder.Entity<PropiedadEntity>());
             new PropiedadElementoConfiguration(modelBuilder.Entity<PropiedadElementoEntity>());
             new ValorPropiedadElementoConfiguration(modelBuilder.Entity<ValorPropiedadElementoEntity>());
+            new TipoElementoConfiguration(modelBuilder.Entity<TipoElementoEntity>());
+            new RelacionTipoElementoPropiedadConfiguracion(modelBuilder.Entity<RelacionTipoElementoPropiedadEntity>());
         }
 
 
