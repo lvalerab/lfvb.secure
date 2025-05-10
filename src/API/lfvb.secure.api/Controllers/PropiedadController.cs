@@ -48,9 +48,9 @@ namespace lfvb.secure.api.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("lista")]
-        public async Task<IActionResult> GetAllPropiedades(string codPadrePropiedad = null)
+        public async Task<IActionResult> GetAllPropiedades(string? codPadrePropiedad = null,string? codTipoElemento=null)
         {
-            List<PropiedadModel> propiedades = await this._getAllPropiedadesQuery.Execute(codPadrePropiedad);
+            List<PropiedadModel> propiedades = await this._getAllPropiedadesQuery.Execute(codPadrePropiedad,codTipoElemento);
             return Ok(propiedades);
         }
 

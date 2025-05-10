@@ -20,10 +20,11 @@ namespace lfvb.secure.aplication.Database.Propiedades.Queries.GetAllPropiedades
             this._mapper = mapper;
         }
 
-        public async Task<List<PropiedadModel>> Execute(string CodPropiedadPadre = null)
+        public async Task<List<PropiedadModel>> Execute(string? CodPropiedadPadre = null, string? CodTipoElemento =null)
         {
             List<PropiedadModel> propiedades = await(from p in _db.Propiedades
                                                      where (CodPropiedadPadre == null || (CodPropiedadPadre!=null && p.PropiedadPadre.Codigo.Equals(CodPropiedadPadre)))
+                                                     && ((CodTipoElemento == null) || (CodTipoElemento != null && p.RelacionTiposElementos.Any(x=>x.CodigoTipoElemento.Equals(CodTipoElemento))))
                                                      select new PropiedadModel
                                                      {
                                                          Codigo = p.Codigo,

@@ -8,6 +8,6 @@ namespace lfvb.secure.aplication.Database.Propiedades.Queries.GetAllPropiedades
 {
     public interface IGetAllPropiedadesQuery
     {
-        public Task<List<PropiedadModel>> Execute(string CodPropiedadPadre);    
+        public Task<List<PropiedadModel>> Execute(string? CodPropiedadPadre, string? CodTipoElemento = null);    
     }
 }
