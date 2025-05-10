@@ -19,7 +19,9 @@ using lfvb.secure.domain.Entities.TipoPropiedad;
 using lfvb.secure.domain.Entities.TokenCredencial;
 using lfvb.secure.domain.Entities.Usuario;
 using lfvb.secure.domain.Entities.ValorPropiedadElemento;
+using lfvb.secure.domain.Entities.Views.VWElemento;
 using lfvb.secure.persistence.Configuraciones;
+using lfvb.secure.persistence.Configuraciones.Views;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -60,7 +62,12 @@ namespace lfvb.secure.persistence.DataBase
         public DbSet<PropiedadElementoEntity> PropiedadesElementos { get; set; }
         public DbSet<ValorPropiedadElementoEntity> ValoresPropiedadesElementos { get; set; }
         public DbSet<TipoElementoEntity> TiposElementos { get; set; }
-        public DbSet<RelacionTipoElementoPropiedadEntity> RelacionesTiposElementosPropiedades { get; set; } 
+        public DbSet<RelacionTipoElementoPropiedadEntity> RelacionesTiposElementosPropiedades { get; set; }
+        #endregion
+
+
+        #region "Elementos de vistas"
+        public DbSet<VWElementoEntity> VistaElementos { get; set; }
         #endregion
 
         public async Task<bool> SaveAsync()
@@ -93,6 +100,8 @@ namespace lfvb.secure.persistence.DataBase
             new ValorPropiedadElementoConfiguration(modelBuilder.Entity<ValorPropiedadElementoEntity>());
             new TipoElementoConfiguration(modelBuilder.Entity<TipoElementoEntity>());
             new RelacionTipoElementoPropiedadConfiguracion(modelBuilder.Entity<RelacionTipoElementoPropiedadEntity>());
+
+            new VWElementoConfiguration(modelBuilder.Entity<VWElementoEntity>());
         }
 
 

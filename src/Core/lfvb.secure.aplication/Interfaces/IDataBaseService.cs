@@ -18,6 +18,7 @@ using lfvb.secure.domain.Entities.TipoPropiedad;
 using lfvb.secure.domain.Entities.TokenCredencial;
 using lfvb.secure.domain.Entities.Usuario;
 using lfvb.secure.domain.Entities.ValorPropiedadElemento;
+using lfvb.secure.domain.Entities.Views.VWElemento;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,7 @@ namespace lfvb.secure.aplication.Interfaces
         DbSet<TipoPermisoElementoAplicacionEntity> TiposPermisosTipoElementosAplicaciones { get; set; }
         DbSet<RelacionGrupoUsuarioElementoAplicacionTipoPermisoAplicacionEntity> RelacionElementosConTiposPermisosConGruposUsuarios { get; set; }
 
+        #region "Modulo de propiedades"
         DbSet<ElementoEntity> Elementos { get; set; }
         DbSet<TipoPropiedadEntity> TiposPropiedades { get; set; }
         DbSet<PropiedadEntity> Propiedades { get; set; }
@@ -50,6 +52,11 @@ namespace lfvb.secure.aplication.Interfaces
         DbSet<ValorPropiedadElementoEntity> ValoresPropiedadesElementos { get; set; }
         DbSet<TipoElementoEntity> TiposElementos { get; set; }
         DbSet<RelacionTipoElementoPropiedadEntity> RelacionesTiposElementosPropiedades { get; set; }
+        #endregion
+
+        #region "Elementos de vistas"
+        DbSet<VWElementoEntity> VistaElementos { get; set; }
+        #endregion
 
         Task<bool> SaveAsync();
     }
