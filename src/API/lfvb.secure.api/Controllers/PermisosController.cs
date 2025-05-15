@@ -116,6 +116,35 @@ namespace lfvb.secure.api.Controllers
                 return BadRequest();
             }
         }
-    
+
+        /// <summary>
+        /// Nos indica si el usuario puede manejar el elemento indicado
+        /// </summary>
+        /// <param name="idElemento"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("usuario/actua/elemento/{idElemento:Guid}")]
+        public async Task<IActionResult> PuedeActuarSobreElElemento(Guid idElemento)
+        {
+            Guid id = Guid.Empty;
+            try
+            {
+                id = this._jwtTokenUtils.GetIdFromToken(HttpContext) ?? Guid.Empty;
+                if (id == Guid.Empty)
+                {
+                    return StatusCode(StatusCodes.Status401Unauthorized);
+                }
+                else
+                {
+                    bool Puede = await this._qryAllElementosUsuario.Execute(id,idElemento);
+                    return StatusCode(StatusCodes.Status200OK, Puede);
+                }
+            }
+            catch (Exception ex)
+            {
+                this._logger.LogError("Error al comprobar si hay relacion entre el usuario y el elemento", new { id, idElemento, ex = ex });
+                return BadRequest();
+            }
+        }
     }
 }
