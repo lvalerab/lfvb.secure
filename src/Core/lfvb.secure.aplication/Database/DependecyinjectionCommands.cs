@@ -1,4 +1,5 @@
-﻿using lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario;
+﻿using lfvb.secure.aplication.Database.Propiedades.Commands.NuevaPropiedadElemento;
+using lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario;
 using lfvb.secure.aplication.Database.Usuario.Commands.UpdateUsuario;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -16,6 +17,8 @@ namespace lfvb.secure.aplication.Database
 
             services.AddTransient<ICreateUsuarioCommand, CreateUsuarioCommand>();
             services.AddTransient<IUpdateUsuarioCommand, UpdateUsuarioCommand>();
+
+            services.AddTransient<INuevaActualizaPropiedadElementoCommand, NuevaActualizaPropiedadElementoCommand>();
             return services;
         }
     }

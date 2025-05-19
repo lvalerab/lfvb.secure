@@ -11,7 +11,7 @@ namespace lfvb.secure.aplication.Database.Propiedades.Queries.GetPropiedadesElem
 {
     public class PropiedadElementoModel
     {
-        public Int64? Id { get; set; }  
+        public Int32? Id { get; set; }  
         public Guid? IdElemento { get; set; }
         public PropiedadModel Propiedad { get; set; }
         public DateTime? FechaValor { get; set; }
