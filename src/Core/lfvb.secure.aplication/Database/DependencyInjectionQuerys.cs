@@ -1,4 +1,5 @@
 ﻿using lfvb.secure.aplication.Database.Aplicaciones.Queries.GetAplicacionesUsuario;
+using lfvb.secure.aplication.Database.Aplicaciones.Queries.PermisoElementoAplicacion;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetGruposUsuario;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetAllPropiedades;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetPropiedadesElemento;
@@ -28,6 +29,7 @@ namespace lfvb.secure.aplication.Database
 
             #region "Querys de aplicaciones"
             services.AddTransient<IGetAplicacionesUsuarioQuery, GetAplicacionesUsuarioQuery>();
+            services.AddTransient<IPermisoElementoAplicacionQuery, PermisoElementoAplicacionQuery>();
             #endregion
 
             #region "Querys de tipos de propiedades"
