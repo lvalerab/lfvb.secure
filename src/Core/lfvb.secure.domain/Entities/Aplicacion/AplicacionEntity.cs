@@ -7,6 +7,8 @@ namespace lfvb.secure.domain.Entities.Aplicacion
     {
         public Guid Id { get; set; }
 
+        public string Codigo { get; set; }  
+
         public string? Nombre { get; set; }
 
         public virtual ICollection<GrupoUsuariosAplicacionEntity>? Grupos { get; set; }

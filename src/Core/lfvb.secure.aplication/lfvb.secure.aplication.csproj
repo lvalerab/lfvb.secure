@@ -22,7 +22,6 @@
   <ItemGroup>
     <Folder Include="Database\Aplicaciones\Commands\" />
     <Folder Include="Database\Grupos\Commands\" />
-    <Folder Include="Database\Propiedades\Commands\" />
     <Folder Include="Database\TipoPropiedad\Commands\" />
   </ItemGroup>
 

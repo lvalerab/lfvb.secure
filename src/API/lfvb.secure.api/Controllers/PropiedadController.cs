@@ -1,4 +1,6 @@
 ﻿using lfvb.secure.api.ParametrosModel;
+using lfvb.secure.aplication.Database.Aplicaciones.Queries.PermisoElementoAplicacion;
+using lfvb.secure.aplication.Database.Propiedades.Commands.NuevaPropiedadElemento;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetAllPropiedades;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetPropiedadesElemento;
 using lfvb.secure.aplication.Database.TipoPropiedad.Queries;
@@ -18,9 +20,18 @@ namespace lfvb.secure.api.Controllers
         private IGetAllTiposPropiedadesQuery _getAllTipoPropiedadesQuery;
         private IGetAllPropiedadesQuery _getAllPropiedadesQuery;  
         private IGetPropiedadesElementoQuery _getPropiedadesElementoQuery;
+        private INuevaActualizaPropiedadElementoCommand _nuevaActualizaPropiedadElementoCommand;
+        private IPermisoElementoAplicacionQuery _permisoElementoAplicacionQuery;
         private readonly string secret;
         private readonly int expires;
-        public PropiedadController(ILogger<PropiedadController> logger, IJwtTokenUtils jwtUtils, IConfiguration config, IGetAllTiposPropiedadesQuery GetAllTipoPropiedadesQuery, IGetAllPropiedadesQuery getAllPropiedades, IGetPropiedadesElementoQuery getPropiedadesElementoQuery)
+        public PropiedadController(ILogger<PropiedadController> logger, 
+                                   IJwtTokenUtils jwtUtils, 
+                                   IConfiguration config, 
+                                   IGetAllTiposPropiedadesQuery GetAllTipoPropiedadesQuery, 
+                                   IGetAllPropiedadesQuery getAllPropiedades, 
+                                   IGetPropiedadesElementoQuery getPropiedadesElementoQuery,
+                                   INuevaActualizaPropiedadElementoCommand nuevaActualizaPropiedadElementoCommand,
+                                   IPermisoElementoAplicacionQuery permisoElementoAplicacionQuery)
         {
             this._logger = logger;
             this._jwtTokenUtils = jwtUtils;
@@ -28,6 +39,8 @@ namespace lfvb.secure.api.Controllers
             this._getAllTipoPropiedadesQuery = GetAllTipoPropiedadesQuery;
             this._getAllPropiedadesQuery = getAllPropiedades;
             this._getPropiedadesElementoQuery = getPropiedadesElementoQuery;
+            this._nuevaActualizaPropiedadElementoCommand = nuevaActualizaPropiedadElementoCommand;
+            this._permisoElementoAplicacionQuery = permisoElementoAplicacionQuery;
         }
 
         /// <summary>
@@ -82,6 +95,38 @@ namespace lfvb.secure.api.Controllers
             List<PropiedadElementoModel> propiedades = await this._getPropiedadesElementoQuery.Execute(idElemento,codPropiedades);
             return Ok(propiedades);
         }
+
+        /// <summary>
+        /// Actualiza o inserta una nueva propiedad 
+        /// </summary>
+        /// <param name="propiedad"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("elemento")]
+        [Authorize()]
+        public async Task<IActionResult> ActualizaInsertaPropiedadElemento([FromBody] PropiedadElementoModel propiedad)
+        {
+            Guid? id = this._jwtTokenUtils.GetIdFromToken(HttpContext);
+            if (id != null)
+            {
+                string codApli = "ADM_PROP";
+                string codElemento = "SW_ACT_INS_PROP_ELEMENTO";
+                string codPermiso = "LLSWEP";
+                Guid aux = (Guid)id;
+                PermisoElementoAplicacionQueryModel permiso = await this._permisoElementoAplicacionQuery.Execute(aux, codApli, codElemento, codPermiso);
+                if(permiso !=null && permiso.CodigoTipoPermiso.Count()>0) { 
+                    PropiedadElementoModel resultado = await this._nuevaActualizaPropiedadElementoCommand.Execute(propiedad);
+                    return Ok(resultado);
+                } else
+                {
+                    return Unauthorized("No tiene permisos para realizar esta operación");
+                }
+            } else
+            {
+                return Unauthorized("No se ha identificado");
+            }
+        }
+
         /// <summary>
         /// Para consultar el listado de propidades de un listado de elementos
         /// </summary>

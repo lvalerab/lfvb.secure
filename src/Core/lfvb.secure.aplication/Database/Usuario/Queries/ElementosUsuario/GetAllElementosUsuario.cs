@@ -32,5 +32,15 @@ namespace lfvb.secure.aplication.Database.Usuario.Queries.ElementosUsuario
                                                     }).ToListAsync<VMElementosModel>();
             return elementos;
         }
+
+
+        public async Task<bool> Execute(Guid idUsuario, Guid idElemento)
+        {
+            bool existe = await (from vw in _db.VistaElementos
+                                 where vw.IdUsuario.Equals(idUsuario)
+                                    && vw.Id.Equals(idElemento)
+                                 select vw.Id).AnyAsync();
+            return existe;
+        }
     }
 }

@@ -32,7 +32,11 @@ namespace lfvb.secure.aplication.Database.Propiedades.Queries.GetAllPropiedades
                                                          TipoPropiedad = new TipoPropiedadModel
                                                          {
                                                              Codigo = p.TipoPropiedad.Codigo,
-                                                             Nombre = p.TipoPropiedad.Nombre
+                                                             Nombre = p.TipoPropiedad.Nombre,
+                                                             Historico=p.TipoPropiedad.Historico=="S",
+                                                             Intervalo=p.TipoPropiedad.Intervalo=="S",
+                                                             Multiple=p.TipoPropiedad.Multiple=="S",
+                                                             Tipo=p.TipoPropiedad.Tipo
                                                          }
                                                      }).ToListAsync<PropiedadModel>();
             return propiedades;
