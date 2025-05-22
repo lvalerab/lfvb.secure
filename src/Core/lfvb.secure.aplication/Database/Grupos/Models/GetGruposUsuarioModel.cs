@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace lfvb.secure.aplication.Database.Grupos.Queries.GetGruposUsuario
+namespace lfvb.secure.aplication.Database.Grupos.Models
 {
     public class GetGruposUsuarioModel
     {

@@ -1,5 +1,6 @@
 ﻿using lfvb.secure.aplication.Database.Aplicaciones.Queries.GetAplicacionesUsuario;
 using lfvb.secure.aplication.Database.Aplicaciones.Queries.PermisoElementoAplicacion;
+using lfvb.secure.aplication.Database.Grupos.Models;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetGruposUsuario;
 using lfvb.secure.aplication.Database.Usuario.Queries.ElementosUsuario;
 using lfvb.secure.common.JWT;

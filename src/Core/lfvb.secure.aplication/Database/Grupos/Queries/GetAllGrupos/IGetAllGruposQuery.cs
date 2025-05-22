@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace lfvb.secure.aplication.Database.Grupos.Queries.GetGruposUsuario
+namespace lfvb.secure.aplication.Database.Grupos.Queries.GetAllGrupos
 {
-    public interface IGetGruposUsuario
+    public interface IGetAllGruposQuery
     {
-        public Task<List<GetGruposUsuarioModel>?> Execute(Guid? id);
+        public Task<List<GrupoModel>> Execute();    
     }
 }
