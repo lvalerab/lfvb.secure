@@ -12,5 +12,6 @@ namespace lfvb.secure.aplication.Database.Propiedades.Queries.GetAllPropiedades
         public string Codigo { get; set; }  
         public TipoPropiedadModel TipoPropiedad { get; set; }   
         public string Nombre { get; set; }
+        public List<PropiedadModel> Propiedades { get; set; } = new List<PropiedadModel>();
     }
 }

@@ -8,6 +8,7 @@ using lfvb.secure.aplication.Database.TipoCrendecial.Queries.GetAllTiposCredenci
 using lfvb.secure.aplication.Database.TipoPropiedad.Queries;
 using lfvb.secure.aplication.Database.Usuario.Queries.ElementosUsuario;
 using lfvb.secure.aplication.Database.Usuario.Queries.GetAllUsuarios;
+using lfvb.secure.aplication.Database.Usuario.Queries.GetCredencialesUsuario;
 using lfvb.secure.aplication.Database.Usuario.Queries.LoginToken;
 using lfvb.secure.aplication.Database.Usuario.Queries.LoginUsuarioPassword;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,7 @@ namespace lfvb.secure.aplication.Database
             services.AddTransient<IGetAllUsuariosQuery, GetAllUsuriosQuery>();
             services.AddTransient<ILoginUsuarioPasswordQuery, LoginUsuarioPasswordQuery>();
             services.AddTransient<ILoginTokenQuery, LoginTokenQuery>();
+            services.AddTransient<IGetCredencialesUsuarioQuery, GetCredencialesUsuarioQuery>();
             #endregion
 
             #region "Querys de grupos"

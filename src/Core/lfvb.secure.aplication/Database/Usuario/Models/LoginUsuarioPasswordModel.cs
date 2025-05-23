@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace lfvb.secure.aplication.Database.Usuario.Queries.LoginUsuarioPassword
+namespace lfvb.secure.aplication.Database.Usuario.Models
 {
     public class LoginUsuarioPasswordModel
     {

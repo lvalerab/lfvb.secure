@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace lfvb.secure.aplication.Database.Usuario.Queries.GetAllUsuarios
+namespace lfvb.secure.aplication.Database.Usuario.Models
 {
     public class GetAllUsuariosModel
     {
         public Guid Id { get; set; }
 
-        public String Nombre { get; set; }
+        public string Nombre { get; set; }
 
-        public String Usuario { get; set; }
+        public string Usuario { get; set; }
     }
 }

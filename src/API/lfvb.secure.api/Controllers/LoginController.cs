@@ -1,4 +1,5 @@
 ﻿using lfvb.secure.aplication.Database.Grupos.Queries.GetGruposUsuario;
+using lfvb.secure.aplication.Database.Usuario.Models;
 using lfvb.secure.aplication.Database.Usuario.Queries.LoginToken;
 using lfvb.secure.aplication.Database.Usuario.Queries.LoginUsuarioPassword;
 using lfvb.secure.common.JWT;

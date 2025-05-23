@@ -4,7 +4,9 @@ using lfvb.secure.aplication.Database.Grupos.Queries.GetAllGrupos;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetGruposUsuario;
 using lfvb.secure.aplication.Database.TipoCrendecial.Models;
 using lfvb.secure.aplication.Database.TipoCrendecial.Queries.GetAllTiposCredenciales;
+using lfvb.secure.aplication.Database.Usuario.Models;
 using lfvb.secure.aplication.Database.Usuario.Queries.GetAllUsuarios;
+using lfvb.secure.aplication.Database.Usuario.Queries.GetCredencialesUsuario;
 using lfvb.secure.aplication.Database.Usuario.Queries.LoginToken;
 using lfvb.secure.aplication.Database.Usuario.Queries.LoginUsuarioPassword;
 using lfvb.secure.common.JWT;
@@ -26,13 +28,15 @@ namespace lfvb.secure.api.Controllers
         private IGetAllTiposCredencialesQuery _qryAllTiposCredenciales;
         private IGetGruposUsuario _qryGruposUsuarios;
         private IGetAllGruposQuery _qryGrupos;
+        private IGetCredencialesUsuarioQuery _qryCredencialesUsuario;   
 
         public AdministracionUsuariosController(ILogger<PermisosController> logger, 
                                                 IJwtTokenUtils jwtTokenUtils,
                                                 IGetAllUsuariosQuery qryGetUsuarios,
                                                 IGetAllTiposCredencialesQuery qryAllTiposCredenciales,
                                                 IGetGruposUsuario qryGruposUsuarios,
-                                                IGetAllGruposQuery qryGrupos)
+                                                IGetAllGruposQuery qryGrupos,
+                                                IGetCredencialesUsuarioQuery qryCredencialesUsuario)
         {
             this._logger = logger;
             this._jwtTokenUtils = jwtTokenUtils;
@@ -40,6 +44,7 @@ namespace lfvb.secure.api.Controllers
             this._qryAllTiposCredenciales = qryAllTiposCredenciales;
             this._qryGruposUsuarios = qryGruposUsuarios;
             this._qryGrupos = qryGrupos;
+            this._qryCredencialesUsuario = qryCredencialesUsuario;
         }
 
         /// <summary>
@@ -90,6 +95,19 @@ namespace lfvb.secure.api.Controllers
         public async Task<IActionResult> GetGruposUsuario(Guid id)
         {
             List<GetGruposUsuarioModel> lista = await this._qryGruposUsuarios.Execute(id);
+            return Ok(lista);
+        }
+
+        /// <summary>
+        /// Obtiene el listado de credenciales asignadas a un usuario
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("usuario/{id:guid}/lista/credenciales")]
+        public async Task<IActionResult> GetCredencialesUsuario(Guid id)
+        {
+            List<CredencialUsuarioModel> lista = await this._qryCredencialesUsuario.Execute(id);
             return Ok(lista);
         }
 

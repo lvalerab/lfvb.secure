@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using lfvb.secure.aplication.Database.Usuario.Models;
 using lfvb.secure.aplication.Interfaces;
 using lfvb.secure.common.PASSWORD;
 using lfvb.secure.domain.Entities.Usuario;
