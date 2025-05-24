@@ -1,4 +1,5 @@
-﻿using lfvb.secure.api.ParametrosModel;
+﻿using lfvb.secure.api.Atributos.Secure;
+using lfvb.secure.api.ParametrosModel;
 using lfvb.secure.aplication.Database.Aplicaciones.Queries.PermisoElementoAplicacion;
 using lfvb.secure.aplication.Database.Propiedades.Commands.NuevaPropiedadElemento;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetAllPropiedades;
@@ -103,28 +104,12 @@ namespace lfvb.secure.api.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("elemento")]
-        [Authorize()]
+        //[Authorize()]
+        [DbAuthorize("ADM_PROP", "SW_ACT_INS_PROP_ELEMENTO", "LLSWEP")]
         public async Task<IActionResult> ActualizaInsertaPropiedadElemento([FromBody] PropiedadElementoModel propiedad)
         {
-            Guid? id = this._jwtTokenUtils.GetIdFromToken(HttpContext);
-            if (id != null)
-            {
-                string codApli = "ADM_PROP";
-                string codElemento = "SW_ACT_INS_PROP_ELEMENTO";
-                string codPermiso = "LLSWEP";
-                Guid aux = (Guid)id;
-                PermisoElementoAplicacionQueryModel permiso = await this._permisoElementoAplicacionQuery.Execute(aux, codApli, codElemento, codPermiso);
-                if(permiso !=null && permiso.CodigoTipoPermiso.Count()>0) { 
-                    PropiedadElementoModel resultado = await this._nuevaActualizaPropiedadElementoCommand.Execute(propiedad);
-                    return Ok(resultado);
-                } else
-                {
-                    return Unauthorized("No tiene permisos para realizar esta operación");
-                }
-            } else
-            {
-                return Unauthorized("No se ha identificado");
-            }
+            //PropiedadElementoModel resultado = await this._nuevaActualizaPropiedadElementoCommand.Execute(propiedad);
+            return Ok(propiedad);
         }
 
         /// <summary>

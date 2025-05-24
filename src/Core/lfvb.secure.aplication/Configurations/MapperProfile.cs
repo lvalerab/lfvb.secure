@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario;
-using lfvb.secure.aplication.Database.Usuario.Queries.GetAllUsuarios;
+using lfvb.secure.aplication.Database.Usuario.Models;
 using lfvb.secure.domain.Entities.Usuario;
 using System;
 using System.Collections.Generic;

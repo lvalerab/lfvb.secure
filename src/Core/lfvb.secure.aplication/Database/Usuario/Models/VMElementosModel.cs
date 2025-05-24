@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace lfvb.secure.aplication.Database.Usuario.Queries.ElementosUsuario
+namespace lfvb.secure.aplication.Database.Usuario.Models
 {
     public class VMElementosModel
     {
         public Guid? Id { get; set; }   
-        public String? Etiqueta { get; set; }   
-        public String? Tipo { get; set; }   
+        public string? Etiqueta { get; set; }   
+        public string? Tipo { get; set; }   
     }
 }

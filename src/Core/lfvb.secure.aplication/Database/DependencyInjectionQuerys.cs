@@ -1,11 +1,14 @@
 ﻿using lfvb.secure.aplication.Database.Aplicaciones.Queries.GetAplicacionesUsuario;
 using lfvb.secure.aplication.Database.Aplicaciones.Queries.PermisoElementoAplicacion;
+using lfvb.secure.aplication.Database.Grupos.Queries.GetAllGrupos;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetGruposUsuario;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetAllPropiedades;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetPropiedadesElemento;
+using lfvb.secure.aplication.Database.TipoCrendecial.Queries.GetAllTiposCredenciales;
 using lfvb.secure.aplication.Database.TipoPropiedad.Queries;
 using lfvb.secure.aplication.Database.Usuario.Queries.ElementosUsuario;
 using lfvb.secure.aplication.Database.Usuario.Queries.GetAllUsuarios;
+using lfvb.secure.aplication.Database.Usuario.Queries.GetCredencialesUsuario;
 using lfvb.secure.aplication.Database.Usuario.Queries.LoginToken;
 using lfvb.secure.aplication.Database.Usuario.Queries.LoginUsuarioPassword;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,10 +24,12 @@ namespace lfvb.secure.aplication.Database
             services.AddTransient<IGetAllUsuariosQuery, GetAllUsuriosQuery>();
             services.AddTransient<ILoginUsuarioPasswordQuery, LoginUsuarioPasswordQuery>();
             services.AddTransient<ILoginTokenQuery, LoginTokenQuery>();
+            services.AddTransient<IGetCredencialesUsuarioQuery, GetCredencialesUsuarioQuery>();
             #endregion
 
             #region "Querys de grupos"
             services.AddTransient<IGetGruposUsuario, GetGruposUsuarioQuery>();
+            services.AddTransient<IGetAllGruposQuery, GetAllGruposQuery>(); 
             #endregion
 
             #region "Querys de aplicaciones"
@@ -44,6 +49,13 @@ namespace lfvb.secure.aplication.Database
             #region "Querys de vistas"
             services.AddTransient<IGetAllElementosUsuario, GetAllElementosUsuario>();
             #endregion
+
+
+            #region "Credenciales"
+            services.AddTransient<IGetAllTiposCredencialesQuery, GetAllTiposCredencialesQuery>();
+            #endregion
+
+
             return services;
         }
     }

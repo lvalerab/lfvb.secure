@@ -72,5 +72,17 @@ namespace lfvb.secure.aplication.Database.Aplicaciones.Queries.PermisoElementoAp
                                                 ).ToListAsync<string>();
             return permiso;
         }
+
+        public PermisoElementoAplicacionQueryModel ExecuteSync(Guid idUsuario, Guid idAplicacion, Guid idElementoAplicacion, string? CodigoTipoPermiso = null)
+        {
+            var tsk=Task.Run(async ()=> await this.Execute(idUsuario, idAplicacion, idElementoAplicacion, CodigoTipoPermiso));
+            return tsk.Result;
+        }
+
+        public PermisoElementoAplicacionQueryModel ExecuteSync(Guid idUsuario, string codAplicacion, string codElementoAplicacion, string? CodigoTipoPermiso = null)
+        {
+            var tsk = Task.Run(async () => await this.Execute(idUsuario, codAplicacion, codElementoAplicacion, CodigoTipoPermiso));
+            return tsk.Result;
+        }
     }
 }
