@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace lfvb.secure.aplication.Database.Aplicaciones.Queries.GetAplicacionesUsuario
+namespace lfvb.secure.aplication.Database.Aplicaciones.Models
 {
     public class GetAplicacionUsuarioModel
     {

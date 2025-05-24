@@ -1,4 +1,5 @@
 ﻿
+using lfvb.secure.api.Atributos.Secure;
 using lfvb.secure.aplication.Database.Grupos.Models;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetAllGrupos;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetGruposUsuario;
@@ -7,8 +8,6 @@ using lfvb.secure.aplication.Database.TipoCrendecial.Queries.GetAllTiposCredenci
 using lfvb.secure.aplication.Database.Usuario.Models;
 using lfvb.secure.aplication.Database.Usuario.Queries.GetAllUsuarios;
 using lfvb.secure.aplication.Database.Usuario.Queries.GetCredencialesUsuario;
-using lfvb.secure.aplication.Database.Usuario.Queries.LoginToken;
-using lfvb.secure.aplication.Database.Usuario.Queries.LoginUsuarioPassword;
 using lfvb.secure.common.JWT;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -55,6 +54,8 @@ namespace lfvb.secure.api.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("lista/{pagina:int}/{elementos:int}")]
+        [Authorize]
+        [DbAuthorize("ADM_USR", "SW_ADM_USR_LST_USU", "LLSWEP")]
         public async Task<IActionResult> GetListaUsuarios(int pagina, int elementos)
         {
             List<GetAllUsuariosModel> lista = await this._qryGetUsuarios.Execute(pagina, elementos);
@@ -92,6 +93,8 @@ namespace lfvb.secure.api.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("usuario/{id:guid}/lista/grupos")]
+        [Authorize]
+        [DbAuthorize("ADM_USR", "SW_ADM_USR_GRP_USU", "LLSWEP")]
         public async Task<IActionResult> GetGruposUsuario(Guid id)
         {
             List<GetGruposUsuarioModel> lista = await this._qryGruposUsuarios.Execute(id);
@@ -105,6 +108,8 @@ namespace lfvb.secure.api.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("usuario/{id:guid}/lista/credenciales")]
+        [Authorize]
+        [DbAuthorize("ADM_USR", "SW_ADM_USR_CRD_USU", "LLSWEP")]
         public async Task<IActionResult> GetCredencialesUsuario(Guid id)
         {
             List<CredencialUsuarioModel> lista = await this._qryCredencialesUsuario.Execute(id);

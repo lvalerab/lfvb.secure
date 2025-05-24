@@ -1,4 +1,5 @@
-﻿using lfvb.secure.aplication.Database.Aplicaciones.Queries.PermisoElementoAplicacion;
+﻿using lfvb.secure.aplication.Database.Aplicaciones.Models;
+using lfvb.secure.aplication.Database.Aplicaciones.Queries.PermisoElementoAplicacion;
 using lfvb.secure.common.JWT;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
