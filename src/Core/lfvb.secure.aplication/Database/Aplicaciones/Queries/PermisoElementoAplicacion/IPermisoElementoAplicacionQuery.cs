@@ -10,5 +10,7 @@ namespace lfvb.secure.aplication.Database.Aplicaciones.Queries.PermisoElementoAp
     {
         public Task<PermisoElementoAplicacionQueryModel> Execute(Guid idUsuario, Guid idAplicacion, Guid idElementoAplicacion, string? CodigoTipoPermiso=null);
         public Task<PermisoElementoAplicacionQueryModel> Execute(Guid idUsuario, string codAplicacion, string codElementoAplicacion, string? CodigoTipoPermiso = null);
+        public PermisoElementoAplicacionQueryModel ExecuteSync(Guid idUsuario, Guid idAplicacion, Guid idElementoAplicacion, string? CodigoTipoPermiso = null);
+        public PermisoElementoAplicacionQueryModel ExecuteSync(Guid idUsuario, string codAplicacion, string codElementoAplicacion, string? CodigoTipoPermiso = null);
     }
 }
