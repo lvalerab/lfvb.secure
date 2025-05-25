@@ -23,11 +23,18 @@ namespace lfvb.secure.aplication.Database.Usuario.Queries.GetAllUsuarios
             this._mapper = mapper;
         }
 
-        public async Task<List<GetAllUsuariosModel>> Execute(int? pagina=null, int? elementos=null)
+        public async Task<List<UsuarioModel>> Execute(int? pagina=null, int? elementos=null)
         {
-            List<UsuarioEntity> lista = await (from u in _db.Usuarios                                               
-                                               select u).ToListAsync<UsuarioEntity>();
-            return this._mapper.Map<List<GetAllUsuariosModel>>(lista);
+            List<UsuarioModel> lista = await (from u in _db.Usuarios                                               
+                                               select new UsuarioModel
+                                               {
+                                                   Id=u.Id,
+                                                   Usuario=u.Usuario,
+                                                   Nombre=u.Nombre,
+                                                   Apellido1=u.Apellido1,
+                                                   Apellido2=u.Apellido2
+                                               } ).ToListAsync<UsuarioModel>();
+            return lista;
         }
     }
 }

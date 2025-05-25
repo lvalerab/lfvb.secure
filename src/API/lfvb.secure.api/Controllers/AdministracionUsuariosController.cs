@@ -8,6 +8,7 @@ using lfvb.secure.aplication.Database.TipoCrendecial.Queries.GetAllTiposCredenci
 using lfvb.secure.aplication.Database.Usuario.Models;
 using lfvb.secure.aplication.Database.Usuario.Queries.GetAllUsuarios;
 using lfvb.secure.aplication.Database.Usuario.Queries.GetCredencialesUsuario;
+using lfvb.secure.aplication.Database.Usuario.Queries.GetUsuario;
 using lfvb.secure.common.JWT;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,8 @@ namespace lfvb.secure.api.Controllers
         private IGetAllTiposCredencialesQuery _qryAllTiposCredenciales;
         private IGetGruposUsuario _qryGruposUsuarios;
         private IGetAllGruposQuery _qryGrupos;
-        private IGetCredencialesUsuarioQuery _qryCredencialesUsuario;   
+        private IGetCredencialesUsuarioQuery _qryCredencialesUsuario;
+        private IGetUsuarioQuery _qruGetUsuario;
 
         public AdministracionUsuariosController(ILogger<PermisosController> logger, 
                                                 IJwtTokenUtils jwtTokenUtils,
@@ -35,7 +37,8 @@ namespace lfvb.secure.api.Controllers
                                                 IGetAllTiposCredencialesQuery qryAllTiposCredenciales,
                                                 IGetGruposUsuario qryGruposUsuarios,
                                                 IGetAllGruposQuery qryGrupos,
-                                                IGetCredencialesUsuarioQuery qryCredencialesUsuario)
+                                                IGetCredencialesUsuarioQuery qryCredencialesUsuario,
+                                                IGetUsuarioQuery qruGetUsuario)
         {
             this._logger = logger;
             this._jwtTokenUtils = jwtTokenUtils;
@@ -44,6 +47,7 @@ namespace lfvb.secure.api.Controllers
             this._qryGruposUsuarios = qryGruposUsuarios;
             this._qryGrupos = qryGrupos;
             this._qryCredencialesUsuario = qryCredencialesUsuario;
+            this._qruGetUsuario = qruGetUsuario;
         }
 
         /// <summary>
@@ -58,8 +62,27 @@ namespace lfvb.secure.api.Controllers
         [DbAuthorize("ADM_USR", "SW_ADM_USR_LST_USU", "LLSWEP")]
         public async Task<IActionResult> GetListaUsuarios(int pagina, int elementos)
         {
-            List<GetAllUsuariosModel> lista = await this._qryGetUsuarios.Execute(pagina, elementos);
+            List<UsuarioModel> lista = await this._qryGetUsuarios.Execute(pagina, elementos);
             return Ok(lista);
+        }
+
+        /// <summary>
+        /// Obtiene los datos de cualquier usuario del sistema, tiene que tener los permisos de consulta de usuarios/listados de usuarios
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{id:guid}")]
+        [Authorize]
+        [DbAuthorize("ADM_USR", "SW_ADM_USR_LST_USU", "LLSWEP")]
+        public async Task<IActionResult> GetUsuario(Guid id)
+        {
+            UsuarioModel usuario = await this._qruGetUsuario.Execute(id);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+            return Ok(usuario);
         }
 
         /// <summary>
