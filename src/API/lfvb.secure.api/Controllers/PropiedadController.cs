@@ -104,7 +104,7 @@ namespace lfvb.secure.api.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("elemento")]
-        //[Authorize()]
+        [Authorize()]
         [DbAuthorize("ADM_PROP", "SW_ACT_INS_PROP_ELEMENTO", "LLSWEP")]
         public async Task<IActionResult> ActualizaInsertaPropiedadElemento([FromBody] PropiedadElementoModel propiedad)
         {

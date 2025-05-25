@@ -9,6 +9,6 @@ namespace lfvb.secure.aplication.Database.Usuario.Queries.GetAllUsuarios
 {
     public interface IGetAllUsuariosQuery
     {
-        public Task<List<GetAllUsuariosModel>> Execute(int? pagina=null, int? elementos=null);
+        public Task<List<UsuarioModel>> Execute(int? pagina=null, int? elementos=null);
     }
 }

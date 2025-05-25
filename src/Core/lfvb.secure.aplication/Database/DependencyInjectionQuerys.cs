@@ -1,4 +1,8 @@
-﻿using lfvb.secure.aplication.Database.Aplicaciones.Queries.GetAplicacionesUsuario;
+﻿using lfvb.secure.aplication.Database.Aplicaciones.Queries.GetAllAplicaciones;
+using lfvb.secure.aplication.Database.Aplicaciones.Queries.GetAplicacion;
+using lfvb.secure.aplication.Database.Aplicaciones.Queries.GetAplicacionesUsuario;
+using lfvb.secure.aplication.Database.Aplicaciones.Queries.GetArbolElementosAplicacion;
+using lfvb.secure.aplication.Database.Aplicaciones.Queries.GetGruposAplicacion;
 using lfvb.secure.aplication.Database.Aplicaciones.Queries.PermisoElementoAplicacion;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetAllGrupos;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetGruposUsuario;
@@ -9,6 +13,7 @@ using lfvb.secure.aplication.Database.TipoPropiedad.Queries;
 using lfvb.secure.aplication.Database.Usuario.Queries.ElementosUsuario;
 using lfvb.secure.aplication.Database.Usuario.Queries.GetAllUsuarios;
 using lfvb.secure.aplication.Database.Usuario.Queries.GetCredencialesUsuario;
+using lfvb.secure.aplication.Database.Usuario.Queries.GetUsuario;
 using lfvb.secure.aplication.Database.Usuario.Queries.LoginToken;
 using lfvb.secure.aplication.Database.Usuario.Queries.LoginUsuarioPassword;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +30,7 @@ namespace lfvb.secure.aplication.Database
             services.AddTransient<ILoginUsuarioPasswordQuery, LoginUsuarioPasswordQuery>();
             services.AddTransient<ILoginTokenQuery, LoginTokenQuery>();
             services.AddTransient<IGetCredencialesUsuarioQuery, GetCredencialesUsuarioQuery>();
+            services.AddTransient<IGetUsuarioQuery, GetUsuarioQuery>(); 
             #endregion
 
             #region "Querys de grupos"
@@ -35,6 +41,10 @@ namespace lfvb.secure.aplication.Database
             #region "Querys de aplicaciones"
             services.AddTransient<IGetAplicacionesUsuarioQuery, GetAplicacionesUsuarioQuery>();
             services.AddTransient<IPermisoElementoAplicacionQuery, PermisoElementoAplicacionQuery>();
+            services.AddTransient<IGetAllAplicacionesQuery, GetAllAplicacionesQuery>();
+            services.AddTransient<IGetAplicacionQuery, GetAplicacionQuery>();
+            services.AddTransient<IGetArbolElementosAplicacion, GetArbolElementosAplicacion>();
+            services.AddTransient<IGetGruposAplicacionQuery, GetGruposAplicacionQuery>();
             #endregion
 
             #region "Querys de tipos de propiedades"

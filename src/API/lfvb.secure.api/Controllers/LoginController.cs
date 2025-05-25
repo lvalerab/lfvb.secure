@@ -1,5 +1,6 @@
 ﻿using lfvb.secure.aplication.Database.Grupos.Queries.GetGruposUsuario;
 using lfvb.secure.aplication.Database.Usuario.Models;
+using lfvb.secure.aplication.Database.Usuario.Queries.GetUsuario;
 using lfvb.secure.aplication.Database.Usuario.Queries.LoginToken;
 using lfvb.secure.aplication.Database.Usuario.Queries.LoginUsuarioPassword;
 using lfvb.secure.common.JWT;
@@ -23,8 +24,9 @@ namespace lfvb.secure.api.Controllers
         private IConfiguration _configuration;
         private readonly string secret;
         private readonly int expires;
+        private IGetUsuarioQuery _qryGetUsuario;
 
-        public LoginController(ILogger<LoginController> logger, ILoginUsuarioPasswordQuery qryLoginUsPw, ILoginTokenQuery qryLoginToken, IJwtTokenUtils jwtUtils, IConfiguration config)
+        public LoginController(ILogger<LoginController> logger, ILoginUsuarioPasswordQuery qryLoginUsPw, ILoginTokenQuery qryLoginToken, IJwtTokenUtils jwtUtils, IConfiguration config, IGetUsuarioQuery qryGetUsuario)
         {
             this._logger = logger;
             this._qryLoginUsPw = qryLoginUsPw;
@@ -36,6 +38,7 @@ namespace lfvb.secure.api.Controllers
             {
                 expires = 5;
             }
+            this._qryGetUsuario = qryGetUsuario;
         }
 
         /// <summary>
@@ -138,6 +141,41 @@ namespace lfvb.secure.api.Controllers
             } catch(Exception ex)
             {
                 this._logger.LogError("Error al obtener el ID del token", new { ex = ex });
+                return BadRequest();
+            }
+        }
+
+        /// <summary>
+        /// Obtiene los datos del usuario autenticado a través del token de seguridad
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Authorize]
+        [Route("usuario")]
+        public async Task<IActionResult> GetUsuarioToken()
+        {
+            try
+            {
+                Guid? id = this._jwtTokenUtils.GetIdFromToken(HttpContext);
+                if (id != null)
+                {
+                    UsuarioModel usuario = await this._qryGetUsuario.Execute(id);
+                    if (usuario != null)
+                    {
+                        return StatusCode(StatusCodes.Status200OK, usuario);
+                    }
+                    else
+                    {
+                        return StatusCode(StatusCodes.Status404NotFound, "Usuario no encontrado");
+                    }
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status401Unauthorized);
+                }
+            } catch(Exception ex)
+            {
+                this._logger.LogError("Error al obtener el usuario del token", new { ex = ex });
                 return BadRequest();
             }
         }

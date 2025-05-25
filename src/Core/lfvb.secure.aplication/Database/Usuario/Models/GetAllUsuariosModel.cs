@@ -12,6 +12,10 @@ namespace lfvb.secure.aplication.Database.Usuario.Models
 
         public string Nombre { get; set; }
 
+        public string Apellido1 { get; set; }
+        
+        public string Apellido2 { get; set; }
+
         public string Usuario { get; set; }
     }
 }

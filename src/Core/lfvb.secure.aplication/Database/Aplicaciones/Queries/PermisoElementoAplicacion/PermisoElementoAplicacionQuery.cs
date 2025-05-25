@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using lfvb.secure.aplication.Database.Aplicaciones.Models;
 using lfvb.secure.aplication.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
