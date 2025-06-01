@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="Database\Aplicaciones\Commands\" />
+    <Folder Include="Database\Credencial\Querys\" />
     <Folder Include="Database\Grupos\Commands\" />
     <Folder Include="Database\TipoCrendecial\Commands\" />
     <Folder Include="Database\TipoPropiedad\Commands\" />
