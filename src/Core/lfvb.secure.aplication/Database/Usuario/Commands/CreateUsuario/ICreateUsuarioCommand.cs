@@ -1,4 +1,5 @@
-﻿using System;
+﻿using lfvb.secure.aplication.Database.Usuario.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

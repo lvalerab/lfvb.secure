@@ -17,8 +17,8 @@ namespace lfvb.secure.persistence.Configuraciones
                 .ToTable("prop_propiedad")
                 .HasKey(x => x.Codigo);
 
-            builder.Property(x => x.Codigo).HasColumnName("COD_PROP").IsRequired();
-            builder.Property(x => x.CodigoPadre).HasColumnName("COD_PROP_PADRE").IsRequired().HasMaxLength(10);
+            builder.Property(x => x.Codigo).HasColumnName("COD_PROP").IsRequired().HasMaxLength(10);
+            builder.Property(x => x.CodigoPadre).HasColumnName("COD_PROP_PADRE").HasMaxLength(10);
             builder.Property(x => x.Nombre).HasColumnName("NOMBRE_PROP").IsRequired().HasMaxLength(255);
             builder.Property(x => x.CodTipoPropiedad).HasColumnName("COD_TPPR").IsRequired().HasMaxLength(255);
 

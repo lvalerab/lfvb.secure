@@ -18,9 +18,9 @@ namespace lfvb.secure.persistence.Configuraciones
                     .HasKey(x => new { x.CodigoPropiedad,x.CodigoTipoElemento});
 
             entityTypeBuilder
-                .Property(x => x.CodigoPropiedad).HasColumnName("COD_TIEL");
+                .Property(x => x.CodigoPropiedad).HasColumnName("COD_PROP");
             entityTypeBuilder
-                .Property(x => x.CodigoTipoElemento).HasColumnName("COD_PROP");
+                .Property(x => x.CodigoTipoElemento).HasColumnName("COD_TIEL");
 
             entityTypeBuilder
                 .HasOne(x => x.Propiedad)

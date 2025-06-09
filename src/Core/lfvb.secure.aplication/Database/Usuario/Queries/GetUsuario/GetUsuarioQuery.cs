@@ -37,6 +37,7 @@ namespace lfvb.secure.aplication.Database.Usuario.Queries.GetUsuario
                                             Nombre = u.Nombre,
                                             Apellido1 = u.Apellido1,
                                             Apellido2 = u.Apellido2,
+                                            Email = u.Email,
                                             Credenciales = u.Credenciales.Select(c => new CredencialUsuarioModel
                                             {
                                                 Id = c.Id,
