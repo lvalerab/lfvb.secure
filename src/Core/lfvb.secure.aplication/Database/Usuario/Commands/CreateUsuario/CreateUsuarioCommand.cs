@@ -1,10 +1,15 @@
 ﻿using AutoMapper;
+using lfvb.secure.aplication.Database.Credencial.Commands.CrearCredencialUsuario;
+using lfvb.secure.aplication.Database.Credencial.Models;
+using lfvb.secure.aplication.Database.Usuario.Models;
 using lfvb.secure.aplication.Interfaces;
 using lfvb.secure.common.PASSWORD;
 using lfvb.secure.domain.Entities.Credencial;
+using lfvb.secure.domain.Entities.Elemento;
 using lfvb.secure.domain.Entities.PasswordCredencial;
 using lfvb.secure.domain.Entities.TokenCredencial;
 using lfvb.secure.domain.Entities.Usuario;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 
@@ -14,18 +19,19 @@ namespace lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario
     {
         private readonly IDataBaseService _db;
         private readonly IMapper _mapper;
-        private readonly ISecurePassword _securePassword;
+        private readonly ICrearCredencialUsuarioCommand _crearCredencialCommand;
+        public bool transacion { get; set; }
 
-        public CreateUsuarioCommand(IDataBaseService db, IMapper mapper, ISecurePassword securePassword)
+        public CreateUsuarioCommand(IDataBaseService db, IMapper mapper, ICrearCredencialUsuarioCommand crearCredencialCommand)
         {
             this._db = db;
             this._mapper = mapper;
-            this._securePassword = securePassword;
+            this._crearCredencialCommand = crearCredencialCommand;
+            this.transacion = false;
         }
        
         public async Task<CreateUsuarioModel> Execute(CreateUsuarioModel usuario)
-        {
-            //TODO: Almacenar los password y los token encriptados, o solo el hash
+        {   
             try { 
                 if (usuario == null)
                 {
@@ -33,9 +39,13 @@ namespace lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario
                 } else if(usuario.Usuario == String.Empty)
                 {
                     throw new Exception("[DATAFIELD] El usuario debe estar relleno");
-                }
+                } 
+
+                int count = await _db.Usuarios.CountAsync(x => x.Usuario == usuario.Usuario);
+
+                if(count<=0)
                 {
-                    if(usuario.Password == null && usuario.Token ==null)
+                    if (usuario.Password == null && usuario.Token == null)
                     {
                         throw new Exception("[DATA] Debe indicar al menos un password o un token");
                     }
@@ -43,38 +53,56 @@ namespace lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario
                     UsuarioEntity entity = _mapper.Map<UsuarioEntity>(usuario);
                     entity.Id = gnew;
                     await _db.Usuarios.AddAsync(entity);
-                    if(usuario.Password != null)
-                    {                    
-                        CredencialEntity credencial = new()
-                        {   
-                            IdUsuario = entity.Id,
-                            CodigoTipoCredencial="PASS",
-                            VigenteDesde=DateTime.Now,
-                            Password=new PasswordCredencialEntity
-                            {
-                                Password=this._securePassword.Crypt(usuario.Password)
-                            }
-                        };
-                        await _db.Credenciales.AddAsync(credencial);                        
-                    }
-                    if(usuario.Token!=null)
+                    ElementoEntity elem = new ElementoEntity { Id = entity.Id, CodigoTipoElemento = "user" };
+                    await _db.Elementos.AddAsync(elem); //Registramos el elemento creado, para las propiedades y demas
+                    if (usuario.Password != null)
                     {
-                        CredencialEntity credencial = new()
-                        {                            
-                            IdUsuario = entity.Id,
-                            CodigoTipoCredencial = "TOKEN",
-                            VigenteDesde= DateTime.Now,
-                            Token=new TokenCredencialEntity
+                        CredencialModel credencial = new CredencialModel
+                        {
+                            Usuario = new UsuarioModel
                             {
-                                Token=this._securePassword.Crypt(usuario.Token)
+                                Id = entity.Id
+                            },
+                            Tipo = new TipoCrendecial.Models.TipoCredencialModel
+                            {
+                                Codigo = "PASS"
+                            },
+                            Password = new PasswordCredencial
+                            {
+                                Password = usuario.Password
                             }
                         };
-                        await _db.Credenciales.AddAsync(credencial);                        
+                        credencial = await _crearCredencialCommand.execute(credencial);
                     }
-                    await _db.SaveAsync();
+                    if (usuario.Token != null)
+                    {
+                        CredencialModel credencial = new CredencialModel
+                        {
+                            Usuario = new UsuarioModel
+                            {
+                                Id = entity.Id
+                            },
+                            Tipo = new TipoCrendecial.Models.TipoCredencialModel
+                            {
+                                Codigo = "PASS"
+                            },
+                            Token = new TokenCredencial
+                            {
+                                Token = usuario.Token
+                            }
+                        };
+                        credencial = await _crearCredencialCommand.execute(credencial);
+                    }
+                    if (!this.transacion)
+                    {
+                        await _db.SaveAsync();
+                    }
                     usuario.IdNuevo = gnew;
                     return usuario;
-                
+
+                } else
+                {
+                   throw new Exception("[DATA] El usuario ya existe en la base de datos");
                 }
             }
             catch (Exception err) {

@@ -29,7 +29,7 @@ namespace lfvb.secure.persistence.Configuraciones
             builder
                 .HasOne(x => x.Padre)
                 .WithMany(x => x.Descendientes)
-                .HasPrincipalKey(x => x.IdPadre);
+                .HasForeignKey(x => x.IdPadre);
 
             builder.HasOne(x => x.Aplicacion)
                     .WithMany(x => x.Elementos)

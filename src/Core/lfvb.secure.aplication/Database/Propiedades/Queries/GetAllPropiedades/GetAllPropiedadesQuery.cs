@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace lfvb.secure.aplication.Database.Propiedades.Queries.GetAllPropiedades
 {
-    public class GetAllPropiedadesQuery:IGetAllPropiedadesQuery
+    public class GetAllPropiedadesQuery : IGetAllPropiedadesQuery
     {
         private readonly IMapper _mapper;
         private readonly IDataBaseService _db;
@@ -20,53 +20,34 @@ namespace lfvb.secure.aplication.Database.Propiedades.Queries.GetAllPropiedades
             this._mapper = mapper;
         }
 
-        public async Task<List<PropiedadModel>> Execute(string? CodPropiedadPadre = null, string? CodTipoElemento =null)
+        public async Task<List<PropiedadModel>> Execute(string? CodPropiedadPadre = null, string? CodTipoElemento = null)
         {
-            //Propiedades raiz
-            List<PropiedadModel> propiedades = await(from p in _db.Propiedades
-                                                     where (CodPropiedadPadre == null || (CodPropiedadPadre!=null && p.PropiedadPadre.Codigo.Equals(CodPropiedadPadre)))
-                                                     && ((CodTipoElemento == null) || (CodTipoElemento != null && p.RelacionTiposElementos.Any(x=>x.CodigoTipoElemento.Equals(CodTipoElemento))))
-                                                     && _db.Propiedades.Where(x=>x.CodigoPadre==p.Codigo).Any()==false //Que no tenga hijas
-                                                     select new PropiedadModel
-                                                     {
-                                                         Codigo = p.Codigo,
-                                                         Nombre = p.Nombre,
-                                                         TipoPropiedad = new TipoPropiedadModel
-                                                         {
-                                                             Codigo = p.TipoPropiedad.Codigo,
-                                                             Nombre = p.TipoPropiedad.Nombre,
-                                                             Historico=p.TipoPropiedad.Historico=="S",
-                                                             Intervalo=p.TipoPropiedad.Intervalo=="S",
-                                                             Multiple=p.TipoPropiedad.Multiple=="S",
-                                                             Tipo=p.TipoPropiedad.Tipo
-                                                         }
-                                                     }).ToListAsync<PropiedadModel>();
+            List<PropiedadModel> propiedades = new List<PropiedadModel>();
+    
+            propiedades.AddRange(await (from p in _db.Propiedades
+                                        join rp in _db.RelacionesTiposElementosPropiedades on p.Codigo equals rp.CodigoPropiedad
+                                        where p.CodigoPadre==CodPropiedadPadre //Que no tenga padre
+                                            && ((CodTipoElemento==null) || (CodTipoElemento!=null && rp.CodigoTipoElemento==CodTipoElemento))
+                                        select new PropiedadModel
+                                        {
+                                            Codigo = p.Codigo,
+                                            Nombre = p.Nombre,
+                                            TipoPropiedad = new TipoPropiedadModel
+                                            {
+                                                Codigo = p.TipoPropiedad.Codigo,
+                                                Nombre = p.TipoPropiedad.Nombre,
+                                                Historico = p.TipoPropiedad.Historico == "S",
+                                                Intervalo = p.TipoPropiedad.Intervalo == "S",
+                                                Multiple = p.TipoPropiedad.Multiple == "S",
+                                                Tipo = p.TipoPropiedad.Tipo
+                                            }
+                                        }).ToListAsync<PropiedadModel>());
 
-            List<PropiedadModel> propiedadesPadres = await (from p in _db.Propiedades
-                                                            where (CodPropiedadPadre == null || (CodPropiedadPadre != null && p.PropiedadPadre.Codigo.Equals(CodPropiedadPadre)))
-                                                            && ((CodTipoElemento == null) || (CodTipoElemento != null && p.RelacionTiposElementos.Any(x => x.CodigoTipoElemento.Equals(CodTipoElemento))))
-                                                            && _db.Propiedades.Where(x => x.CodigoPadre == p.Codigo).Any() == true //Que tenga hijas
-                                                            select new PropiedadModel
-                                                            {
-                                                                Codigo = p.Codigo,
-                                                                Nombre = p.Nombre,
-                                                                TipoPropiedad = new TipoPropiedadModel
-                                                                {
-                                                                    Codigo = p.TipoPropiedad.Codigo,
-                                                                    Nombre = p.TipoPropiedad.Nombre,
-                                                                    Historico = p.TipoPropiedad.Historico == "S",
-                                                                    Intervalo = p.TipoPropiedad.Intervalo == "S",
-                                                                    Multiple = p.TipoPropiedad.Multiple == "S",
-                                                                    Tipo = p.TipoPropiedad.Tipo
-                                                                }
-                                                            }).ToListAsync<PropiedadModel>();
-            foreach(PropiedadModel p in propiedadesPadres)
+            foreach (PropiedadModel p in propiedades)
             {
-               p.Propiedades=await this.Execute(p.Codigo, CodTipoElemento);
+                p.Propiedades = await this.Execute(p.Codigo, CodTipoElemento);
             }
-
-            propiedades.AddRange(propiedadesPadres);
             return propiedades;
-        }   
+        }
     }
 }

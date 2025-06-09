@@ -20,6 +20,8 @@ namespace lfvb.secure.domain.Entities.Usuario
 
         public String Usuario { get; set; }
 
+        public String Email { get; set; }   
+
         public ICollection<CredencialEntity> Credenciales { get; set; }
 
         public ICollection<RelacionUsuarioGrupoUsuarioAplicacionEntity> RelacionGrupos { get; set; }

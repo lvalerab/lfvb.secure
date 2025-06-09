@@ -1,10 +1,15 @@
 ﻿
 using lfvb.secure.api.Atributos.Secure;
+using lfvb.secure.aplication.Database.Credencial.Commands.CaducarCredencial;
 using lfvb.secure.aplication.Database.Grupos.Models;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetAllGrupos;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetGruposUsuario;
 using lfvb.secure.aplication.Database.TipoCrendecial.Models;
 using lfvb.secure.aplication.Database.TipoCrendecial.Queries.GetAllTiposCredenciales;
+using lfvb.secure.aplication.Database.Usuario.Commands.ActualizaUsuario;
+using lfvb.secure.aplication.Database.Usuario.Commands.AgregarGrupoPermisosUsuario;
+using lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario;
+using lfvb.secure.aplication.Database.Usuario.Commands.QuitarGrupoPermisosUsuario;
 using lfvb.secure.aplication.Database.Usuario.Models;
 using lfvb.secure.aplication.Database.Usuario.Queries.GetAllUsuarios;
 using lfvb.secure.aplication.Database.Usuario.Queries.GetCredencialesUsuario;
@@ -30,6 +35,11 @@ namespace lfvb.secure.api.Controllers
         private IGetAllGruposQuery _qryGrupos;
         private IGetCredencialesUsuarioQuery _qryCredencialesUsuario;
         private IGetUsuarioQuery _qruGetUsuario;
+        private ICreateUsuarioCommand _cmdCreateUsuario;
+        private ICaducarCredencialCommand _cmdCaducarCredencial;
+        private IAgregarGrupoPermisosUsuarioCommand _cmdAgregarGrupoUsuario;
+        private IQuitarGrupoPermisosUsuario _cmdQuitarGrupoUsuario;
+        private IActualizaUsuarioCommand _cmdActualizaUsuario;
 
         public AdministracionUsuariosController(ILogger<PermisosController> logger, 
                                                 IJwtTokenUtils jwtTokenUtils,
@@ -38,7 +48,12 @@ namespace lfvb.secure.api.Controllers
                                                 IGetGruposUsuario qryGruposUsuarios,
                                                 IGetAllGruposQuery qryGrupos,
                                                 IGetCredencialesUsuarioQuery qryCredencialesUsuario,
-                                                IGetUsuarioQuery qruGetUsuario)
+                                                IGetUsuarioQuery qruGetUsuario,
+                                                ICreateUsuarioCommand cmdCreateUsuario,
+                                                ICaducarCredencialCommand cmdCaducarCredencial,
+                                                IAgregarGrupoPermisosUsuarioCommand cmdAgregarGrupoUsuario,
+                                                IQuitarGrupoPermisosUsuario cmdQuitarGrupoUsuario,
+                                                IActualizaUsuarioCommand cmdActualizaUsuario)
         {
             this._logger = logger;
             this._jwtTokenUtils = jwtTokenUtils;
@@ -48,6 +63,11 @@ namespace lfvb.secure.api.Controllers
             this._qryGrupos = qryGrupos;
             this._qryCredencialesUsuario = qryCredencialesUsuario;
             this._qruGetUsuario = qruGetUsuario;
+            this._cmdCreateUsuario = cmdCreateUsuario;
+            this._cmdCaducarCredencial = cmdCaducarCredencial;
+            this._cmdAgregarGrupoUsuario = cmdAgregarGrupoUsuario;
+            this._cmdQuitarGrupoUsuario = cmdQuitarGrupoUsuario;
+            this._cmdActualizaUsuario = cmdActualizaUsuario;
         }
 
         /// <summary>
@@ -111,6 +131,7 @@ namespace lfvb.secure.api.Controllers
 
         /// <summary>
         /// Obtiene el listado de grupos a los que pertenece un usuario
+        /// necesita el permiso de quitar grupos de permisos a usuarios (SW_ADM_USR_GRP_USU)
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -122,6 +143,52 @@ namespace lfvb.secure.api.Controllers
         {
             List<GetGruposUsuarioModel> lista = await this._qryGruposUsuarios.Execute(id);
             return Ok(lista);
+        }
+
+        /// <summary>
+        /// Agrega grupos de permisos a un usuario, los grupos deben existir en el sistema y el usuario no puede pertenecer a ellos
+        /// necesita el permiso de quitar grupos de permisos a usuarios (SW_ADM_USR_GRP_USU)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="grupos"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("usuario/{id:guid}/grupos/agregar")]
+        [Authorize]
+        [DbAuthorize("ADM_USR", "SW_ADM_USR_GRP_USU", "LLSWEP")]
+        public async Task<IActionResult> AddGruposUsuario(Guid id, [FromBody] List<Guid> grupos)
+        {
+            try
+            {
+                bool correcto = await this._cmdAgregarGrupoUsuario.Execute(id, grupos);
+                return Ok(correcto);
+            } catch (Exception err)
+            {
+                return BadRequest(err);
+            }
+        }
+
+        /// <summary>
+        /// Quita grupos de permisos a un usuario, los grupos deben existir en el sistema y el usuario debe pertenecer a ellos 
+        /// necesita el permiso de quitar grupos de permisos a usuarios (SW_ADM_USR_GRP_USU)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="grupos"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("usuario/{id:guid}/grupos/quitar")]
+        [Authorize]
+        [DbAuthorize("ADM_USR", "SW_ADM_USR_GRP_USU", "LLSWEP")]
+        public async Task<IActionResult> QuitarGruposUsuario(Guid id, [FromBody] List<Guid> grupos)
+        {
+            try
+            {
+                bool correcto = await this._cmdQuitarGrupoUsuario.Execute(id, grupos);
+                return Ok(correcto);
+            } catch (Exception err)
+            {
+                return BadRequest(err);
+            }
         }
 
         /// <summary>
@@ -137,6 +204,70 @@ namespace lfvb.secure.api.Controllers
         {
             List<CredencialUsuarioModel> lista = await this._qryCredencialesUsuario.Execute(id);
             return Ok(lista);
+        }
+
+        /// <summary>
+        /// Caduca las credenciales de un usuario de un tipo determinado, las credenciales caducadas no se pueden volver a utilizar
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="codTIpo"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("usuario/{id:guid}/credencial/tipo/{codTIpo}/revocar")]
+        [Authorize]
+        [DbAuthorize("ADM_USR", "SW_ADM_USR_CRD_CADUCAR", "LLSWEP")]
+        public async Task<IActionResult> CaducarCredencialUsuario(Guid id, string codTIpo)
+        {
+            try
+            {
+                int credenciales = await this._cmdCaducarCredencial.execute(id, codTIpo);                
+                return Ok(credenciales);
+            } catch (Exception err)
+            {
+                return BadRequest(err);
+            }
+        }
+
+        /// <summary>
+        /// Metodo para crear un usuario, debe tener el permiso se llamar a crear usuario del panel de administracion de usuarios
+        /// </summary>
+        /// <param name="datos"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("usuario")]
+        [Authorize]
+        [DbAuthorize("ADM_USR","SW_ADM_USR_ALT_USU","LLSWEP")]
+        public async Task<IActionResult> AltaUsuario(CreateUsuarioModel datos)
+        {
+            try { 
+                CreateUsuarioModel md = await this._cmdCreateUsuario.Execute(datos);
+            return Ok(md);
+            } catch (Exception err)
+            {
+                return BadRequest(err);
+            }
+        }
+
+        /// <summary>
+        /// Actualiza los datos de un usuario, debe tener el permiso de actualizar usuarios del panel de administracion de usuarios 
+        /// </summary>
+        /// <param name="datos"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("usuario")]
+        [Authorize]
+        [DbAuthorize("ADM_USR", "SW_ADM_USR_ALT_USU", "LLSWEP")]
+        public async Task<IActionResult> ActualizaUsuario(ActualizaUsuarioModel datos)
+        {
+            try
+            {
+                ActualizaUsuarioModel md = await this._cmdActualizaUsuario.Execute(datos);   
+                return Ok(md);
+            }
+            catch (Exception err)
+            {
+                return BadRequest(err);
+            }
         }
 
     }

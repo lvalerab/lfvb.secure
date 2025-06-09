@@ -32,7 +32,8 @@ namespace lfvb.secure.aplication.Database.Usuario.Queries.GetAllUsuarios
                                                    Usuario=u.Usuario,
                                                    Nombre=u.Nombre,
                                                    Apellido1=u.Apellido1,
-                                                   Apellido2=u.Apellido2
+                                                   Apellido2=u.Apellido2,
+                                                   Email=u.Email   
                                                } ).ToListAsync<UsuarioModel>();
             return lista;
         }

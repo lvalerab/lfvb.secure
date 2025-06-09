@@ -17,5 +17,7 @@ namespace lfvb.secure.aplication.Database.Usuario.Models
         public string Apellido2 { get; set; }
 
         public string Usuario { get; set; }
+
+        public string Email { get; set; }
     }
 }

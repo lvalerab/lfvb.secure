@@ -20,7 +20,7 @@ namespace lfvb.secure.domain.Entities.ElementoAplicacion
 
         public string CodigoTipoElemento { get; set; }
 
-        public Guid IdAplicacion { get; set; }
+        public Guid? IdAplicacion { get; set; }
 
         public string Nombre { get; set; }
 
