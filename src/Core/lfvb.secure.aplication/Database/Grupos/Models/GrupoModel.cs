@@ -1,4 +1,5 @@
-﻿using System;
+﻿using lfvb.secure.aplication.Database.Aplicaciones.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,5 +11,6 @@ namespace lfvb.secure.aplication.Database.Grupos.Models
     {
         public Guid? Id { get; set; }
         public string? Nombre { get; set; } 
+        public AplicacionModel? Aplicacion { get; set; }
     }
 }

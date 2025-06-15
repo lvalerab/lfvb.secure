@@ -45,7 +45,7 @@ namespace lfvb.secure.api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("lista")]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> Lista()
         {
             List<AplicacionModel> aplicaciones = await _qryListaAplicaciones.Execute();
@@ -59,6 +59,7 @@ namespace lfvb.secure.api.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id:guid}")]
+        [Authorize]
         public async Task<IActionResult> GetAplicacion(Guid id)
         {
             AplicacionModel app = await _qryAplicacion.Execute(id);
@@ -75,6 +76,7 @@ namespace lfvb.secure.api.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("elementos/{id}")]
+        [Authorize]
         public async Task<IActionResult> GetElementosAplicacion(Guid id)
         {
             var elementos = await _qryAplicacion.Execute(id);
@@ -87,6 +89,7 @@ namespace lfvb.secure.api.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("grupos/{id}")]
+        [Authorize]
         public async Task<IActionResult> GetGruposAplicacion(Guid id)
         {
             var grupos = await _qryGruposAplicacion.Execute(id);
