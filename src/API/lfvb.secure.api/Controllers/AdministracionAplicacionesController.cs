@@ -5,6 +5,7 @@ using lfvb.secure.aplication.Database.Aplicaciones.Queries.GetAllAplicaciones;
 using lfvb.secure.aplication.Database.Aplicaciones.Queries.GetAplicacion;
 using lfvb.secure.aplication.Database.Aplicaciones.Queries.GetArbolElementosAplicacion;
 using lfvb.secure.aplication.Database.Aplicaciones.Queries.GetGruposAplicacion;
+using lfvb.secure.aplication.Database.TipoElementoAplicacion.Queries.GetAllTiposElementosAplicacion;
 using lfvb.secure.common.JWT;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,13 +25,15 @@ namespace lfvb.secure.api.Controllers
         private IGetAplicacionQuery _qryAplicacion;
         private IGetArbolElementosAplicacion _getArbolElementosAplicacion;
         private IGetGruposAplicacionQuery _qryGruposAplicacion;
+        private IGetAllTiposElementosAplicacionQuery _qryTiposElementosAplicacion;
 
         public AdministracionAplicacionesController(ILogger<PermisosController> logger,
                                                     IJwtTokenUtils jwtTokenUtils,
                                                     IGetAllAplicacionesQuery qryListaAplicaciones,
                                                     IGetAplicacionQuery qryAplicacion,
                                                     IGetArbolElementosAplicacion qryArbolElementosAplicacion,
-                                                    IGetGruposAplicacionQuery qryGruposAplicacion)
+                                                    IGetGruposAplicacionQuery qryGruposAplicacion,
+                                                    IGetAllTiposElementosAplicacionQuery qryTiposElementosAplicacion)
         {
             this._logger = logger;
             this._jwtTokenUtils = jwtTokenUtils;
@@ -38,6 +41,7 @@ namespace lfvb.secure.api.Controllers
             this._qryAplicacion = qryAplicacion;
             this._getArbolElementosAplicacion = qryArbolElementosAplicacion;
             this._qryGruposAplicacion = qryGruposAplicacion;
+            this._qryTiposElementosAplicacion = qryTiposElementosAplicacion;
         }
 
         /// <summary>
@@ -81,6 +85,18 @@ namespace lfvb.secure.api.Controllers
         {
             var elementos = await _qryAplicacion.Execute(id);
             return Ok(elementos);
+        }
+
+        /// <summary>
+        /// Obtiene los tipos de elementos de aplicacion definidos en el sistema
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("elementos/tipos")]
+        [Authorize]
+        public async Task<IActionResult> GetTiposElementosAplicacion()
+        {
+            var tipos = await _qryTiposElementosAplicacion.Execute();
+            return Ok(tipos);
         }
 
         /// <summary>
