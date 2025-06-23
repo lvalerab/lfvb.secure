@@ -7,6 +7,8 @@ using lfvb.secure.aplication.Database.Grupos.Models;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetUsuariosGrupo;
 using lfvb.secure.aplication.Database.Usuario.Models;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetGrupo;
+using lfvb.secure.aplication.Database.Grupos.Commands.AltaGrupoUsuariosPermisos;
+using lfvb.secure.aplication.Database.Grupos.Commands.ActualizaGrupoUsuariosPerisos;
 
 namespace lfvb.secure.api.Controllers
 {
@@ -15,7 +17,7 @@ namespace lfvb.secure.api.Controllers
     /// </summary>
     [ApiController]
     [Route("api/administracion/permisos/grupos")]
-    public class AdministracionGruposPermisos:ControllerBase
+    public class AdministracionGruposPermisos : ControllerBase
     {
 
         private ILogger<PermisosController> _logger;
@@ -23,18 +25,24 @@ namespace lfvb.secure.api.Controllers
         private IGetAllGruposQuery _qryListaGrupos;
         private IGetGrupoQuery _qryGrupo;
         private IGetUsuariosGrupoQuery _qryGetUsuariosGrupos;
+        private IAltaGrupoUsuariosPermisosCommand _cmdAltaGrupoUsuariosPermisos;
+        private IActualizaGrupoUsuariosPermisosCommand _cmdActualizaGrupoUsuariosPermisos;
 
-        public AdministracionGruposPermisos(ILogger<PermisosController> logger, 
+        public AdministracionGruposPermisos(ILogger<PermisosController> logger,
                                             IJwtTokenUtils jwtTokenUtils,
                                             IGetAllGruposQuery qryListaGrupos,
                                             IGetGrupoQuery qryGrupo,
-                                            IGetUsuariosGrupoQuery qryUsuariosGrupo)
+                                            IGetUsuariosGrupoQuery qryUsuariosGrupo,
+                                            IAltaGrupoUsuariosPermisosCommand cmdAltaGrupoUsuariosPermisos,
+                                            IActualizaGrupoUsuariosPermisosCommand cmdActualizaGrupoUsuariosPermisos)
         {
             this._logger = logger;
             this._jwtTokenUtils = jwtTokenUtils;
             _qryListaGrupos = qryListaGrupos;
             this._qryGetUsuariosGrupos = qryUsuariosGrupo;
             this._qryGrupo = qryGrupo;
+            this._cmdAltaGrupoUsuariosPermisos = cmdAltaGrupoUsuariosPermisos;
+            this._cmdActualizaGrupoUsuariosPermisos = cmdActualizaGrupoUsuariosPermisos;
         }
 
         /// <summary>
@@ -103,5 +111,60 @@ namespace lfvb.secure.api.Controllers
             }
         }
 
+        /// <summary>
+        /// Da de alta un grupo de usuarios y permisos en el sistema
+        /// </summary>
+        /// <param name="grupo"></param>
+        /// <returns></returns>
+        [HttpPost("grupo")]
+        [Authorize]
+        public async Task<IActionResult> AltaGrupoUsuariosPermisos([FromBody] GrupoModel grupo)
+        {
+            try
+            {
+                if (grupo == null)
+                {
+                    return BadRequest("El grupo no puede ser nulo");
+                } else if (grupo.Id != null && grupo.Id!=Guid.Empty)
+                {
+                    return BadRequest("El grupo no puede tener identificador");
+                }
+                grupo.Id = null;
+                GrupoModel resultado = await _cmdAltaGrupoUsuariosPermisos.Execute(grupo);
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al dar de alta el grupo de usuarios y permisos");
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        /// <summary>
+        /// Actualiza los datos de un grupo de usuarios y permisos en el sistema    
+        /// </summary>
+        /// <param name="grupo"></param>
+        /// <returns></returns>
+        [HttpPut("grupo")]
+        [Authorize]
+        public async Task<IActionResult> ActualizaGrupoUsuariosPermisos([FromBody] GrupoModel grupo)
+        {
+            try
+            {
+                if (grupo == null || grupo.Id == null || grupo.Id==Guid.Empty)
+                {
+                    return BadRequest("El grupo no puede ser nulo y debe tener un identificador");
+                }
+                GrupoModel resultado = await _cmdActualizaGrupoUsuariosPermisos.Execute(grupo);
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al actualizar el grupo de usuarios y permisos");
+                return BadRequest(ex.Message);
+            }
+
+        }
     }
 }

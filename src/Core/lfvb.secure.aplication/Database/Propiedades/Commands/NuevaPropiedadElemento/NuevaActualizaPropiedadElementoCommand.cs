@@ -1,16 +1,10 @@
 ﻿using AutoMapper;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetPropiedadesElemento;
 using lfvb.secure.aplication.Interfaces;
-using lfvb.secure.domain.Entities.Propiedad;
 using lfvb.secure.domain.Entities.PropiedadElemento;
 using lfvb.secure.domain.Entities.ValorPropiedadElemento;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace lfvb.secure.aplication.Database.Propiedades.Commands.NuevaPropiedadElemento
 {
@@ -27,84 +21,114 @@ namespace lfvb.secure.aplication.Database.Propiedades.Commands.NuevaPropiedadEle
 
         public async Task<PropiedadElementoModel> Execute(PropiedadElementoModel propiedad)
         {
-            if (propiedad != null)
+            PropiedadElementoEntity entity = null;
+            //Comprobamos si la propiedad es nueva o no, (con el ID a null sabemos que es nueva)
+            if (propiedad.Id == null)
             {
-                PropiedadElementoEntity entity = new PropiedadElementoEntity
+                //Si es nueva, comprobamos que la propiedad no exista ya para el elemento
+                List<PropiedadElementoEntity> propiedades = await this._db.PropiedadesElementos.Where(x => x.IdElemento == propiedad.IdElemento && x.CodPropiedad.Equals(propiedad.Propiedad.Codigo)).ToListAsync<PropiedadElementoEntity>();
+                if (propiedades != null && propiedades.Count > 0)
                 {
-                    IdElemento = propiedad.IdElemento,
-                    Activo = (propiedad.Activo ?? false) ? "S" : "N",
-                    FechaValor = DateTime.Now,
-                    CodPropiedad = propiedad.Propiedad.Codigo
-                };
-
-                if (propiedad.Propiedad.TipoPropiedad.Historico)
-                {
-                    //Si es historico, desactivamos el resto de propiedades y siempre damos de alta una nueva propiedad //aunque tenga el ID
-                    List<PropiedadElementoEntity> propiedades = await this._db.PropiedadesElementos.Where(x => x.IdElemento == propiedad.IdElemento && x.CodPropiedad.Equals(propiedad.Propiedad.Codigo)).ToListAsync<PropiedadElementoEntity>();
+                    //Las propiedades anteriores, las desactivamos
                     foreach (var prop in propiedades)
                     {
                         prop.Activo = "N";
                         this._db.PropiedadesElementos.Update(prop);
                     }
-                } else { 
-                    if (propiedad.Id == null)
+                }
+                //Creamos la nueva propiedad
+                entity = new PropiedadElementoEntity
+                {
+                    IdElemento = propiedad.IdElemento,
+                    Activo = "S",
+                    FechaValor = DateTime.Now,
+                    CodPropiedad = propiedad.Propiedad.Codigo,
+                    Valores = new List<ValorPropiedadElementoEntity>()
+                };
+            } else
+            {
+                //Buscamos la propiedad por ID, si no existe, lanzamos una excepción
+                entity = await this._db.PropiedadesElementos.Include(p=>p.Valores).Where(x => x.Id == propiedad.Id).FirstOrDefaultAsync<PropiedadElementoEntity>();
+                if(entity == null)
+                {
+                    throw new Exception("No se ha encontrado la propiedad con el ID indicado");
+                } else
+                {
+                    //Depende del tipo de propiedad, hacemos una cosa u otra
+                    if(propiedad.Propiedad.TipoPropiedad.Historico)
                     {
-                        await this._db.PropiedadesElementos.AddAsync(entity);
+                        //Si es historico, desactivamos el resto de propiedades y siempre damos de alta una nueva propiedad //aunque tenga el ID
+                        List<PropiedadElementoEntity> propiedades = await this._db.PropiedadesElementos.Include(p=>p.Valores).Where(x => x.IdElemento == propiedad.IdElemento && x.CodPropiedad.Equals(propiedad.Propiedad.Codigo)).ToListAsync<PropiedadElementoEntity>();
+                        foreach (var prop in propiedades)
+                        {
+                            prop.Activo = "N";
+                            this._db.PropiedadesElementos.Update(prop);
+                        }
+                        //Creamos una nueva propiedad
+                        entity = new PropiedadElementoEntity
+                        {
+                            IdElemento = propiedad.IdElemento,
+                            Activo = "S",
+                            FechaValor = DateTime.Now,
+                            CodPropiedad = propiedad.Propiedad.Codigo,
+                            Valores = new List<ValorPropiedadElementoEntity>()
+                        };
                     }
                     else
                     {
-                        entity.Id = propiedad.Id ?? 0;
-                        PropiedadElementoEntity anterior = await this._db.PropiedadesElementos.Where(x => x.Id == entity.Id).FirstOrDefaultAsync<PropiedadElementoEntity>();
-                        if (anterior != null)
-                        {
-                            entity.Elemento = anterior.Elemento;
-                            entity.Valores = anterior.Valores;
-                            entity.Propiedad = anterior.Propiedad;
-                            entity.IdElemento = anterior.IdElemento;
-                            entity.Activo = anterior.Activo;
-                            entity.FechaValor = anterior.FechaValor;
-                            entity.CodPropiedad = anterior.CodPropiedad;
-                        }
-                        this._db.PropiedadesElementos.Update(entity);
-                    }
-                }
-                propiedad.Id = entity.Id;
-                if (propiedad.Valores != null && propiedad.Valores.Count > 0)
-                {
-                    foreach (var valor in propiedad.Valores)
-                    {
-                        if(valor.Id==null || (valor.IdPropiedadElemento!=entity.Id))
-                        {
-                            ValorPropiedadElementoEntity nuevov=new ValorPropiedadElementoEntity
-                            {
-                                IdPropiedadElemento=entity.Id,
-                                Numerico=valor.Numero,
-                                NumericoMaximo=valor.NumeroMaximo,
-                                Fecha=valor.Fecha,
-                                FechaMaximo=valor.FechaMaxima,
-                                Texto=valor.Texto,
-                                Booleano=valor.Bool??false?"S": "N"
-                            };
-                            await this._db.ValoresPropiedadesElementos.AddAsync(nuevov);
-                            valor.Id = nuevov.Id;
-                        } else
-                        {
-                            ValorPropiedadElementoEntity anterior = await this._db.ValoresPropiedadesElementos.Where(x => x.Id == valor.Id).FirstOrDefaultAsync<ValorPropiedadElementoEntity>();
-                            if(anterior != null)
-                            {
-                                anterior.Numerico = valor.Numero;
-                                anterior.NumericoMaximo = valor.NumeroMaximo;
-                                anterior.Fecha = valor.Fecha;
-                                anterior.FechaMaximo = valor.FechaMaxima;
-                                anterior.Texto = valor.Texto;
-                                anterior.Booleano = valor.Bool ?? false ? "S" : "N";
-                                this._db.ValoresPropiedadesElementos.Update(anterior);
-                            }
-                        }
+                        //Si no es historico, actualizamos la propiedad existente
+                        entity.Activo = "S";
+                        entity.FechaValor = DateTime.Now;
                     }
                 }
             }
-            return propiedad;
+            //Agregamos los valores de la prorpiedad, si existen
+            if(propiedad.Valores != null && propiedad.Valores.Count > 0)
+            {
+                foreach (var valor in propiedad.Valores)
+                {
+                    ValorPropiedadElementoEntity encontrado = null;
+                    if(valor.Id != null && valor.Id > 0)
+                    {
+                        //Si el valor tiene ID, lo buscamos en la entidad
+                        encontrado = entity.Valores.FirstOrDefault(x => x.Id == valor.Id);
+                    }                    
+                    if (encontrado != null)
+                    {
+                        encontrado.Numerico = valor.Numero;
+                        encontrado.NumericoMaximo = valor.NumeroMaximo;
+                        encontrado.Fecha = valor.Fecha;
+                        encontrado.FechaMaximo = valor.FechaMaxima;
+                        encontrado.Texto = valor.Texto;
+                        encontrado.Booleano = valor.Bool ?? false ? "S" : "N";
+                    }
+                    else {
+                        ValorPropiedadElementoEntity nuevov = new ValorPropiedadElementoEntity
+                        {
+                            IdPropiedadElemento = entity.Id,
+                            Numerico = valor.Numero,
+                            NumericoMaximo = valor.NumeroMaximo,
+                            Fecha = valor.Fecha,
+                            FechaMaximo = valor.FechaMaxima,
+                            Texto = valor.Texto,
+                            Booleano = valor.Bool ?? false ? "S" : "N"
+                        };
+                        entity.Valores.Add(nuevov);
+                    }
+                }
+            }
+            if(entity.Id == 0)
+            {
+                //Si es una propiedad nueva, la añadimos a la base de datos
+                await this._db.PropiedadesElementos.AddAsync(entity);
+            } else
+            {
+                //Si es una propiedad existente, la actualizamos
+                this._db.PropiedadesElementos.Update(entity);
+            }
+            await this._db.SaveAsync();
+            propiedad.Id = entity.Id;
+            return propiedad;           
         }
     }
 }

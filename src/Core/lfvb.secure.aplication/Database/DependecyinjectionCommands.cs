@@ -1,5 +1,7 @@
 ﻿using lfvb.secure.aplication.Database.Credencial.Commands.CaducarCredencial;
 using lfvb.secure.aplication.Database.Credencial.Commands.CrearCredencialUsuario;
+using lfvb.secure.aplication.Database.Grupos.Commands.ActualizaGrupoUsuariosPerisos;
+using lfvb.secure.aplication.Database.Grupos.Commands.AltaGrupoUsuariosPermisos;
 using lfvb.secure.aplication.Database.Propiedades.Commands.NuevaPropiedadElemento;
 using lfvb.secure.aplication.Database.Usuario.Commands.ActualizaUsuario;
 using lfvb.secure.aplication.Database.Usuario.Commands.AgregarGrupoPermisosUsuario;
@@ -27,12 +29,20 @@ namespace lfvb.secure.aplication.Database
             services.AddTransient<IActualizaUsuarioCommand, ActualizaUsuarioCommand>();
             #endregion
 
+            #region "Relativos a grupos"
+            services.AddTransient<IAltaGrupoUsuariosPermisosCommand, AltaGrupoUsuariosPermisosCommand>();   
+            services.AddTransient<IActualizaGrupoUsuariosPermisosCommand, ActualizaGrupoUsuariosPermisosCommand>();
+            #endregion
+
             #region "Relativos a credenciales"
             services.AddTransient<ICrearCredencialUsuarioCommand, CrearCredencialUsuarioCommand>();
             services.AddTransient<ICaducarCredencialCommand, CaducarCredencialCommand>();
             #endregion
 
+            #region "Relativos a propiedades"
             services.AddTransient<INuevaActualizaPropiedadElementoCommand, NuevaActualizaPropiedadElementoCommand>();
+            #endregion
+
             return services;
         }
     }

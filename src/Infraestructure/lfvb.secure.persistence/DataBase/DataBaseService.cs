@@ -35,7 +35,6 @@ namespace lfvb.secure.persistence.DataBase
     {
         public DataBaseService(DbContextOptions options):base(options) { 
             
-        
         }
 
         
