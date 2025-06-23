@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Database\Aplicaciones\Commands\" />
     <Folder Include="Database\Credencial\Querys\" />
     <Folder Include="Database\TipoCrendecial\Commands\" />
     <Folder Include="Database\TipoElementoAplicacion\Commands\" />

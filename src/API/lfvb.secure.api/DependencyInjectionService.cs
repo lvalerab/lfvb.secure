@@ -50,9 +50,9 @@ namespace lfvb.secure.api
                 options.AddPolicy(name: "LOCAL",
                     policy =>
                     {
-                        policy.AllowAnyOrigin()
+                        policy.AllowAnyOrigin()                        
                         .AllowAnyHeader()
-                        .AllowAnyMethod();
+                        .AllowAnyMethod();                        
                     });
             });
 

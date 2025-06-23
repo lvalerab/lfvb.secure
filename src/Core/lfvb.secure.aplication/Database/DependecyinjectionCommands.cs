@@ -1,4 +1,6 @@
-﻿using lfvb.secure.aplication.Database.Credencial.Commands.CaducarCredencial;
+﻿using lfvb.secure.aplication.Database.Aplicaciones.Commands.AltaActualizacionElementoAplicacion;
+using lfvb.secure.aplication.Database.Aplicaciones.Commands.AltaAplicacion;
+using lfvb.secure.aplication.Database.Credencial.Commands.CaducarCredencial;
 using lfvb.secure.aplication.Database.Credencial.Commands.CrearCredencialUsuario;
 using lfvb.secure.aplication.Database.Grupos.Commands.ActualizaGrupoUsuariosPerisos;
 using lfvb.secure.aplication.Database.Grupos.Commands.AltaGrupoUsuariosPermisos;
@@ -41,6 +43,11 @@ namespace lfvb.secure.aplication.Database
 
             #region "Relativos a propiedades"
             services.AddTransient<INuevaActualizaPropiedadElementoCommand, NuevaActualizaPropiedadElementoCommand>();
+            #endregion
+
+            #region "Relativos a aplicaciones"
+            services.AddTransient<IAltaAplicacionCommand, AltaAplicacionCommand>();
+            services.AddTransient<IAltaActualizacionElementoAplicacionCommand, AltaActualizacionElementoAplicacionCommand>();   
             #endregion
 
             return services;
