@@ -10,7 +10,7 @@ namespace lfvb.secure.aplication.Database.Aplicaciones.Models
     {
         public Guid? Id { get; set; }
         public String Codigo { get; set; }
-        public ElementoAplicacionModel Padre { get; set; }
+        public ElementoAplicacionModel? Padre { get; set; } = null;
         public AplicacionModel Aplicacion { get; set; }
         public TipoElementoAplicacionModel TipoElemento { get; set; }
         public string? Nombre { get; set; }

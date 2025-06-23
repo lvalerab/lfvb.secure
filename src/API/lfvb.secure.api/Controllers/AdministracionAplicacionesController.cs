@@ -1,5 +1,7 @@
 ﻿
 using lfvb.secure.api.Atributos.Secure;
+using lfvb.secure.aplication.Database.Aplicaciones.Commands.AltaActualizacionElementoAplicacion;
+using lfvb.secure.aplication.Database.Aplicaciones.Commands.AltaAplicacion;
 using lfvb.secure.aplication.Database.Aplicaciones.Models;
 using lfvb.secure.aplication.Database.Aplicaciones.Queries.GetAllAplicaciones;
 using lfvb.secure.aplication.Database.Aplicaciones.Queries.GetAplicacion;
@@ -26,6 +28,8 @@ namespace lfvb.secure.api.Controllers
         private IGetArbolElementosAplicacion _getArbolElementosAplicacion;
         private IGetGruposAplicacionQuery _qryGruposAplicacion;
         private IGetAllTiposElementosAplicacionQuery _qryTiposElementosAplicacion;
+        private IAltaAplicacionCommand _altaAplicacionCommand;
+        private IAltaActualizacionElementoAplicacionCommand _altaActualizacionElementoAplicacionCommand;
 
         public AdministracionAplicacionesController(ILogger<PermisosController> logger,
                                                     IJwtTokenUtils jwtTokenUtils,
@@ -33,7 +37,9 @@ namespace lfvb.secure.api.Controllers
                                                     IGetAplicacionQuery qryAplicacion,
                                                     IGetArbolElementosAplicacion qryArbolElementosAplicacion,
                                                     IGetGruposAplicacionQuery qryGruposAplicacion,
-                                                    IGetAllTiposElementosAplicacionQuery qryTiposElementosAplicacion)
+                                                    IGetAllTiposElementosAplicacionQuery qryTiposElementosAplicacion,
+                                                    IAltaAplicacionCommand altaAplicacionCommand,
+                                                     IAltaActualizacionElementoAplicacionCommand altaActualizacionElementoAplicacionCommand)
         {
             this._logger = logger;
             this._jwtTokenUtils = jwtTokenUtils;
@@ -42,14 +48,17 @@ namespace lfvb.secure.api.Controllers
             this._getArbolElementosAplicacion = qryArbolElementosAplicacion;
             this._qryGruposAplicacion = qryGruposAplicacion;
             this._qryTiposElementosAplicacion = qryTiposElementosAplicacion;
+            this._altaAplicacionCommand = altaAplicacionCommand;
+            this._altaActualizacionElementoAplicacionCommand = altaActualizacionElementoAplicacionCommand;
         }
 
         /// <summary>
-        /// Obtiene la lista de todas las aplicaciones disponibles en el sistema
+        /// Obtiene la lista de todas las aplicaciones disponibles en el sistema (Permiso: SW_ADM_APL_LST_APL)
         /// </summary>
         /// <returns></returns>
         [HttpGet("lista")]
         [Authorize]
+        //[DbAuthorize("ADM_APLI", "SW_ADM_APL_LST_APL", "LLSWEP")]
         public async Task<IActionResult> Lista()
         {
             List<AplicacionModel> aplicaciones = await _qryListaAplicaciones.Execute();
@@ -58,12 +67,13 @@ namespace lfvb.secure.api.Controllers
         }
 
         /// <summary>
-        /// Obtiene los datos de una aplicacion en particular
+        /// Obtiene los datos de una aplicacion en particular (Permiso: SW_ADM_APL_FICH_APL)
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id:guid}")]
         [Authorize]
+        //[DbAuthorize("ADM_APLI", "SW_ADM_APL_FICH_APL", "LLSWEP")]
         public async Task<IActionResult> GetAplicacion(Guid id)
         {
             AplicacionModel app = await _qryAplicacion.Execute(id);
@@ -72,6 +82,32 @@ namespace lfvb.secure.api.Controllers
                 return NotFound();
             }
             return Ok(app);
+        }
+
+        /// <summary>
+        /// Da de a una nueva aplicacion en el sistema  
+        /// </summary>
+        /// <param name="aplicacion"></param>
+        /// <returns></returns>
+        [HttpPost()]
+        [Authorize]
+        //[DbAuthorize("ADM_APLI", "SW_ADM_APL_COM_ALTA","LLSWEP")]
+        public async Task<IActionResult> AltaAplicacion([FromBody] AltaAplicacionModel aplicacion)
+        {
+            if (aplicacion == null)
+            {
+                return BadRequest("Los datos de la aplicacion no pueden ser nulos");
+            }
+            try
+            {
+                AplicacionModel nuevaAplicacion = await _altaAplicacionCommand.Execute(aplicacion);
+                return Ok(nuevaAplicacion);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al dar de alta la aplicacion");
+                return BadRequest("Error interno del servidor al dar de alta la aplicacion");
+            }
         }
 
         /// <summary>
@@ -85,6 +121,63 @@ namespace lfvb.secure.api.Controllers
         {
             var elementos = await _qryAplicacion.Execute(id);
             return Ok(elementos);
+        }
+
+        /// <summary>
+        /// Da de alta un nuevo elemento de la aplicacion
+        /// </summary>
+        /// <param name="elemento"></param>
+        /// <returns></returns>
+        [HttpPost("elementos/alta")]
+        [Authorize]
+        public async Task<IActionResult> AltaElementoAplicacion([FromBody] ElementoAplicacionModel elemento)
+        {
+            if (elemento == null)
+            {
+                return BadRequest("Los datos del elemento no pueden ser nulos");
+            } else if(elemento.Id!=null)
+            {
+                return BadRequest("Este metodo solo sirve para añadir nuevos elementos");
+            }
+            try
+            {
+                ElementoAplicacionModel nuevoElemento = await _altaActualizacionElementoAplicacionCommand.Execute(elemento);
+                return Ok(nuevoElemento);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al dar de alta el elemento de aplicacion");
+                return BadRequest("Error interno del servidor al dar de alta el elemento de aplicacion");
+            }
+        }
+
+        /// <summary>
+        /// Da de alta un nuevo elemento de la aplicacion
+        /// </summary>
+        /// <param name="elemento"></param>
+        /// <returns></returns>
+        [HttpPut("elementos/actualizar")]
+        [Authorize]
+        public async Task<IActionResult> ActualizaElementoAplicacion([FromBody] ElementoAplicacionModel elemento)
+        {
+            if (elemento == null)
+            {
+                return BadRequest("Los datos del elemento no pueden ser nulos");
+            }
+            else if (elemento.Id == null)
+            {
+                return BadRequest("Este metodo solo sirve para actualizar un elemento dado");
+            }
+            try
+            {
+                ElementoAplicacionModel nuevoElemento = await _altaActualizacionElementoAplicacionCommand.Execute(elemento);
+                return Ok(nuevoElemento);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al dar de alta el elemento de aplicacion");
+                return BadRequest("Error interno del servidor al dar de alta el elemento de aplicacion");
+            }
         }
 
         /// <summary>

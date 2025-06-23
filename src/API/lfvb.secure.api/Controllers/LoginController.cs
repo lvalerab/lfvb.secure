@@ -1,4 +1,6 @@
 ﻿using lfvb.secure.aplication.Database.Grupos.Queries.GetGruposUsuario;
+using lfvb.secure.aplication.Database.Propiedades.Commands.NuevaPropiedadElemento;
+using lfvb.secure.aplication.Database.Propiedades.Queries.GetPropiedadesElemento;
 using lfvb.secure.aplication.Database.Usuario.Commands.ActualizaUsuario;
 using lfvb.secure.aplication.Database.Usuario.Models;
 using lfvb.secure.aplication.Database.Usuario.Queries.GetUsuario;
@@ -27,6 +29,8 @@ namespace lfvb.secure.api.Controllers
         private readonly int expires;
         private IGetUsuarioQuery _qryGetUsuario;
         private IActualizaUsuarioCommand _cmdActualizaUsuario;
+        private IGetPropiedadesElementoQuery _getPropiedadesElementoQuery;
+        private INuevaActualizaPropiedadElementoCommand _nuevaActualizaPropiedadElementoCommand;
 
         public LoginController(ILogger<LoginController> logger,
                                ILoginUsuarioPasswordQuery qryLoginUsPw,
@@ -34,7 +38,9 @@ namespace lfvb.secure.api.Controllers
                                IJwtTokenUtils jwtUtils,
                                IConfiguration config,
                                IGetUsuarioQuery qryGetUsuario,
-                               IActualizaUsuarioCommand cmdActualizarUsuario)
+                               IActualizaUsuarioCommand cmdActualizarUsuario,
+                               IGetPropiedadesElementoQuery getPropiedadesElementoQuery,
+                               INuevaActualizaPropiedadElementoCommand nuevaActualizaPropiedadElementoCommand)
         {
             this._logger = logger;
             this._qryLoginUsPw = qryLoginUsPw;
@@ -48,6 +54,8 @@ namespace lfvb.secure.api.Controllers
             }
             this._qryGetUsuario = qryGetUsuario;
             this._cmdActualizaUsuario = cmdActualizarUsuario;
+            this._getPropiedadesElementoQuery = getPropiedadesElementoQuery;
+            this._nuevaActualizaPropiedadElementoCommand = nuevaActualizaPropiedadElementoCommand;
         }
 
         /// <summary>
@@ -239,6 +247,104 @@ namespace lfvb.secure.api.Controllers
                 return BadRequest();
             }
 
+        }
+
+        /// <summary>
+        /// Obtiene el avatar del usuario loggeado
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Authorize]
+        [Route("usuario/avatar")]
+        public async Task<IActionResult> GetAvatarUsuarioLoggeado()
+        {
+            try
+            {
+                Guid? id = this._jwtTokenUtils.GetIdFromToken(HttpContext);
+                if (id != null)
+                {
+                    PropiedadElementoModel prop = null;
+                    List<PropiedadElementoModel> propiedades = await this._getPropiedadesElementoQuery.Execute(new List<Guid?> { id ?? Guid.Empty }, new List<string> { "IMG_USER" });
+                    if (propiedades.Count > 0)
+                    {
+                        prop = propiedades[0];
+                        return Ok(prop.Valores[0].Texto);
+                    }
+                    else
+                    {
+                        return StatusCode(StatusCodes.Status404NotFound, "Avatar no actualizado, no se encuentra");
+                    }
+                } else
+                {
+                    return Unauthorized();
+                }
+            } catch (Exception ex)
+            {
+                this._logger.LogError("Error al obtener el avatar del usuario", new { ex = ex });
+                return BadRequest();
+            }
+        }
+
+        /// <summary>
+        /// Actualiza el avatar del usuario loggueado
+        /// </summary>
+        /// <param name="base64"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Authorize]
+        [Route("usuario/avatar")]
+        public async Task<IActionResult> ActualizaAvatarUsuario([FromBody] string base64)
+        {
+
+            try
+            {
+                if (base64 == null)
+                {
+                    return BadRequest("No se ha indicado el avatar a actualizar");
+                }
+                Guid? id = this._jwtTokenUtils.GetIdFromToken(HttpContext);
+                if (id != null)
+                {
+                    PropiedadElementoModel prop = null;
+                    List<PropiedadElementoModel> propiedades = await this._getPropiedadesElementoQuery.Execute(new List<Guid?> { id ?? Guid.Empty }, new List<string> { "IMG_USER"});
+                    if(propiedades.Count>0)
+                    {
+                        prop = propiedades[0];                        
+                    } else
+                    {
+                        prop = new PropiedadElementoModel
+                        {
+                            Id = null,
+                            IdElemento = id,
+                            Propiedad = new aplication.Database.Propiedades.Queries.GetAllPropiedades.PropiedadModel
+                            {
+                                Codigo = "IMG_USER"
+                            },
+                            Valores = new List<ValorPropiedadModel>()
+                        };
+                        prop.Valores.Add(new ValorPropiedadModel { Id=null,IdPropiedadElemento=null, Texto=null });
+                    }
+                    prop.Valores[0].Texto = base64;
+                    prop=await this._nuevaActualizaPropiedadElementoCommand.Execute(prop);
+                    if (prop != null)
+                    {
+                        return StatusCode(StatusCodes.Status200OK, prop);
+                    }
+                    else
+                    {
+                        return StatusCode(StatusCodes.Status404NotFound, "Avatar no actualizado, no se encuentra");
+                    }
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status401Unauthorized);
+                }
+            }
+            catch (Exception ex)
+            {
+                this._logger.LogError("Error al actualizar el avatar del usuario", new { ex = ex });
+                return BadRequest();
+            }
         }
     }
 }
