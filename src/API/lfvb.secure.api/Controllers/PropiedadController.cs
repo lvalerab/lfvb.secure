@@ -108,8 +108,14 @@ namespace lfvb.secure.api.Controllers
         [DbAuthorize("ADM_PROP", "SW_ACT_INS_PROP_ELEMENTO", "LLSWEP")]
         public async Task<IActionResult> ActualizaInsertaPropiedadElemento([FromBody] PropiedadElementoModel propiedad)
         {
-            //PropiedadElementoModel resultado = await this._nuevaActualizaPropiedadElementoCommand.Execute(propiedad);
+            try { 
+            PropiedadElementoModel resultado = await this._nuevaActualizaPropiedadElementoCommand.Execute(propiedad);
             return Ok(propiedad);
+            } catch (Exception err)
+            {
+                this._logger.LogError("Error al actualizar/grabar una propiedad para un elemento", propiedad);
+                return BadRequest(err);
+            }
         }
 
         /// <summary>
