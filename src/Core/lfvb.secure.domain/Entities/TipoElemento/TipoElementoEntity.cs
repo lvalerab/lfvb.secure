@@ -1,4 +1,7 @@
-﻿using lfvb.secure.domain.Entities.Elemento;
+﻿using lfvb.secure.domain.Entities.Circuitos.AccionTipoElemento;
+using lfvb.secure.domain.Entities.Circuitos.Circuito;
+using lfvb.secure.domain.Entities.Circuitos.TipoElementoCircuito;
+using lfvb.secure.domain.Entities.Elemento;
 using lfvb.secure.domain.Entities.RelacionTipoElementoPropiedad;
 using System;
 using System.Collections.Generic;
@@ -15,5 +18,9 @@ namespace lfvb.secure.domain.Entities.TipoElemento
 
         public ICollection<ElementoEntity> Elementos { get; set; }
         public ICollection<RelacionTipoElementoPropiedadEntity> RelacionPropiedades { get; set; }
+        public ICollection<TipoElementoCircuitoEntity> RelacionCircuitos { get; set; }  
+        public ICollection<AccionTipoElementoEntity> Acciones { get; set; }
+
+
     }
 }

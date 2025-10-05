@@ -100,6 +100,8 @@ namespace lfvb.secure.persistence.DataBase
             new TipoElementoConfiguration(modelBuilder.Entity<TipoElementoEntity>());
             new RelacionTipoElementoPropiedadConfiguracion(modelBuilder.Entity<RelacionTipoElementoPropiedadEntity>());
 
+            //Modulo de circuitos
+
             new VWElementoConfiguration(modelBuilder.Entity<VWElementoEntity>());
         }
 

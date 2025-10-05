@@ -1,4 +1,6 @@
-﻿using lfvb.secure.domain.Entities.Credencial;
+﻿using lfvb.secure.domain.Entities.Circuitos.EstadoElemento;
+using lfvb.secure.domain.Entities.Circuitos.PermisoPasoUsuario;
+using lfvb.secure.domain.Entities.Credencial;
 using lfvb.secure.domain.Entities.RelacionUsuarioGrupoUsuarioAplicacion;
 using System;
 using System.Collections.Generic;
@@ -25,6 +27,10 @@ namespace lfvb.secure.domain.Entities.Usuario
         public ICollection<CredencialEntity> Credenciales { get; set; }
 
         public ICollection<RelacionUsuarioGrupoUsuarioAplicacionEntity> RelacionGrupos { get; set; }
+
+        public ICollection<PermisoPasoUsuarioEntity> PermisosPasos { get; set; }   
+        
+        public ICollection<EstadoElementoEntity> Tramitadores { get; set; } 
 
     }
 }

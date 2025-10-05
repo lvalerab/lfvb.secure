@@ -1,5 +1,8 @@
 ﻿using lfvb.secure.domain.Entities;
 using lfvb.secure.domain.Entities.Aplicacion;
+using lfvb.secure.domain.Entities.Circuitos.Circuito;
+using lfvb.secure.domain.Entities.Circuitos.GrupoAdministradorCircuito;
+using lfvb.secure.domain.Entities.Circuitos.PermisoPasoGrupo;
 using lfvb.secure.domain.Entities.RelacionGrupoUsuarioElementoAplicacionTipoPermisoAplicacion;
 using lfvb.secure.domain.Entities.RelacionTipoElementoApliConTipoPermisoTipoElementoApli;
 using lfvb.secure.domain.Entities.RelacionUsuarioGrupoUsuarioAplicacion;
@@ -30,6 +33,10 @@ namespace lfvb.secure.domain.Entities.GrupoUsuarioAplicacion
         public AplicacionEntity Aplicacion { get; set; }
 
         public ICollection<RelacionGrupoUsuarioElementoAplicacionTipoPermisoAplicacionEntity> RelacionElementosPermisos { get; set; }
-        
-    }
+
+        public ICollection<PermisoPasoGrupoEntity> PermisoPasos { get; set; }   
+
+        public ICollection<GrupoAdministradorCircuitoEntity> CircuitosAdministrados { get; set; }
+
+        }
 }
