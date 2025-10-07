@@ -4,6 +4,8 @@ using lfvb.secure.aplication.Database.Aplicaciones.Queries.GetAplicacionesUsuari
 using lfvb.secure.aplication.Database.Aplicaciones.Queries.GetArbolElementosAplicacion;
 using lfvb.secure.aplication.Database.Aplicaciones.Queries.GetGruposAplicacion;
 using lfvb.secure.aplication.Database.Aplicaciones.Queries.PermisoElementoAplicacion;
+using lfvb.secure.aplication.Database.Aplicaciones.Queries.PermisosElementosAplicacionPorGrupoYAplicacion;
+using lfvb.secure.aplication.Database.Aplicaciones.Queries.TiposPermisosElementoPorTipoQuery;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetAllGrupos;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetGrupo;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetGruposUsuario;
@@ -54,6 +56,11 @@ namespace lfvb.secure.aplication.Database
 
             #region "elementos de aplicacion"
             services.AddTransient<IGetAllTiposElementosAplicacionQuery, GetAllTiposElementosAplicacionQuery>();
+            #endregion
+
+            #region "Permisos de elementos de aplicacion"
+            services.AddTransient<IPermisosElementosAplicacionPorGrupoYAplicacionQuery, PermisosElementosAplicacionPorGrupoYAplicacionQuery>();
+            services.AddTransient<ITiposPermisosElementoPorTipoQuery, TiposPermisosElementoPorTipoQuery>();
             #endregion
 
             #region "Querys de tipos de propiedades"

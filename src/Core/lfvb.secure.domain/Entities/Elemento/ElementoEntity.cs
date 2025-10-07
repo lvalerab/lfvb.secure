@@ -1,4 +1,5 @@
-﻿using lfvb.secure.domain.Entities.PropiedadElemento;
+﻿using lfvb.secure.domain.Entities.Circuitos.EstadoElemento;
+using lfvb.secure.domain.Entities.PropiedadElemento;
 using lfvb.secure.domain.Entities.TipoElemento;
 using System;
 using System.Collections.Generic;
@@ -17,5 +18,7 @@ namespace lfvb.secure.domain.Entities.Elemento
         public TipoElementoEntity TipoElemento { get; set; }
         
         public ICollection<PropiedadElementoEntity>? Propiedades { get; set; }
+
+        public ICollection<EstadoElementoEntity> Estados { get; set; }
     }
 }

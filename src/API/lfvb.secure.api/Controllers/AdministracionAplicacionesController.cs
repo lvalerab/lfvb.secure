@@ -2,11 +2,14 @@
 using lfvb.secure.api.Atributos.Secure;
 using lfvb.secure.aplication.Database.Aplicaciones.Commands.AltaActualizacionElementoAplicacion;
 using lfvb.secure.aplication.Database.Aplicaciones.Commands.AltaAplicacion;
+using lfvb.secure.aplication.Database.Aplicaciones.Commands.AltaPermisoElementoAplicacion;
 using lfvb.secure.aplication.Database.Aplicaciones.Models;
 using lfvb.secure.aplication.Database.Aplicaciones.Queries.GetAllAplicaciones;
 using lfvb.secure.aplication.Database.Aplicaciones.Queries.GetAplicacion;
 using lfvb.secure.aplication.Database.Aplicaciones.Queries.GetArbolElementosAplicacion;
 using lfvb.secure.aplication.Database.Aplicaciones.Queries.GetGruposAplicacion;
+using lfvb.secure.aplication.Database.Aplicaciones.Queries.PermisosElementosAplicacionPorGrupoYAplicacion;
+using lfvb.secure.aplication.Database.Aplicaciones.Queries.TiposPermisosElementoPorTipoQuery;
 using lfvb.secure.aplication.Database.TipoElementoAplicacion.Queries.GetAllTiposElementosAplicacion;
 using lfvb.secure.common.JWT;
 using Microsoft.AspNetCore.Authorization;
@@ -30,6 +33,9 @@ namespace lfvb.secure.api.Controllers
         private IGetAllTiposElementosAplicacionQuery _qryTiposElementosAplicacion;
         private IAltaAplicacionCommand _altaAplicacionCommand;
         private IAltaActualizacionElementoAplicacionCommand _altaActualizacionElementoAplicacionCommand;
+        private IPermisosElementosAplicacionPorGrupoYAplicacionQuery _qryPermisosElementosAplicacion;
+        private ITiposPermisosElementoPorTipoQuery _qryTiposPermisosElementoPorTipoQuery;
+        private IAltaPermisoElementoAplicacionCommand _altaPermisoElementoAplicacionCommand;
 
         public AdministracionAplicacionesController(ILogger<PermisosController> logger,
                                                     IJwtTokenUtils jwtTokenUtils,
@@ -39,7 +45,10 @@ namespace lfvb.secure.api.Controllers
                                                     IGetGruposAplicacionQuery qryGruposAplicacion,
                                                     IGetAllTiposElementosAplicacionQuery qryTiposElementosAplicacion,
                                                     IAltaAplicacionCommand altaAplicacionCommand,
-                                                     IAltaActualizacionElementoAplicacionCommand altaActualizacionElementoAplicacionCommand)
+                                                    IAltaActualizacionElementoAplicacionCommand altaActualizacionElementoAplicacionCommand,
+                                                    IPermisosElementosAplicacionPorGrupoYAplicacionQuery qryPermisosElementosAplicacion,
+                                                    ITiposPermisosElementoPorTipoQuery qryTiposPermisosElementoPorTipoQuery,
+                                                    IAltaPermisoElementoAplicacionCommand altaPermisoElementoAplicacionCommand)
         {
             this._logger = logger;
             this._jwtTokenUtils = jwtTokenUtils;
@@ -50,6 +59,9 @@ namespace lfvb.secure.api.Controllers
             this._qryTiposElementosAplicacion = qryTiposElementosAplicacion;
             this._altaAplicacionCommand = altaAplicacionCommand;
             this._altaActualizacionElementoAplicacionCommand = altaActualizacionElementoAplicacionCommand;
+            this._qryPermisosElementosAplicacion = qryPermisosElementosAplicacion;
+            this._qryTiposPermisosElementoPorTipoQuery = qryTiposPermisosElementoPorTipoQuery;
+            this._altaPermisoElementoAplicacionCommand = altaPermisoElementoAplicacionCommand;
         }
 
         /// <summary>
@@ -58,7 +70,7 @@ namespace lfvb.secure.api.Controllers
         /// <returns></returns>
         [HttpGet("lista")]
         [Authorize]
-        //[DbAuthorize("ADM_APLI", "SW_ADM_APL_LST_APL", "LLSWEP")]
+        [DbAuthorize("ADM_APLI", "SW_ADM_APL_LST_APL", "LLSWEP")]
         public async Task<IActionResult> Lista()
         {
             List<AplicacionModel> aplicaciones = await _qryListaAplicaciones.Execute();
@@ -73,7 +85,7 @@ namespace lfvb.secure.api.Controllers
         /// <returns></returns>
         [HttpGet("{id:guid}")]
         [Authorize]
-        //[DbAuthorize("ADM_APLI", "SW_ADM_APL_FICH_APL", "LLSWEP")]
+        [DbAuthorize("ADM_APLI", "SW_ADM_APL_FICH_APL", "LLSWEP")]
         public async Task<IActionResult> GetAplicacion(Guid id)
         {
             AplicacionModel app = await _qryAplicacion.Execute(id);
@@ -91,7 +103,7 @@ namespace lfvb.secure.api.Controllers
         /// <returns></returns>
         [HttpPost()]
         [Authorize]
-        //[DbAuthorize("ADM_APLI", "SW_ADM_APL_COM_ALTA","LLSWEP")]
+        [DbAuthorize("ADM_APLI", "SW_ADM_APL_COM_ALTA","LLSWEP")]
         public async Task<IActionResult> AltaAplicacion([FromBody] AltaAplicacionModel aplicacion)
         {
             if (aplicacion == null)
@@ -111,12 +123,13 @@ namespace lfvb.secure.api.Controllers
         }
 
         /// <summary>
-        /// Obtiene el arbol de elementos de una aplicacion 
+        /// Obtiene el arbol de elementos de una aplicacion (Permiso SW_ADM_EAPL_LST_ELEM)
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("elementos/{id}")]
         [Authorize]
+        [DbAuthorize("ADM_APLI", "SW_ADM_EAPL_LST_ELEM","LLSWEP")]
         public async Task<IActionResult> GetElementosAplicacion(Guid id)
         {
             var elementos = await _qryAplicacion.Execute(id);
@@ -124,18 +137,20 @@ namespace lfvb.secure.api.Controllers
         }
 
         /// <summary>
-        /// Da de alta un nuevo elemento de la aplicacion
+        /// Da de alta un nuevo elemento de la aplicacion (Permiso SW_ADM_EAPL_ALT_ELEM)
         /// </summary>
         /// <param name="elemento"></param>
         /// <returns></returns>
         [HttpPost("elementos/alta")]
         [Authorize]
+        [DbAuthorize("ADM_APLI", "SW_ADM_EAPL_ALT_ELEM","LLSWEP")]
         public async Task<IActionResult> AltaElementoAplicacion([FromBody] ElementoAplicacionModel elemento)
         {
             if (elemento == null)
             {
                 return BadRequest("Los datos del elemento no pueden ser nulos");
-            } else if(elemento.Id!=null)
+            }
+            else if (elemento.Id != null)
             {
                 return BadRequest("Este metodo solo sirve para añadir nuevos elementos");
             }
@@ -152,12 +167,13 @@ namespace lfvb.secure.api.Controllers
         }
 
         /// <summary>
-        /// Da de alta un nuevo elemento de la aplicacion
+        /// Da de alta un nuevo elemento de la aplicacion (Permiso SW_ADM_EAPL_ALT_ELEM)
         /// </summary>
         /// <param name="elemento"></param>
         /// <returns></returns>
         [HttpPut("elementos/actualizar")]
         [Authorize]
+        [DbAuthorize("ADM_APLI", "SW_ADM_EAPL_ALT_ELEM","LLSWEP")]
         public async Task<IActionResult> ActualizaElementoAplicacion([FromBody] ElementoAplicacionModel elemento)
         {
             if (elemento == null)
@@ -199,10 +215,66 @@ namespace lfvb.secure.api.Controllers
         /// <returns></returns>
         [HttpGet("grupos/{id}")]
         [Authorize]
+        [DbAuthorize("ADM_APLI", "SW_ADM_APL_LST_GRP","LLSWEP")]
         public async Task<IActionResult> GetGruposAplicacion(Guid id)
         {
             var grupos = await _qryGruposAplicacion.Execute(id);
             return Ok(grupos);
+        }
+
+        /// <summary>
+        /// Obtiene el listado de permisos de los elementos de un grupo y una aplicacion
+        /// </summary>
+        /// <param name="idAplicacion"></param>
+        /// <param name="idGrupo"></param>
+        /// <returns></returns>
+        [HttpGet("elementos/permiso/{idAplicacion}/{idGrupo}")]
+        [Authorize]
+        [DbAuthorize("ADM_APLI", "SW_ADM_ELP_PERM_LST","LLSWEP")]
+        public async Task<IActionResult> GetPermisosElementosAplicacionPorGrupoYAplicacion(Guid idAplicacion, Guid idGrupo)
+        {
+            var permisos = await _qryPermisosElementosAplicacion.Execute(idAplicacion, idGrupo);
+            return Ok(permisos);
+        }
+
+        /// <summary>
+        /// Obtiene los tipos de permisos en base al tipo de elemento de la aplicacion
+        /// </summary>
+        /// <param name="codigoTipo"></param>
+        /// <returns></returns>
+        [HttpGet("elementos/tipo/{codigoTipo}/permisos")]
+        [Authorize]
+        [DbAuthorize("ADM_APLI", "SW_ADM_ELP_PERM_LST","LLSWEP")]
+        public async Task<IActionResult> GetTiposPermisosElementoPorTipo(string codigoTipo)
+        {
+            var tiposPermisos = await _qryTiposPermisosElementoPorTipoQuery.Execute(codigoTipo);
+            return Ok(tiposPermisos);
+        }
+
+        /// <summary>
+        /// Da de alta un nuevo permiso para un elemento de aplicacion (Permiso SW_ADM_ELP_PERM_ALTA)   
+        /// </summary>
+        /// <param name="permiso"></param>
+        /// <returns></returns>
+        [HttpPost("elementos/permiso/alta")]
+        [Authorize]
+        [DbAuthorize("ADM_APLI", "SW_ADM_ELP_PERM_ALTA","LLSWEP")]
+        public ActionResult AltaPermisoElementoAplicacion([FromBody] AltaPermisoElementoAplicacionModel permiso)
+        {
+            if (permiso == null)
+            {
+                return BadRequest("Los datos del permiso no pueden ser nulos");
+            }
+            try
+            {
+                AltaPermisoElementoAplicacionModel nuevoPermiso = _altaPermisoElementoAplicacionCommand.Execute(permiso).Result;
+                return Ok(nuevoPermiso);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al dar de alta el permiso de elemento de aplicacion");
+                return BadRequest("Error interno del servidor al dar de alta el permiso de elemento de aplicacion");
+            }
         }
     }
 }

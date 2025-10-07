@@ -50,7 +50,8 @@ namespace lfvb.secure.api
                 options.AddPolicy(name: "LOCAL",
                     policy =>
                     {
-                        policy.AllowAnyOrigin()                        
+                        policy                       
+                        .AllowAnyOrigin()                        
                         .AllowAnyHeader()
                         .AllowAnyMethod();                        
                     });
@@ -62,7 +63,8 @@ namespace lfvb.secure.api
                 options.AddPolicy(name: "PRODUCCION",
                     policy =>
                     {
-                        policy.WithOrigins("http://localhost", "https://localhost")
+                        policy                        
+                        .WithOrigins("http://localhost", "https://localhost")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                     });
