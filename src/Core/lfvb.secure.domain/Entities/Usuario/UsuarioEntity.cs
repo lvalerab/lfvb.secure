@@ -1,4 +1,5 @@
 ﻿using lfvb.secure.domain.Entities.Circuitos.EstadoElemento;
+using lfvb.secure.domain.Entities.Circuitos.EstadoElementoSiguiente;
 using lfvb.secure.domain.Entities.Circuitos.PermisoPasoUsuario;
 using lfvb.secure.domain.Entities.Credencial;
 using lfvb.secure.domain.Entities.RelacionUsuarioGrupoUsuarioAplicacion;
@@ -31,6 +32,8 @@ namespace lfvb.secure.domain.Entities.Usuario
         public ICollection<PermisoPasoUsuarioEntity> PermisosPasos { get; set; }   
         
         public ICollection<EstadoElementoEntity> Tramitadores { get; set; } 
+
+        public ICollection<EstadoElementoSiguienteEntity> EnvioEstados { get; set; }
 
     }
 }

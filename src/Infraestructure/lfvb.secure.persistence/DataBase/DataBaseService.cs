@@ -1,5 +1,19 @@
 ﻿using lfvb.secure.aplication.Interfaces;
 using lfvb.secure.domain.Entities.Aplicacion;
+using lfvb.secure.domain.Entities.Circuitos.Accion;
+using lfvb.secure.domain.Entities.Circuitos.AccionTipoElemento;
+using lfvb.secure.domain.Entities.Circuitos.AccionUsuario;
+using lfvb.secure.domain.Entities.Circuitos.Circuito;
+using lfvb.secure.domain.Entities.Circuitos.Estado;
+using lfvb.secure.domain.Entities.Circuitos.EstadoElemento;
+using lfvb.secure.domain.Entities.Circuitos.EstadoElementoSiguiente;
+using lfvb.secure.domain.Entities.Circuitos.GrupoAdministradorCircuito;
+using lfvb.secure.domain.Entities.Circuitos.Paso;
+using lfvb.secure.domain.Entities.Circuitos.PasoAccion;
+using lfvb.secure.domain.Entities.Circuitos.PermisoPasoGrupo;
+using lfvb.secure.domain.Entities.Circuitos.PermisoPasoUsuario;
+using lfvb.secure.domain.Entities.Circuitos.TipoElementoCircuito;
+using lfvb.secure.domain.Entities.Circuitos.Tramite;
 using lfvb.secure.domain.Entities.Credencial;
 using lfvb.secure.domain.Entities.Elemento;
 using lfvb.secure.domain.Entities.ElementoAplicacion;
@@ -21,6 +35,7 @@ using lfvb.secure.domain.Entities.Usuario;
 using lfvb.secure.domain.Entities.ValorPropiedadElemento;
 using lfvb.secure.domain.Entities.Views.VWElemento;
 using lfvb.secure.persistence.Configuraciones;
+using lfvb.secure.persistence.Configuraciones.Circuitos;
 using lfvb.secure.persistence.Configuraciones.Views;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -52,6 +67,22 @@ namespace lfvb.secure.persistence.DataBase
         public DbSet<RelacionTipoElementoTipoPermisoEntity> RelacionTiposElementosConTiposPermisos { get; set; }
         public DbSet<TipoPermisoElementoAplicacionEntity> TiposPermisosTipoElementosAplicaciones { get; set; }
         public DbSet<RelacionGrupoUsuarioElementoAplicacionTipoPermisoAplicacionEntity> RelacionElementosConTiposPermisosConGruposUsuarios { get; set; }
+
+        //Circuitos 
+        public DbSet<AccionEntity> Acciones { get; set; }   
+        public DbSet<AccionTipoElementoEntity> AccionesTiposElementos { get; set; } 
+        public DbSet<AccionUsuarioEntity> AccionesUsuarios { get; set; }    
+        public DbSet<CircuitoEntity> Circuitos { get; set; }    
+        public DbSet<EstadoEntity> Estados { get; set; }    
+        public DbSet<EstadoElementoEntity> EstadosElementos { get; set; }
+        public DbSet<EstadoElementoSiguienteEntity> EstadosElementosSiguientes { get; set; }    
+        public DbSet<GrupoAdministradorCircuitoEntity> GruposAdministradoresCircuitos { get; set; } 
+        public DbSet<PasoAccionEntity> PasosAcciones { get; set; }  
+        public DbSet<PasoEntity> Pasos { get; set; }    
+        public DbSet<PermisoPasoGrupoEntity> PermisosPasosGrupos { get; set; }  
+        public DbSet<PermisoPasoUsuarioEntity> PermisosPasosUsuarios { get; set; }  
+        public DbSet<TipoElementoCircuitoEntity> TiposElementosCircuitos { get; set; }  
+        public DbSet<TramiteEntity> Tramites { get; set; }          
 
 
         #region "Gestion de propiedades de los elementos"
@@ -101,6 +132,21 @@ namespace lfvb.secure.persistence.DataBase
             new RelacionTipoElementoPropiedadConfiguracion(modelBuilder.Entity<RelacionTipoElementoPropiedadEntity>());
 
             //Modulo de circuitos
+            new AccionConfiguration(modelBuilder.Entity<AccionEntity>());   
+            new AccionTipoElementoConfiguration(modelBuilder.Entity<AccionTipoElementoEntity>());   
+            new AccionUsuarioConfiguration(modelBuilder.Entity<AccionUsuarioEntity>()); 
+            new CircuitoConfiguration(modelBuilder.Entity<CircuitoEntity>());
+            new EstadoConfiguration(modelBuilder.Entity<EstadoEntity>());
+            new EstadoElementoConfiguration(modelBuilder.Entity<EstadoElementoEntity>());
+            new EstadoElementoSiguienteConfiguration(modelBuilder.Entity<EstadoElementoSiguienteEntity>());
+            new GrupoAdministradorCircuitoConfiguration(modelBuilder.Entity<GrupoAdministradorCircuitoEntity>());   
+            new PasoAccionConfiguration(modelBuilder.Entity<PasoAccionEntity>());
+            new PasoConfiguration(modelBuilder.Entity<PasoEntity>());
+            new PermisoPasoGrupoConfiguration(modelBuilder.Entity<PermisoPasoGrupoEntity>());   
+            new PermisoPasoUsuarioConfiguration(modelBuilder.Entity<PermisoPasoUsuarioEntity>());   
+            new TipoElementoCircuitoConfiguration(modelBuilder.Entity<TipoElementoCircuitoEntity>());   
+            new TramiteConfiguration(modelBuilder.Entity<TramiteEntity>()); 
+
 
             new VWElementoConfiguration(modelBuilder.Entity<VWElementoEntity>());
         }

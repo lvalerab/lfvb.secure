@@ -1,4 +1,5 @@
 ﻿using lfvb.secure.domain.Entities.Circuitos.EstadoElemento;
+using lfvb.secure.domain.Entities.Circuitos.EstadoElementoSiguiente;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
@@ -31,6 +32,14 @@ namespace lfvb.secure.persistence.Configuraciones.Circuitos
             builder.HasOne(x => x.Estado).WithMany(e => e.EstadosElemento).HasForeignKey(x => x.CodEstado);
             builder.HasOne(x => x.Circuito).WithMany(c => c.ElementosEstados).HasForeignKey(x => x.IdCircuito);
             builder.HasOne(x => x.UsuarioTramitador).WithMany(u => u.Tramitadores).HasForeignKey(x => x.IdUsuarioTramitador);
+
+            builder.HasOne(x => x.RelacionEstadoActual)
+                   .WithOne(x => x.RelacionEstadoActual)
+                   .HasForeignKey<EstadoElementoSiguienteEntity>(e => e.Id); 
+
+            builder.HasOne(x => x.RelacionEstadoSiguiente)
+                     .WithOne(x => x.RelacionEstadoSiguiente)
+                     .HasForeignKey<EstadoElementoSiguienteEntity>(x => x.IdSiguiente);  
         }
     }
 }

@@ -43,6 +43,10 @@ namespace lfvb.secure.persistence.Configuraciones
             entityBuilder.HasMany(x => x.Tramitadores)
                          .WithOne(x => x.UsuarioTramitador)
                          .HasForeignKey(x => x.IdUsuarioTramitador);
+
+            entityBuilder.HasMany(x => x.EnvioEstados)
+                         .WithOne(x => x.UsuarioEnvio)
+                         .HasForeignKey(x => x.IdUsuarioEnvio);
         }        
     }
 }

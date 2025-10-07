@@ -11,8 +11,8 @@ namespace lfvb.secure.domain.Entities.Circuitos.EstadoElementoSiguiente
         public Guid IdUsuarioEnvio { get; set; }
         public DateTime Fecha { get; set; } 
 
-        public EstadoElementoEntity Estado { get; set; }    
-        public EstadoElementoEntity EstadoSiguiente { get; set; }   
+        public EstadoElementoEntity RelacionEstadoActual { get; set; }    
+        public EstadoElementoEntity RelacionEstadoSiguiente { get; set; }   
         public UsuarioEntity UsuarioEnvio { get; set; }
 
     }

@@ -7,7 +7,7 @@ namespace lfvb.secure.domain.Entities.Circuitos.AccionTipoElemento
     public class AccionTipoElementoEntity
     {
         public Guid Id { get; set; }                        
-        public Guid CodigoTipoElemento { get; set; }  
+        public string CodigoTipoElemento { get; set; }  
         
         public bool LlamarSW { get; set; }  
         public string PuntoAcceso { get; set; } 

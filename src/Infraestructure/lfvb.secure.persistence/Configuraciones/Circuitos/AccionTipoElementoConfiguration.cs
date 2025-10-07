@@ -19,12 +19,12 @@ namespace lfvb.secure.persistence.Configuraciones.Circuitos
 
             builder.Property(x => x.Id).HasColumnName("ID_ACCI").IsRequired();  
             builder.Property(x => x.CodigoTipoElemento).HasColumnName("COD_TIEL").IsRequired();
-            builder.Property(x => x.LlamarSW).HasColumnName("LLAMAR_SW").IsRequired().HasDefaultValue("N");
+            builder.Property(x => x.LlamarSW).HasColumnName("LLAMAR_SW").IsRequired().HasDefaultValue(false);
             builder.Property(x => x.PuntoAcceso).HasColumnName("PUNTO_ACCESO_SW");
-            builder.Property(x => x.LlamarLibreriaNET).HasColumnName("LLAMAR_LIB_NET").IsRequired().HasDefaultValue("N");
+            builder.Property(x => x.LlamarLibreriaNET).HasColumnName("LLAMAR_LIB_NET").IsRequired().HasDefaultValue(false);
             builder.Property(x => x.LibreriaNET).HasColumnName("LIBRERIA_NET");
             builder.Property(x => x.MetodoLibreriaNET).HasColumnName("METODO_NET");
-            builder.Property(x => x.EsAccionUsuario).HasColumnName("ACCION_USUARIO").IsRequired().HasDefaultValue("N");
+            builder.Property(x => x.EsAccionUsuario).HasColumnName("ACCION_USUARIO").IsRequired().HasDefaultValue(false);
             builder.Property(x => x.CodigoAccionUsuario).HasColumnName("COD_ACUS");           
             
             

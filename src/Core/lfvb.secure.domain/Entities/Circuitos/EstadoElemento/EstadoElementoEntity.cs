@@ -25,7 +25,7 @@ namespace lfvb.secure.domain.Entities.Circuitos.EstadoElemento
         public EstadoEntity Estado { get; set; }    
         public CircuitoEntity Circuito { get; set; }
 
-        public EstadoElementoSiguienteEntity EstadoSiguiente { get; set; }
-        public EstadoElementoSiguienteEntity EstadoAnterior { get; set; }
+        public EstadoElementoSiguienteEntity RelacionEstadoActual { get; set; }
+        public EstadoElementoSiguienteEntity RelacionEstadoSiguiente { get; set; }
     }
 }
