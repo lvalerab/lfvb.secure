@@ -1,4 +1,5 @@
 ﻿using lfvb.secure.domain.Entities.Circuitos.Circuito;
+using lfvb.secure.persistence.Conversions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -17,7 +18,7 @@ namespace lfvb.secure.persistence.Configuraciones.Circuitos
                 .ToTable("CIRC_CIRCUITO")
                 .HasKey(x => x.Id);
 
-            builder.Property(x => x.Id).HasColumnName("ID_CIRC").IsRequired();
+            builder.Property(x => x.Id).HasColumnName("ID_CIRC").IsRequired().HasConversion(v => GuidConversion.toString(v), v => GuidConversion.toGuid(v));
             builder.Property(x => x.IdTramite).HasColumnName("ID_TRAM").IsRequired();
             builder.Property(x => x.Nombre).HasColumnName("NOMBRE_CIRC").IsRequired();
             builder.Property(x => x.Descripcion).HasColumnName("DESCRIPCION_CIRC");

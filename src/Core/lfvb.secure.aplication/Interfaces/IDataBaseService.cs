@@ -1,4 +1,18 @@
 ﻿using lfvb.secure.domain.Entities.Aplicacion;
+using lfvb.secure.domain.Entities.Circuitos.Accion;
+using lfvb.secure.domain.Entities.Circuitos.AccionTipoElemento;
+using lfvb.secure.domain.Entities.Circuitos.AccionUsuario;
+using lfvb.secure.domain.Entities.Circuitos.Circuito;
+using lfvb.secure.domain.Entities.Circuitos.Estado;
+using lfvb.secure.domain.Entities.Circuitos.EstadoElemento;
+using lfvb.secure.domain.Entities.Circuitos.EstadoElementoSiguiente;
+using lfvb.secure.domain.Entities.Circuitos.GrupoAdministradorCircuito;
+using lfvb.secure.domain.Entities.Circuitos.Paso;
+using lfvb.secure.domain.Entities.Circuitos.PasoAccion;
+using lfvb.secure.domain.Entities.Circuitos.PermisoPasoGrupo;
+using lfvb.secure.domain.Entities.Circuitos.PermisoPasoUsuario;
+using lfvb.secure.domain.Entities.Circuitos.TipoElementoCircuito;
+using lfvb.secure.domain.Entities.Circuitos.Tramite;
 using lfvb.secure.domain.Entities.Credencial;
 using lfvb.secure.domain.Entities.Elemento;
 using lfvb.secure.domain.Entities.ElementoAplicacion;
@@ -43,6 +57,23 @@ namespace lfvb.secure.aplication.Interfaces
         DbSet<RelacionTipoElementoTipoPermisoEntity> RelacionTiposElementosConTiposPermisos { get; set; }
         DbSet<TipoPermisoElementoAplicacionEntity> TiposPermisosTipoElementosAplicaciones { get; set; }
         DbSet<RelacionGrupoUsuarioElementoAplicacionTipoPermisoAplicacionEntity> RelacionElementosConTiposPermisosConGruposUsuarios { get; set; }
+
+        #region "modulo de circuitos"   
+        DbSet<AccionEntity> Acciones { get; set; }
+        DbSet<AccionTipoElementoEntity> AccionesTiposElementos { get; set; }
+        DbSet<AccionUsuarioEntity> AccionesUsuarios { get; set; }
+        DbSet<CircuitoEntity> Circuitos { get; set; }
+        DbSet<EstadoEntity> Estados { get; set; }
+        DbSet<EstadoElementoEntity> EstadosElementos { get; set; }
+        DbSet<EstadoElementoSiguienteEntity> EstadosElementosSiguientes { get; set; }
+        DbSet<GrupoAdministradorCircuitoEntity> GruposAdministradoresCircuitos { get; set; }
+        DbSet<PasoAccionEntity> PasosAcciones { get; set; }
+        DbSet<PasoEntity> Pasos { get; set; }
+        DbSet<PermisoPasoGrupoEntity> PermisosPasosGrupos { get; set; }
+        DbSet<PermisoPasoUsuarioEntity> PermisosPasosUsuarios { get; set; }
+        DbSet<TipoElementoCircuitoEntity> TiposElementosCircuitos { get; set; }
+        DbSet<TramiteEntity> Tramites { get; set; }
+        #endregion
 
         #region "Modulo de propiedades"
         DbSet<ElementoEntity> Elementos { get; set; }
