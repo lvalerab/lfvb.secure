@@ -1,8 +1,10 @@
 ﻿using lfvb.secure.aplication.Database.Aplicaciones.Commands.AltaActualizacionElementoAplicacion;
 using lfvb.secure.aplication.Database.Aplicaciones.Commands.AltaAplicacion;
 using lfvb.secure.aplication.Database.Aplicaciones.Commands.AltaPermisoElementoAplicacion;
+using lfvb.secure.aplication.Database.Circuitos;
 using lfvb.secure.aplication.Database.Credencial.Commands.CaducarCredencial;
 using lfvb.secure.aplication.Database.Credencial.Commands.CrearCredencialUsuario;
+using lfvb.secure.aplication.Database.Elementos;
 using lfvb.secure.aplication.Database.Grupos.Commands.ActualizaGrupoUsuariosPerisos;
 using lfvb.secure.aplication.Database.Grupos.Commands.AltaGrupoUsuariosPermisos;
 using lfvb.secure.aplication.Database.Propiedades.Commands.NuevaPropiedadElemento;
@@ -24,6 +26,9 @@ namespace lfvb.secure.aplication.Database
     {
         public static IServiceCollection AddCommands(IServiceCollection services)
         {
+
+            DependencyInjectionElementos.AddCommands(services);
+
             #region "Relativos a usuarios"
             services.AddTransient<ICreateUsuarioCommand, CreateUsuarioCommand>();
             services.AddTransient<IUpdateUsuarioCommand, UpdateUsuarioCommand>();
@@ -54,6 +59,8 @@ namespace lfvb.secure.aplication.Database
             services.AddTransient<IAltaAplicacionCommand, AltaAplicacionCommand>();
             services.AddTransient<IAltaActualizacionElementoAplicacionCommand, AltaActualizacionElementoAplicacionCommand>();   
             #endregion
+
+            CircuitosDependencyInjection.AddCommands(services);
 
             return services;
         }

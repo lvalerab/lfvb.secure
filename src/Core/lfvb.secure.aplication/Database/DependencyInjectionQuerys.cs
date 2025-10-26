@@ -6,6 +6,8 @@ using lfvb.secure.aplication.Database.Aplicaciones.Queries.GetGruposAplicacion;
 using lfvb.secure.aplication.Database.Aplicaciones.Queries.PermisoElementoAplicacion;
 using lfvb.secure.aplication.Database.Aplicaciones.Queries.PermisosElementosAplicacionPorGrupoYAplicacion;
 using lfvb.secure.aplication.Database.Aplicaciones.Queries.TiposPermisosElementoPorTipoQuery;
+using lfvb.secure.aplication.Database.Circuitos;
+using lfvb.secure.aplication.Database.Elementos;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetAllGrupos;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetGrupo;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetGruposUsuario;
@@ -30,6 +32,9 @@ namespace lfvb.secure.aplication.Database
     {
         public static IServiceCollection AddQuerys(IServiceCollection services)
         {
+
+            DependencyInjectionElementos.AddQuerys(services);
+
             #region "Querys de usuario"
             services.AddTransient<IGetAllUsuariosQuery, GetAllUsuriosQuery>();
             services.AddTransient<ILoginUsuarioPasswordQuery, LoginUsuarioPasswordQuery>();
@@ -80,6 +85,8 @@ namespace lfvb.secure.aplication.Database
             #region "Credenciales"
             services.AddTransient<IGetAllTiposCredencialesQuery, GetAllTiposCredencialesQuery>();
             #endregion
+
+            CircuitosDependencyInjection.AddQuerys(services);   
 
 
             return services;
