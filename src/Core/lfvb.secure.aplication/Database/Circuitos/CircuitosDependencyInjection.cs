@@ -1,4 +1,5 @@
-﻿using lfvb.secure.aplication.Database.Circuitos.Tramites.Queries.GetAllTramites;
+﻿using lfvb.secure.aplication.Database.Circuitos.Tramites.Commands;
+using lfvb.secure.aplication.Database.Circuitos.Tramites.Queries.GetAllTramites;
 using lfvb.secure.aplication.Database.Circuitos.Tramites.Queries.GetTramite;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -14,7 +15,8 @@ namespace lfvb.secure.aplication.Database.Circuitos
     {
         public static IServiceCollection AddCommands(IServiceCollection services)
         {
-            
+            services.AddTransient<IAltaTramiteCommand, AltaTramiteCommand>();
+            services.AddTransient<IModificarTramiteCommand, ModificarTramiteCommand>(); 
             return services;
         }
 

@@ -30,7 +30,8 @@ namespace lfvb.secure.aplication.Database.Circuitos.Tramites.Queries.GetAllTrami
                                          select new TramiteModel
                                          {
                                              Id = tr.Id,
-                                             Nombre = tr.Nombre
+                                             Nombre = tr.Nombre,
+                                             Descripcion=tr.Descripcion??""
                                          }).ToListAsync<TramiteModel>(); 
 
             return tramites;
@@ -43,7 +44,8 @@ namespace lfvb.secure.aplication.Database.Circuitos.Tramites.Queries.GetAllTrami
                                                  select new TramiteModel
                                                  {
                                                      Id = tr.Id,
-                                                     Nombre = tr.Nombre
+                                                     Nombre = tr.Nombre,
+                                                     Descripcion=tr.Descripcion??""
                                                  }).ToListAsync<TramiteModel>();
 
             tramites=tramites.Page<TramiteModel>(page, registros).ToList();
