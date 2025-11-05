@@ -1,4 +1,6 @@
 ﻿using lfvb.secure.api.Atributos.Secure;
+using lfvb.secure.aplication.Database.Circuitos.Circuitos.Models;
+using lfvb.secure.aplication.Database.Circuitos.Circuitos.Queries;
 using lfvb.secure.aplication.Database.Circuitos.Tramites.Commands;
 using lfvb.secure.aplication.Database.Circuitos.Tramites.Models;
 using lfvb.secure.aplication.Database.Circuitos.Tramites.Queries.GetAllTramites;
@@ -23,16 +25,25 @@ namespace lfvb.secure.api.Controllers.Circuitos
         private IGetAllTramitesQuery _qryAllTramites;
         private IGetTramiteQuery _qryTramite;
         private IAltaTramiteCommand _cmdAltaTramite;
-        private IModificarTramiteCommand _cmdModificarTramite;  
+        private IModificarTramiteCommand _cmdModificarTramite;
 
-        public AdministracionCircuitosController(ILogger<PermisosController> logger, IJwtTokenUtils jwtTokenUtils, IGetAllTramitesQuery qryAllTram, IGetTramiteQuery qryTramite, IAltaTramiteCommand cmdAltaTramite, IModificarTramiteCommand cmdModificarTramite)
+        private IGetCircuitosQuery _cmdGetCircuitosQuery;
+
+        public AdministracionCircuitosController(ILogger<PermisosController> logger, 
+                                                 IJwtTokenUtils jwtTokenUtils, 
+                                                 IGetAllTramitesQuery qryAllTram, 
+                                                 IGetTramiteQuery qryTramite, 
+                                                 IAltaTramiteCommand cmdAltaTramite, 
+                                                 IModificarTramiteCommand cmdModificarTramite,
+                                                 IGetCircuitosQuery cmdGetCircuitosQuery)
         {
             _logger = logger;
             _jwtTokenUtils = jwtTokenUtils;
             _qryAllTramites = qryAllTram;
             _qryTramite = qryTramite;
             _cmdAltaTramite = cmdAltaTramite;   
-            _cmdModificarTramite = cmdModificarTramite; 
+            _cmdModificarTramite = cmdModificarTramite;
+            _cmdGetCircuitosQuery = cmdGetCircuitosQuery;
         }
 
         #region "Relativos a los tramites de la aplicacion"
@@ -162,6 +173,30 @@ namespace lfvb.secure.api.Controllers.Circuitos
             {
                 _logger.LogError(ex, ex.Message);
                 return BadRequest(ex.Message);
+            }
+        }
+
+        #endregion
+
+        #region "Relativos a obtener los datos de los circuitos"
+
+        /// <summary>
+        /// Obtiene el listado de circuitos con filtro
+        /// </summary>
+        /// <param name="filtro"></param>
+        /// <returns></returns>
+        [HttpPost("circuitos/listado")]
+        [Authorize]
+        public async Task<IActionResult> ListaCircuitos(FiltroCircuitoModel filtro)
+        {
+            try
+            {
+                List<CircuitoModel> lista =await _cmdGetCircuitosQuery.execute(filtro);
+                return Ok(lista);
+            } catch (Exception err)
+            {
+                _logger.LogError(err, err.Message);
+                return BadRequest(err.Message);
             }
         }
 

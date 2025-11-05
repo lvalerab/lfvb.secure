@@ -1,15 +1,10 @@
 using lfvb.secure.api;
 using lfvb.secure.aplication;
-using lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario;
-using lfvb.secure.aplication.Database.Usuario.Queries.GetAllUsuarios;
-using lfvb.secure.aplication.Interfaces;
 using lfvb.secure.common;
 using lfvb.secure.external;
 using lfvb.secure.persistence;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
-using System.Security.Cryptography.Xml;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -81,6 +76,7 @@ builder.Services
         .AddAplication(builder.Configuration); //PAra incluir la capa de aplicacion (Core)
 #endregion
 
+//builder.WebHost.UseUrls("http://+:7005", "https://+:7006");
 
 var app = builder.Build();
 
@@ -94,7 +90,7 @@ if (app.Environment.IsDevelopment())
 
 if(app.Environment.IsDevelopment())
 {
-    app.UseCors("LOCAL");
+    app.UseCors("LOCAL");    
 } else
 {
     app.UseCors("PRODUCCION");
