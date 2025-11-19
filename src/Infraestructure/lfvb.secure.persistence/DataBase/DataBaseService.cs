@@ -10,6 +10,7 @@ using lfvb.secure.domain.Entities.Circuitos.EstadoElementoSiguiente;
 using lfvb.secure.domain.Entities.Circuitos.GrupoAdministradorCircuito;
 using lfvb.secure.domain.Entities.Circuitos.Paso;
 using lfvb.secure.domain.Entities.Circuitos.PasoAccion;
+using lfvb.secure.domain.Entities.Circuitos.PasoSiguiente;
 using lfvb.secure.domain.Entities.Circuitos.PermisoPasoGrupo;
 using lfvb.secure.domain.Entities.Circuitos.PermisoPasoUsuario;
 using lfvb.secure.domain.Entities.Circuitos.TipoElementoCircuito;
@@ -82,7 +83,8 @@ namespace lfvb.secure.persistence.DataBase
         public DbSet<PermisoPasoGrupoEntity> PermisosPasosGrupos { get; set; }  
         public DbSet<PermisoPasoUsuarioEntity> PermisosPasosUsuarios { get; set; }  
         public DbSet<TipoElementoCircuitoEntity> TiposElementosCircuitos { get; set; }  
-        public DbSet<TramiteEntity> Tramites { get; set; }          
+        public DbSet<TramiteEntity> Tramites { get; set; }  
+        public DbSet<PasoSiguienteEntity> PasosSiguientes { get; set; }
 
 
         #region "Gestion de propiedades de los elementos"
@@ -145,7 +147,8 @@ namespace lfvb.secure.persistence.DataBase
             new PermisoPasoGrupoConfiguration(modelBuilder.Entity<PermisoPasoGrupoEntity>());   
             new PermisoPasoUsuarioConfiguration(modelBuilder.Entity<PermisoPasoUsuarioEntity>());   
             new TipoElementoCircuitoConfiguration(modelBuilder.Entity<TipoElementoCircuitoEntity>());   
-            new TramiteConfiguration(modelBuilder.Entity<TramiteEntity>()); 
+            new TramiteConfiguration(modelBuilder.Entity<TramiteEntity>());
+            new PasoSiguienteConfiguration(modelBuilder.Entity<PasoSiguienteEntity>()); 
 
 
             new VWElementoConfiguration(modelBuilder.Entity<VWElementoEntity>());

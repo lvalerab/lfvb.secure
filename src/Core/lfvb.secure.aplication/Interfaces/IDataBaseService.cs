@@ -9,6 +9,7 @@ using lfvb.secure.domain.Entities.Circuitos.EstadoElementoSiguiente;
 using lfvb.secure.domain.Entities.Circuitos.GrupoAdministradorCircuito;
 using lfvb.secure.domain.Entities.Circuitos.Paso;
 using lfvb.secure.domain.Entities.Circuitos.PasoAccion;
+using lfvb.secure.domain.Entities.Circuitos.PasoSiguiente;
 using lfvb.secure.domain.Entities.Circuitos.PermisoPasoGrupo;
 using lfvb.secure.domain.Entities.Circuitos.PermisoPasoUsuario;
 using lfvb.secure.domain.Entities.Circuitos.TipoElementoCircuito;
@@ -73,6 +74,7 @@ namespace lfvb.secure.aplication.Interfaces
         DbSet<PermisoPasoUsuarioEntity> PermisosPasosUsuarios { get; set; }
         DbSet<TipoElementoCircuitoEntity> TiposElementosCircuitos { get; set; }
         DbSet<TramiteEntity> Tramites { get; set; }
+        DbSet<PasoSiguienteEntity> PasosSiguientes { get; set; }
         #endregion
 
         #region "Modulo de propiedades"
