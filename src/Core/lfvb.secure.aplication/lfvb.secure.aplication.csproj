@@ -20,11 +20,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Database\Circuitos\Circuitos\Commands\" />
     <Folder Include="Database\Credencial\Querys\" />
     <Folder Include="Database\Elementos\Querys\" />
     <Folder Include="Database\TipoCrendecial\Commands\" />
     <Folder Include="Database\TipoElementoAplicacion\Commands\" />
+    <Folder Include="Database\TipoElemento\Commands\" />
     <Folder Include="Database\TipoPropiedad\Commands\" />
   </ItemGroup>
 

@@ -31,6 +31,10 @@ namespace lfvb.secure.persistence.Configuraciones.Circuitos
             builder.HasMany(x => x.PermisosGrupos).WithOne(pg => pg.Paso).HasForeignKey(x => x.IdPaso);
             builder.HasMany(x => x.PermisoUsuarios).WithOne(pu => pu.Paso).HasForeignKey(x => x.IdPaso);
             builder.HasMany(x => x.Acciones).WithOne(acc => acc.Paso).HasForeignKey(x => x.IdPaso);
+
+            builder.HasMany(x => x.PasosPrevios).WithOne(v => v.PasoSiguiente).HasForeignKey(x => x.IdPasoSiguiente);
+            builder.HasMany(x => x.PasosSiguientes).WithOne(v => v.Paso).HasForeignKey(x => x.IdPaso);
+
         }
        
     }

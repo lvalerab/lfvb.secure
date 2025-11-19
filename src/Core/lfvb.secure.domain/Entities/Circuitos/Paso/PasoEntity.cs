@@ -1,6 +1,7 @@
 ﻿using lfvb.secure.domain.Entities.Circuitos.Circuito;
 using lfvb.secure.domain.Entities.Circuitos.Estado;
 using lfvb.secure.domain.Entities.Circuitos.PasoAccion;
+using lfvb.secure.domain.Entities.Circuitos.PasoSiguiente;
 using lfvb.secure.domain.Entities.Circuitos.PermisoPasoGrupo;
 using lfvb.secure.domain.Entities.Circuitos.PermisoPasoUsuario;
 
@@ -22,5 +23,8 @@ namespace lfvb.secure.domain.Entities.Circuitos.Paso
         public ICollection<PermisoPasoGrupoEntity> PermisosGrupos { get;set; }
         public ICollection<PermisoPasoUsuarioEntity> PermisoUsuarios { get; set; }  
         public ICollection<PasoAccionEntity> Acciones { get; set; }
+
+        public ICollection<PasoSiguienteEntity> PasosPrevios { get; set; }
+        public ICollection<PasoSiguienteEntity> PasosSiguientes { get; set; }
     }
 }

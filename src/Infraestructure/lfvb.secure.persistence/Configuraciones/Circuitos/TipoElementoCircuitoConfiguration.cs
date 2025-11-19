@@ -19,7 +19,7 @@ namespace lfvb.secure.persistence.Configuraciones.Circuitos
                 .HasKey(x => new { x.IdCircuito, x.CodigoTipoElemento });
 
             builder.Property(x => x.IdCircuito).HasColumnName("ID_CIRC").IsRequired();
-            builder.Property(x => x.CodigoTipoElemento).HasColumnType("COD_TIEL").IsRequired();
+            builder.Property(x => x.CodigoTipoElemento).HasColumnName("COD_TIEL").IsRequired();
 
             //Relacion 1 a muchos
 

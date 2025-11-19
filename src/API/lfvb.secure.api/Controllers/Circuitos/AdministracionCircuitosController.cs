@@ -1,4 +1,5 @@
 ﻿using lfvb.secure.api.Atributos.Secure;
+using lfvb.secure.aplication.Database.Circuitos.Circuitos.Commands;
 using lfvb.secure.aplication.Database.Circuitos.Circuitos.Models;
 using lfvb.secure.aplication.Database.Circuitos.Circuitos.Queries;
 using lfvb.secure.aplication.Database.Circuitos.Tramites.Commands;
@@ -28,22 +29,25 @@ namespace lfvb.secure.api.Controllers.Circuitos
         private IModificarTramiteCommand _cmdModificarTramite;
 
         private IGetCircuitosQuery _cmdGetCircuitosQuery;
+        private IAltaCircuitoCommand _cmdAltaCircuitoCommand;
 
-        public AdministracionCircuitosController(ILogger<PermisosController> logger, 
-                                                 IJwtTokenUtils jwtTokenUtils, 
-                                                 IGetAllTramitesQuery qryAllTram, 
-                                                 IGetTramiteQuery qryTramite, 
-                                                 IAltaTramiteCommand cmdAltaTramite, 
+        public AdministracionCircuitosController(ILogger<PermisosController> logger,
+                                                 IJwtTokenUtils jwtTokenUtils,
+                                                 IGetAllTramitesQuery qryAllTram,
+                                                 IGetTramiteQuery qryTramite,
+                                                 IAltaTramiteCommand cmdAltaTramite,
                                                  IModificarTramiteCommand cmdModificarTramite,
-                                                 IGetCircuitosQuery cmdGetCircuitosQuery)
+                                                 IGetCircuitosQuery cmdGetCircuitosQuery,
+                                                 IAltaCircuitoCommand cmdAltaCircuitoCommand)
         {
             _logger = logger;
             _jwtTokenUtils = jwtTokenUtils;
             _qryAllTramites = qryAllTram;
             _qryTramite = qryTramite;
-            _cmdAltaTramite = cmdAltaTramite;   
+            _cmdAltaTramite = cmdAltaTramite;
             _cmdModificarTramite = cmdModificarTramite;
             _cmdGetCircuitosQuery = cmdGetCircuitosQuery;
+            _cmdAltaCircuitoCommand = cmdAltaCircuitoCommand;
         }
 
         #region "Relativos a los tramites de la aplicacion"
@@ -123,7 +127,7 @@ namespace lfvb.secure.api.Controllers.Circuitos
         {
             try
             {
-                if(modelo.Nombre!="" && modelo.Descripcion!="" && modelo.Normativa!="")
+                if (modelo.Nombre != "" && modelo.Descripcion != "" && modelo.Normativa != "")
                 {
                     TramiteModel nuevoTramite = await _cmdAltaTramite.execute(modelo);
                     return Ok(nuevoTramite);
@@ -132,7 +136,7 @@ namespace lfvb.secure.api.Controllers.Circuitos
                 {
                     _logger.LogCritical("El modelo de alta de tramite no es correcto.");
                     return BadRequest("El modelo de alta de tramite no es correcto.");
-                }   
+                }
             }
             catch (Exception ex)
             {
@@ -151,17 +155,17 @@ namespace lfvb.secure.api.Controllers.Circuitos
         {
             try
             {
-                if (modelo.Id!=Guid.Empty && modelo.Nombre != "" && modelo.Descripcion != "" && modelo.Normativa != "")
+                if (modelo.Id != Guid.Empty && modelo.Nombre != "" && modelo.Descripcion != "" && modelo.Normativa != "")
                 {
-                    TramiteModel modificado= await _cmdModificarTramite.execute(modelo);
-                    if(modificado==null)
+                    TramiteModel modificado = await _cmdModificarTramite.execute(modelo);
+                    if (modificado == null)
                     {
                         _logger.LogCritical("No se ha encontrado el tramite a modificar.");
                         return NotFound("No se ha encontrado el tramite a modificar.");
                     } else
                     {
                         return Ok(modificado);
-                    }   
+                    }
                 }
                 else
                 {
@@ -191,7 +195,7 @@ namespace lfvb.secure.api.Controllers.Circuitos
         {
             try
             {
-                List<CircuitoModel> lista =await _cmdGetCircuitosQuery.execute(filtro);
+                List<CircuitoModel> lista = await _cmdGetCircuitosQuery.execute(filtro);
                 return Ok(lista);
             } catch (Exception err)
             {
@@ -200,6 +204,23 @@ namespace lfvb.secure.api.Controllers.Circuitos
             }
         }
 
+        /// <summary>
+        /// Método para dar de alta un circuito nuevo, requiere permisos en [ADM_GEST_CIRCUITOS, SW_MOD_ADM_CIRC_ALTA, LLSWEP]
+        /// </summary>
+        [HttpPost("circuitos/alta")]
+        [Authorize]
+        [DbAuthorize("ADM_GEST_CIRCUITOS", "SW_MOD_ADM_CIRC_ALTA", "LLSWEP")]
+        public async Task<IActionResult> AltaCircuito(AltaCircuitoModel modelo)
+        {
+            try
+            {
+                return Ok(await _cmdAltaCircuitoCommand.Execute(modelo));
+            } catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
         #endregion
     }
 }
