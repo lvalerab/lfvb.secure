@@ -1,5 +1,6 @@
 ﻿using lfvb.secure.domain.Entities.Circuitos.Circuito;
 using lfvb.secure.domain.Entities.Circuitos.Estado;
+using lfvb.secure.domain.Entities.Circuitos.EstadoElemento;
 using lfvb.secure.domain.Entities.Circuitos.PasoAccion;
 using lfvb.secure.domain.Entities.Circuitos.PasoSiguiente;
 using lfvb.secure.domain.Entities.Circuitos.PermisoPasoGrupo;
@@ -13,6 +14,7 @@ namespace lfvb.secure.domain.Entities.Circuitos.Paso
         public Guid IdCircuito { get; set; }
         public string CodEstado { get; set; } = string.Empty;
         public string CodEstadoSiguiente { get; set; } = string.Empty;
+        public string Nombre { get; set; }
         public Guid? IdCircuitoSiguiente { get; set; }
 
         public CircuitoEntity Circuito { get; set; }
@@ -26,5 +28,7 @@ namespace lfvb.secure.domain.Entities.Circuitos.Paso
 
         public ICollection<PasoSiguienteEntity> PasosPrevios { get; set; }
         public ICollection<PasoSiguienteEntity> PasosSiguientes { get; set; }
+
+        public ICollection<EstadoElementoEntity> EstadosElementos { get; set; }
     }
 }

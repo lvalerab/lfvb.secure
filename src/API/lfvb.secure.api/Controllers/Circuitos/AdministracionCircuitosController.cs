@@ -1,7 +1,10 @@
 ﻿using lfvb.secure.api.Atributos.Secure;
+using lfvb.secure.api.ParametrosModel;
 using lfvb.secure.aplication.Database.Circuitos.Circuitos.Commands;
+using lfvb.secure.aplication.Database.Circuitos.Circuitos.Commands.Pasos;
 using lfvb.secure.aplication.Database.Circuitos.Circuitos.Models;
 using lfvb.secure.aplication.Database.Circuitos.Circuitos.Queries;
+using lfvb.secure.aplication.Database.Circuitos.Circuitos.Queries.Pasos;
 using lfvb.secure.aplication.Database.Circuitos.Tramites.Commands;
 using lfvb.secure.aplication.Database.Circuitos.Tramites.Models;
 using lfvb.secure.aplication.Database.Circuitos.Tramites.Queries.GetAllTramites;
@@ -29,8 +32,35 @@ namespace lfvb.secure.api.Controllers.Circuitos
         private IModificarTramiteCommand _cmdModificarTramite;
 
         private IGetCircuitosQuery _cmdGetCircuitosQuery;
+        private IGetCircuitoQuery _cmdGetCircuitoQuery;
         private IAltaCircuitoCommand _cmdAltaCircuitoCommand;
 
+        private IGetPasosCircuitoQuery _qryPasosCircuito;
+        private IGetPasoCircuitoQuery _qryPasoCircuito;
+
+        private IAltaPasoCircuitoCommand _cmdAltaPasoCircuitoCommand;
+        private IModificarPasoCircuitoCommand _cmdModificarPasoCircuitoCommand;
+        private IEliminarPasoCircuitoCommand _cmdEliminarPasoCircuitoCommand;
+
+        private IAltaPasoSiguienteCircuitoCommand _cmdAltaPasoSiguienteCommando;
+        private IEliminarPasosSiguienteCircuitoCommand _cmdEliminarPasosSiguientesCommando;
+
+        /// <summary>
+        /// Controlador para aministrar los circuitos de tramitacion, necesita permisos en ADM_GEST_CIRCUITOS
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="jwtTokenUtils"></param>
+        /// <param name="qryAllTram"></param>
+        /// <param name="qryTramite"></param>
+        /// <param name="cmdAltaTramite"></param>
+        /// <param name="cmdModificarTramite"></param>
+        /// <param name="cmdGetCircuitosQuery"></param>
+        /// <param name="cmdAltaCircuitoCommand"></param>
+        /// <param name="qryPasosCircuito"></param>
+        /// <param name="qryPasoCircuito"></param>
+        /// <param name="cmdAltaPasoCircuitoCommand"></param>
+        /// <param name="cmdModificarPasoCircuitoCommand"></param>
+        /// <param name="cmdEliminarPasoCircuitoCommand"></param>
         public AdministracionCircuitosController(ILogger<PermisosController> logger,
                                                  IJwtTokenUtils jwtTokenUtils,
                                                  IGetAllTramitesQuery qryAllTram,
@@ -38,7 +68,16 @@ namespace lfvb.secure.api.Controllers.Circuitos
                                                  IAltaTramiteCommand cmdAltaTramite,
                                                  IModificarTramiteCommand cmdModificarTramite,
                                                  IGetCircuitosQuery cmdGetCircuitosQuery,
-                                                 IAltaCircuitoCommand cmdAltaCircuitoCommand)
+                                                 IGetCircuitoQuery cmdGetCircuitoQuery,
+                                                 IAltaCircuitoCommand cmdAltaCircuitoCommand,
+                                                 IGetPasosCircuitoQuery qryPasosCircuito,
+                                                 IGetPasoCircuitoQuery qryPasoCircuito,
+                                                 IAltaPasoCircuitoCommand cmdAltaPasoCircuitoCommand,
+                                                 IModificarPasoCircuitoCommand cmdModificarPasoCircuitoCommand,  
+                                                 IEliminarPasoCircuitoCommand cmdEliminarPasoCircuitoCommand,
+                                                 IAltaPasoSiguienteCircuitoCommand cmdAltaPasoSiguienteCommando,
+                                                 IEliminarPasosSiguienteCircuitoCommand cmdEliminarPasosSiguientesCommando
+            )
         {
             _logger = logger;
             _jwtTokenUtils = jwtTokenUtils;
@@ -47,7 +86,16 @@ namespace lfvb.secure.api.Controllers.Circuitos
             _cmdAltaTramite = cmdAltaTramite;
             _cmdModificarTramite = cmdModificarTramite;
             _cmdGetCircuitosQuery = cmdGetCircuitosQuery;
+            _cmdGetCircuitoQuery = cmdGetCircuitoQuery; 
             _cmdAltaCircuitoCommand = cmdAltaCircuitoCommand;
+            _qryPasoCircuito = qryPasoCircuito;
+            _qryPasosCircuito= qryPasosCircuito;
+            _qryPasoCircuito = qryPasoCircuito;
+            _cmdAltaPasoCircuitoCommand = cmdAltaPasoCircuitoCommand;
+            _cmdModificarPasoCircuitoCommand = cmdModificarPasoCircuitoCommand;
+            _cmdEliminarPasoCircuitoCommand = cmdEliminarPasoCircuitoCommand;
+            _cmdAltaPasoSiguienteCommando = cmdAltaPasoSiguienteCommando;
+            _cmdEliminarPasosSiguientesCommando = cmdEliminarPasosSiguientesCommando;   
         }
 
         #region "Relativos a los tramites de la aplicacion"
@@ -183,6 +231,30 @@ namespace lfvb.secure.api.Controllers.Circuitos
         #endregion
 
         #region "Relativos a obtener los datos de los circuitos"
+        /// <summary>
+        /// Obtiene el listado de circuitos asociados a un tramite
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("tramite/{id:guid}/circuitos/listado")]
+        [Authorize]
+        public async Task<IActionResult> ListaCircuitosTramite(Guid id)
+        {
+            try
+            {
+                FiltroCircuitoModel filtro = new FiltroCircuitoModel()
+                {
+                    IdTramite = id
+                };
+                List<CircuitoModel> lista = await _cmdGetCircuitosQuery.execute(filtro);
+                return Ok(lista);
+            }
+            catch (Exception err)
+            {
+                _logger.LogError(err, err.Message);
+                return BadRequest(err.Message);
+            }
+        }
 
         /// <summary>
         /// Obtiene el listado de circuitos con filtro
@@ -198,6 +270,29 @@ namespace lfvb.secure.api.Controllers.Circuitos
                 List<CircuitoModel> lista = await _cmdGetCircuitosQuery.execute(filtro);
                 return Ok(lista);
             } catch (Exception err)
+            {
+                _logger.LogError(err, err.Message);
+                return BadRequest(err.Message);
+            }
+        }
+
+        /// <summary>
+        /// Obtiene los datos de un circuito dado
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("circuito/{id:guid}")]
+        [Authorize]
+        public async Task<IActionResult> GetCircuito(Guid id)
+        {
+            try
+            {
+                CircuitoModel? circuito = await _cmdGetCircuitoQuery.execute(id);
+                if (circuito == null)
+                    return NotFound();
+                return Ok(circuito);
+            }
+            catch (Exception err)
             {
                 _logger.LogError(err, err.Message);
                 return BadRequest(err.Message);
@@ -221,6 +316,177 @@ namespace lfvb.secure.api.Controllers.Circuitos
                 return BadRequest(ex.Message);
             }
         }
+
+
+        /// <summary>
+        /// Obtiene los pasos de un circuito determinado
+        /// </summary>
+        /// <param name="circuitoId"></param>
+        /// <returns></returns>
+        [HttpGet("circuitos/{circuitoId:guid}/pasos")]
+        [Authorize]
+        public async Task<IActionResult> GetPasosCircuito(Guid circuitoId)
+        {
+            try
+            {
+                List<PasoModel> pasos = await _qryPasosCircuito.execute(circuitoId);
+                return Ok(pasos);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Obtiene los datos de un paso en concreto
+        ///</summary>
+        [HttpGet("circuitos/paso/{pasoId:guid}")]
+        [Authorize]
+        public async Task<IActionResult> GetPasoCircuito(Guid pasoId)
+        {
+            try
+            {
+                PasoModel? paso = await _qryPasoCircuito.execute(pasoId);
+                if (paso == null)
+                    return NotFound();
+                return Ok(paso);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Para dar de alta un nuevo paso en un circuito, requiere permisos en [ADM_GEST_CIRCUITOS, SW_MOD_ADM_PSCR_ALTA, LLSWEP]  
+        /// </summary>
+        /// <param name="modelo"></param>
+        /// <returns></returns>
+        [HttpPost("circuitos/paso/alta")]
+        [Authorize]
+        [DbAuthorize("ADM_GEST_CIRCUITOS", "SW_MOD_ADM_PSCR_ALTA", "LLSWEP")]
+        public async Task<IActionResult> AltaPasoCircuito(PasoModel modelo)
+        {
+            try
+            {
+                PasoModel nuevoPaso = await _cmdAltaPasoCircuitoCommand.execute(modelo);
+                return Ok(nuevoPaso);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Para modificar un paso existente en un circuito, requiere permisos en [ADM_GEST_CIRCUITOS, SW_MOD_ADM_PSCR_MOD, LLSWEP] 
+        /// </summary>
+        /// <param name="modelo"></param>
+        /// <returns></returns>
+        [HttpPut("circuitos/paso/modificacion")]
+        [Authorize]
+        [DbAuthorize("ADM_GEST_CIRCUITOS", "SW_MOD_ADM_PSCR_MOD", "LLSWEP")]
+        public async Task<IActionResult> ModificarPasoCircuito(PasoModel modelo)
+        {
+            try
+            {
+                PasoModel modificado = await _cmdModificarPasoCircuitoCommand.execute(modelo);
+                if (modificado == null)
+                {
+                    _logger.LogCritical("No se ha encontrado el paso a modificar.");
+                    return NotFound("No se ha encontrado el paso a modificar.");
+                }
+                else
+                {
+                    return Ok(modificado);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Elimina un paso de un circuito, requiere permisos en [ADM_GEST_CIRCUITOS, SW_MOD_ADM_PSCR_ELIM, LLSWEP] 
+        /// </summary>
+        /// <param name="pasoId"></param>
+        /// <param name="interconectar"></param>
+        /// <returns></returns>
+        [HttpDelete("circuitos/paso/{pasoId:guid}")]
+        [Authorize]
+        [DbAuthorize("ADM_GEST_CIRCUITOS", "SW_MOD_ADM_PSCR_ELIM", "LLSWEP")]
+        public async Task<IActionResult> EliminarPasoCircuito(Guid pasoId, [FromQuery] bool interconectar = false)
+        {
+            try
+            {
+                bool resultado = await _cmdEliminarPasoCircuitoCommand.execute(pasoId, interconectar);
+                if (!resultado)
+                {
+                    _logger.LogCritical("No se ha podido eliminar el paso, puede que tenga elementos asociados.");
+                    return BadRequest("No se ha podido eliminar el paso, puede que tenga elementos asociados.");
+                }
+                else
+                {
+                    return Ok(resultado);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Da de alta los pasos siguientes a un paso concreto, requiere permisos en [ADM_GEST_CIRCUITOS, SW_MOD_ADM_PSCR_RELA, LLSWEP]
+        /// </summary>
+        /// <param name="modelo"></param>
+        /// <returns></returns>
+        [HttpPost("circuitos/paso/siguientes/alta")]
+        [Authorize]
+        [DbAuthorize("ADM_GEST_CIRCUITOS", "SW_MOD_ADM_PSCR_RELA", "LLSWEP")]
+        public async Task<IActionResult> AltaPasoSiguienteCircuito(ParametrosRelacionPasoCircuito modelo)
+        {
+            try
+            {
+                List<Guid> resultado = await _cmdAltaPasoSiguienteCommando.execute(modelo.Id, modelo.Ids);
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Elimina los pasos siguientes a un paso concreto, requiere permisos en [ADM_GEST_CIRCUITOS, SW_MOD_ADM_PSCR_RELA, LLSWEP]    
+        /// </summary>
+        /// <param name="modelo"></param>
+        /// <returns></returns>
+        [HttpPost("circuitos/paso/siguientes/elimina")]
+        [Authorize]
+        [DbAuthorize("ADM_GEST_CIRCUITOS", "SW_MOD_ADM_PSCR_RELA", "LLSWEP")]
+        public async Task<IActionResult> EliminaPasosSiguientesCircuito(ParametrosRelacionPasoCircuito modelo)
+        {
+            try
+            {
+                List<Guid> resultado = await _cmdEliminarPasosSiguientesCommando.execute(modelo.Id, modelo.Ids);
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
         #endregion
     }
 }

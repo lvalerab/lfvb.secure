@@ -23,7 +23,7 @@ namespace lfvb.secure.persistence.Configuraciones.Circuitos
             builder.Property(x => x.Nombre).HasColumnName("NOMBRE_CIRC").IsRequired();
             builder.Property(x => x.Descripcion).HasColumnName("DESCRIPCION_CIRC");
             builder.Property(x => x.Normativa).HasColumnName("NORMATIVA_CIRC");           
-            builder.Property(x => x.Activo).HasColumnName("ACTIVO_CIRC").IsRequired();
+            builder.Property(x => x.Activo).HasColumnName("ACTIVO_CIRC").IsRequired().HasConversion(v => SNToBooleanConversion.toString(v), v=>SNToBooleanConversion.toBoolean(v));
             builder.Property(x => x.FechaAlta).HasColumnName("FECHA_ALTA").IsRequired();
             builder.Property(x => x.FechaModificacion).HasColumnName("FECHA_MODIFICACION").IsRequired();
             builder.Property(x => x.FechaBaja).HasColumnName("FECHA_BAJA");

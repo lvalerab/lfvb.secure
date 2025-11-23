@@ -1,4 +1,5 @@
-﻿using lfvb.secure.aplication.Database.Grupos.Queries.GetGruposUsuario;
+﻿using lfvb.secure.aplication.Database.Circuitos.Circuitos.Queries.Estados;
+using lfvb.secure.aplication.Database.Grupos.Queries.GetGruposUsuario;
 using lfvb.secure.aplication.Database.Propiedades.Commands.NuevaPropiedadElemento;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetPropiedadesElemento;
 using lfvb.secure.aplication.Database.TipoElemento.Queries;
@@ -24,15 +25,19 @@ namespace lfvb.secure.api.Controllers
         private ILogger<LoginController> _logger;
 
         private IGetAllTiposElementosQuery _getAllTiposElementos;
+        private IEstadosElementosQuery _qryEstadosElementos;
 
         /// <summary>
         /// Constructor
         /// </summary>
         public CoreController(ILogger<LoginController> logger,
-            IGetAllTiposElementosQuery getAllTiposElementos)
+            IGetAllTiposElementosQuery getAllTiposElementos,
+            IEstadosElementosQuery qryEstadosElementos
+            )
         {
             _logger = logger;
             _getAllTiposElementos = getAllTiposElementos;
+            _qryEstadosElementos = qryEstadosElementos;
         }
 
         /// <summary>
@@ -54,6 +59,26 @@ namespace lfvb.secure.api.Controllers
                 return StatusCode(500, "Error interno del servidor");
             }
 
+        }
+
+        /// <summary>
+        /// Obtiene los estados posibles de los elementos (solo hace falta estar logueado)
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("elementos/estados")]
+        [Authorize]
+        public async Task<IActionResult> GetEstadosElementos()
+        {
+            try
+            {
+                var result = await _qryEstadosElementos.execute();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error obteniendo estados de elementos");
+                return StatusCode(500, "Error interno del servidor");
+            }
         }
     }
 }
