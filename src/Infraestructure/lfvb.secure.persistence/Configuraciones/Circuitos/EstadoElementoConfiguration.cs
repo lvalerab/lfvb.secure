@@ -26,12 +26,14 @@ namespace lfvb.secure.persistence.Configuraciones.Circuitos
             builder.Property(x => x.IdUsuarioTramitador).HasColumnName("ID_USUA_TRAMITADOR");
             builder.Property(x => x.CodEstado).HasColumnName("COD_ESTA");
             builder.Property(x => x.IdCircuito).HasColumnName("ID_CIRC");
+            builder.Property(x => x.IdPaso).HasColumnName("ID_PASO");
 
 
             builder.HasOne(x => x.Elemento).WithMany(e => e.Estados).HasForeignKey(x => x.IdElemento);
             builder.HasOne(x => x.Estado).WithMany(e => e.EstadosElemento).HasForeignKey(x => x.CodEstado);
             builder.HasOne(x => x.Circuito).WithMany(c => c.ElementosEstados).HasForeignKey(x => x.IdCircuito);
             builder.HasOne(x => x.UsuarioTramitador).WithMany(u => u.Tramitadores).HasForeignKey(x => x.IdUsuarioTramitador);
+            builder.HasOne(x => x.Paso).WithMany(p => p.EstadosElementos).HasForeignKey(x => x.IdPaso);
 
             builder.HasOne(x => x.RelacionEstadoActual)
                    .WithOne(x => x.RelacionEstadoActual)

@@ -1,6 +1,7 @@
 ﻿using lfvb.secure.domain.Entities.Circuitos.Circuito;
 using lfvb.secure.domain.Entities.Circuitos.Estado;
 using lfvb.secure.domain.Entities.Circuitos.EstadoElementoSiguiente;
+using lfvb.secure.domain.Entities.Circuitos.Paso;
 using lfvb.secure.domain.Entities.Elemento;
 using lfvb.secure.domain.Entities.Usuario;
 using System;
@@ -19,11 +20,13 @@ namespace lfvb.secure.domain.Entities.Circuitos.EstadoElemento
         public Guid IdUsuarioTramitador { get; set; }   
         public string CodEstado { get; set; }
         public Guid IdCircuito { get; set; }
+        public Guid IdPaso { get; set; }    
 
         public ElementoEntity Elemento { get; set; }
         public UsuarioEntity UsuarioTramitador { get; set; }
         public EstadoEntity Estado { get; set; }    
         public CircuitoEntity Circuito { get; set; }
+        public PasoEntity Paso { get; set; }    
 
         public EstadoElementoSiguienteEntity RelacionEstadoActual { get; set; }
         public EstadoElementoSiguienteEntity RelacionEstadoSiguiente { get; set; }

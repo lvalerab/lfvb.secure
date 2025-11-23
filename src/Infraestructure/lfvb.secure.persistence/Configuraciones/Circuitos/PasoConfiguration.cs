@@ -19,14 +19,15 @@ namespace lfvb.secure.persistence.Configuraciones.Circuitos
 
             builder.Property(x => x.Id).HasColumnName("ID_PASO").IsRequired();  
             builder.Property(x => x.IdCircuito).HasColumnName("ID_CIRC").IsRequired(); 
-            builder.Property(x=>x.CodEstado).HasColumnName("COD_ESTA").IsRequired();
+            builder.Property(x => x.CodEstado).HasColumnName("COD_ESTA").IsRequired();
             builder.Property(x => x.CodEstadoSiguiente).HasColumnName("COD_ESTA_SIG");
-            builder.Property(x => x.IdCircuitoSiguiente).HasColumnName("ID_CIRC_SIG");
+            builder.Property(x => x.IdCircuitoSiguiente).HasColumnName("COD_CIRC_SIG");
+            builder.Property(x => x.Nombre).HasColumnName("NOMBRE_PASO");
 
-            builder.HasOne(x => x.Estado).WithMany(e => e.Pasos).HasForeignKey(x => x.CodEstado);
             builder.HasOne(x => x.Circuito).WithMany(c => c.Pasos).HasForeignKey(x => x.IdCircuito);
-            builder.HasOne(x => x.EstadoSiguiente).WithMany().HasForeignKey(x => x.CodEstadoSiguiente);
-            builder.HasOne(x => x.CircuitoSiguiente).WithMany().HasForeignKey(x => x.IdCircuitoSiguiente);
+            builder.HasOne(x => x.Estado).WithMany(e => e.Pasos).HasForeignKey(x => x.CodEstado);
+            //builder.HasOne(x => x.EstadoSiguiente).WithMany(e=>e.).HasForeignKey(x => x.CodEstadoSiguiente);
+            //builder.HasOne(x => x.CircuitoSiguiente).WithMany().HasForeignKey(x => x.IdCircuitoSiguiente);
 
             builder.HasMany(x => x.PermisosGrupos).WithOne(pg => pg.Paso).HasForeignKey(x => x.IdPaso);
             builder.HasMany(x => x.PermisoUsuarios).WithOne(pu => pu.Paso).HasForeignKey(x => x.IdPaso);
@@ -34,6 +35,8 @@ namespace lfvb.secure.persistence.Configuraciones.Circuitos
 
             builder.HasMany(x => x.PasosPrevios).WithOne(v => v.PasoSiguiente).HasForeignKey(x => x.IdPasoSiguiente);
             builder.HasMany(x => x.PasosSiguientes).WithOne(v => v.Paso).HasForeignKey(x => x.IdPaso);
+
+            builder.HasMany(x => x.EstadosElementos).WithOne(ee => ee.Paso).HasForeignKey(x => x.IdPaso);
 
         }
        

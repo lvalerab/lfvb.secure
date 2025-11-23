@@ -1,15 +1,13 @@
 ﻿using lfvb.secure.aplication.Database.Circuitos.Circuitos.Commands;
+using lfvb.secure.aplication.Database.Circuitos.Circuitos.Commands.Pasos;
 using lfvb.secure.aplication.Database.Circuitos.Circuitos.Queries;
+using lfvb.secure.aplication.Database.Circuitos.Circuitos.Queries.Estados;
+using lfvb.secure.aplication.Database.Circuitos.Circuitos.Queries.Pasos;
 using lfvb.secure.aplication.Database.Circuitos.Tramites.Commands;
 using lfvb.secure.aplication.Database.Circuitos.Tramites.Queries.GetAllTramites;
 using lfvb.secure.aplication.Database.Circuitos.Tramites.Queries.GetTramite;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.Pkcs;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace lfvb.secure.aplication.Database.Circuitos
 {
@@ -21,6 +19,15 @@ namespace lfvb.secure.aplication.Database.Circuitos
             services.AddTransient<IModificarTramiteCommand, ModificarTramiteCommand>(); 
 
             services.AddTransient<IAltaCircuitoCommand, AltaCircuitoCommand>();
+
+
+            services.AddTransient<IAltaPasoCircuitoCommand, AltaPasoCircuitoCommand>(); 
+            services.AddTransient<IModificarPasoCircuitoCommand, ModificarPasoCircuitoCommand>();
+            services.AddTransient<IEliminarPasoCircuitoCommand, EliminarPasoCircuitoCommand>(); 
+
+            services.AddTransient<IAltaPasoSiguienteCircuitoCommand, AltaPasoSiguienteCircuitoCommand>();
+            services.AddTransient<IEliminarPasosSiguienteCircuitoCommand, EliminarPasosSiguienteCircuitoCommand>();   
+
             return services;
         }
 
@@ -31,6 +38,12 @@ namespace lfvb.secure.aplication.Database.Circuitos
             services.AddTransient<IGetTramiteQuery, GetTramiteQuery>();
 
             services.AddTransient<IGetCircuitosQuery, GetCircuitosQuery>();
+            services.AddTransient<IGetCircuitoQuery, GetCircuitoQuery>();
+
+            services.AddTransient<IGetPasosCircuitoQuery, GetPasosCircuitoQuery>();
+            services.AddTransient<IGetPasoCircuitoQuery, GetPasoCircuitoQuery>();
+
+            services.AddTransient<IEstadosElementosQuery, EstadosElementosQuery>(); 
 
             return services;
         }   
