@@ -1,5 +1,9 @@
 ﻿using lfvb.secure.api.Atributos.Secure;
 using lfvb.secure.api.ParametrosModel;
+using lfvb.secure.aplication.Database.Circuitos.Acciones.Models;
+using lfvb.secure.aplication.Database.Circuitos.Acciones.Queries;
+using lfvb.secure.aplication.Database.Circuitos.AccionesPasos.Models;
+using lfvb.secure.aplication.Database.Circuitos.AccionesPasos.Queries;
 using lfvb.secure.aplication.Database.Circuitos.Circuitos.Commands;
 using lfvb.secure.aplication.Database.Circuitos.Circuitos.Commands.Pasos;
 using lfvb.secure.aplication.Database.Circuitos.Circuitos.Models;
@@ -45,6 +49,10 @@ namespace lfvb.secure.api.Controllers.Circuitos
         private IAltaPasoSiguienteCircuitoCommand _cmdAltaPasoSiguienteCommando;
         private IEliminarPasosSiguienteCircuitoCommand _cmdEliminarPasosSiguientesCommando;
 
+        private IGetAllAccionesQuery _qryAllAcciones; 
+        
+        private IGetAccionesPasoQuery _qryAccionesPaso;
+
         /// <summary>
         /// Controlador para aministrar los circuitos de tramitacion, necesita permisos en ADM_GEST_CIRCUITOS
         /// </summary>
@@ -76,7 +84,9 @@ namespace lfvb.secure.api.Controllers.Circuitos
                                                  IModificarPasoCircuitoCommand cmdModificarPasoCircuitoCommand,  
                                                  IEliminarPasoCircuitoCommand cmdEliminarPasoCircuitoCommand,
                                                  IAltaPasoSiguienteCircuitoCommand cmdAltaPasoSiguienteCommando,
-                                                 IEliminarPasosSiguienteCircuitoCommand cmdEliminarPasosSiguientesCommando
+                                                 IEliminarPasosSiguienteCircuitoCommand cmdEliminarPasosSiguientesCommando,
+                                                 IGetAllAccionesQuery qryAllAcciones,
+                                                 IGetAccionesPasoQuery qryAccionesPaso
             )
         {
             _logger = logger;
@@ -95,7 +105,9 @@ namespace lfvb.secure.api.Controllers.Circuitos
             _cmdModificarPasoCircuitoCommand = cmdModificarPasoCircuitoCommand;
             _cmdEliminarPasoCircuitoCommand = cmdEliminarPasoCircuitoCommand;
             _cmdAltaPasoSiguienteCommando = cmdAltaPasoSiguienteCommando;
-            _cmdEliminarPasosSiguientesCommando = cmdEliminarPasosSiguientesCommando;   
+            _cmdEliminarPasosSiguientesCommando = cmdEliminarPasosSiguientesCommando;
+            _qryAllAcciones = qryAllAcciones;
+            _qryAccionesPaso = qryAccionesPaso;
         }
 
         #region "Relativos a los tramites de la aplicacion"
@@ -479,6 +491,50 @@ namespace lfvb.secure.api.Controllers.Circuitos
             {
                 List<Guid> resultado = await _cmdEliminarPasosSiguientesCommando.execute(modelo.Id, modelo.Ids);
                 return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+        #endregion
+
+        #region "Relativos a las acciones disponibles en los pasos de los circuitos"
+        /// <summary>
+        /// Obtiene el listado de acciones que se pueden ejecutar en un paso dado
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("acciones/listado")]
+        [Authorize]
+        public async Task<IActionResult> GetAllAcciones()
+        {
+            try
+            {
+                List<AccionModel> lista = await this._qryAllAcciones.execute();
+                return Ok(lista);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Obtiene el listado de acciones asociadas a un paso en concreto, se necesita el permiso de ADM_GEST_CIRCUITOS, SW_LST_PASO_ACCIONES, LLSWEP  
+        /// </summary>
+        /// <param name="pasoId"></param>
+        /// <returns></returns>
+        [HttpGet("circuitos/paso/{pasoId:guid}/acciones/{tipo}")]  
+        [Authorize]
+        [DbAuthorize("ADM_GEST_CIRCUITOS", "SW_LST_PASO_ACCIONES", "LLSWEP")]
+        public async Task<IActionResult> GetAccionesPaso(Guid pasoId, string tipo="")
+        {
+            try
+            {
+                List<AccionPasoModel> lista = await this._qryAccionesPaso.execute(pasoId);
+                return Ok(lista);
             }
             catch (Exception ex)
             {

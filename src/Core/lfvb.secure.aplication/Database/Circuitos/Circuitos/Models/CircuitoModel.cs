@@ -1,4 +1,6 @@
 ﻿using lfvb.secure.aplication.Database.Circuitos.Tramites.Models;
+using lfvb.secure.aplication.Database.Grupos.Models;
+using lfvb.secure.domain.Entities.TipoElemento;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +20,7 @@ namespace lfvb.secure.aplication.Database.Circuitos.Circuitos.Models
         public DateTime? FechaAlta { get; set; } = null;
         public DateTime? FechaModificacion { get; set; } = null;
         public DateTime? FechaBaja { get; set; } = null;
+        public List<TipoElementoEntity> Tipos { get; set; } = new List<TipoElementoEntity>();   
+        public List<GrupoModel> Grupos { get; set; } = new List<GrupoModel>();  
     }
 }

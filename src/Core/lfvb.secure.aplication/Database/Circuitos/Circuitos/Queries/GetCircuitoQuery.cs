@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using lfvb.secure.aplication.Database.Circuitos.Circuitos.Models;
 using lfvb.secure.aplication.Database.Circuitos.Tramites.Models;
+using lfvb.secure.aplication.Database.Grupos.Models;
 using lfvb.secure.aplication.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -25,7 +26,9 @@ namespace lfvb.secure.aplication.Database.Circuitos.Circuitos.Queries
         public async Task<CircuitoModel?> execute(Guid idCircuito)
         {
             CircuitoModel? circuito= await (from c in _db.Circuitos.Include(c=>c.Tramite)
-                                           where c.Id == idCircuito
+                                                                   .Include(c=>c.RelacionTiposElementos)
+                                                                   .Include(c=>c.GruposAdministradores)
+                                            where c.Id == idCircuito
                                            select new CircuitoModel
                                            {
                                                 Id = c.Id,
@@ -42,8 +45,18 @@ namespace lfvb.secure.aplication.Database.Circuitos.Circuitos.Queries
                                                 Activo = c.Activo,
                                                 FechaAlta = c.FechaAlta,
                                                 FechaModificacion = c.FechaModificacion,
-                                                FechaBaja = c.FechaBaja
+                                                FechaBaja = c.FechaBaja,
+                                                Tipos= c.RelacionTiposElementos.Select(rt=>rt.TipoElemento).ToList() ,
+                                                Grupos = (from ga in c.GruposAdministradores
+                                                                 join g in _db.Grupos on ga.IdGuap equals g.Id
+                                                         select new GrupoModel
+                                                         {
+                                                             Id=g.Id,
+                                                             Nombre = g.Nombre
+                                                         }).ToList()
                                            }).FirstOrDefaultAsync();
+
+
 
             return circuito;
         }
