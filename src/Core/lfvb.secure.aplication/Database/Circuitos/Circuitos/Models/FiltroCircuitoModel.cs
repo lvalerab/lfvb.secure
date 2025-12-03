@@ -8,7 +8,7 @@ namespace lfvb.secure.aplication.Database.Circuitos.Circuitos.Models
 {
     public class FiltroCircuitoModel
     {
-        public Guid? IdTramite { get; set; }
+        public Guid? IdTramite { get; set; } = Guid.Empty;
         public string Nombre { get; set; } = string.Empty;
         public bool? Activo { get; set; } = null;
         public int? page { get; set; } = 0;

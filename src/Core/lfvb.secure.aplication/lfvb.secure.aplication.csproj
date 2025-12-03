@@ -20,7 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Database\Circuitos\Circuitos\Queries\Acciones\" />
+    <Folder Include="Database\Circuitos\AccionesPasos\Commands\" />
+    <Folder Include="Database\Circuitos\Acciones\Commands\" />
     <Folder Include="Database\Credencial\Querys\" />
     <Folder Include="Database\Elementos\Querys\" />
     <Folder Include="Database\TipoCrendecial\Commands\" />

@@ -1,4 +1,4 @@
-﻿using lfvb.secure.aplication.Database.Circuitos.Circuitos.Queries.Estados;
+﻿using lfvb.secure.aplication.Database.Circuitos.Estados;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetGruposUsuario;
 using lfvb.secure.aplication.Database.Propiedades.Commands.NuevaPropiedadElemento;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetPropiedadesElemento;
