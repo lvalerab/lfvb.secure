@@ -25,15 +25,15 @@ namespace lfvb.secure.domain.Entities.Usuario
 
         public String Email { get; set; }   
 
-        public ICollection<CredencialEntity> Credenciales { get; set; }
+        public ICollection<CredencialEntity>? Credenciales { get; set; }
 
-        public ICollection<RelacionUsuarioGrupoUsuarioAplicacionEntity> RelacionGrupos { get; set; }
+        public ICollection<RelacionUsuarioGrupoUsuarioAplicacionEntity>? RelacionGrupos { get; set; }
 
-        public ICollection<PermisoPasoUsuarioEntity> PermisosPasos { get; set; }   
+        public ICollection<PermisoPasoUsuarioEntity>? PermisosPasos { get; set; }   
         
-        public ICollection<EstadoElementoEntity> Tramitadores { get; set; } 
+        public ICollection<EstadoElementoEntity>? Tramitadores { get; set; } 
 
-        public ICollection<EstadoElementoSiguienteEntity> EnvioEstados { get; set; }
+        public ICollection<EstadoElementoSiguienteEntity>? EnvioEstados { get; set; }
 
     }
 }

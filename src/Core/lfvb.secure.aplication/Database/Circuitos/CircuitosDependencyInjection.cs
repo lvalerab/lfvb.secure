@@ -21,6 +21,7 @@ namespace lfvb.secure.aplication.Database.Circuitos
             services.AddTransient<IModificarTramiteCommand, ModificarTramiteCommand>(); 
 
             services.AddTransient<IAltaCircuitoCommand, AltaCircuitoCommand>();
+            services.AddTransient<IModificacionCircuitoCommand, ModificarCircuitoCommand>();   
 
 
             services.AddTransient<IAltaPasoCircuitoCommand, AltaPasoCircuitoCommand>(); 

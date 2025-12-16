@@ -38,6 +38,7 @@ namespace lfvb.secure.api.Controllers.Circuitos
         private IGetCircuitosQuery _cmdGetCircuitosQuery;
         private IGetCircuitoQuery _cmdGetCircuitoQuery;
         private IAltaCircuitoCommand _cmdAltaCircuitoCommand;
+        private IModificacionCircuitoCommand _cmdModificarCircuitoCommand; 
 
         private IGetPasosCircuitoQuery _qryPasosCircuito;
         private IGetPasoCircuitoQuery _qryPasoCircuito;
@@ -81,6 +82,7 @@ namespace lfvb.secure.api.Controllers.Circuitos
                                                  IGetPasosCircuitoQuery qryPasosCircuito,
                                                  IGetPasoCircuitoQuery qryPasoCircuito,
                                                  IAltaPasoCircuitoCommand cmdAltaPasoCircuitoCommand,
+                                                 IModificacionCircuitoCommand  cmdModificarCircuitoCommand,
                                                  IModificarPasoCircuitoCommand cmdModificarPasoCircuitoCommand,  
                                                  IEliminarPasoCircuitoCommand cmdEliminarPasoCircuitoCommand,
                                                  IAltaPasoSiguienteCircuitoCommand cmdAltaPasoSiguienteCommando,
@@ -98,6 +100,7 @@ namespace lfvb.secure.api.Controllers.Circuitos
             _cmdGetCircuitosQuery = cmdGetCircuitosQuery;
             _cmdGetCircuitoQuery = cmdGetCircuitoQuery; 
             _cmdAltaCircuitoCommand = cmdAltaCircuitoCommand;
+            _cmdModificarCircuitoCommand = cmdModificarCircuitoCommand;
             _qryPasoCircuito = qryPasoCircuito;
             _qryPasosCircuito= qryPasosCircuito;
             _qryPasoCircuito = qryPasoCircuito;
@@ -329,6 +332,29 @@ namespace lfvb.secure.api.Controllers.Circuitos
             }
         }
 
+        /// <summary>
+        /// Metedo para modificar un circuito existente, requiere permisos en [ADM_GEST_CIRCUITOS, SW_MOD_ADM_CIRC_MOD, LLSWEP] 
+        /// </summary>
+        /// <param name="modelo"></param>
+        /// <returns></returns>
+        [HttpPut("circuitos/modificacion")]
+        [Authorize]
+        [DbAuthorize("ADM_GEST_CIRCUITOS", "SW_MOD_ADM_CIRC_MOD", "LLSWEP")]
+        public async Task<IActionResult> ModificacionCircuito(CircuitoModel modelo)
+        {
+            try
+            {
+                CircuitoModel? modificado = await _cmdModificarCircuitoCommand.execute(modelo);
+                if (modificado == null)
+                    return NotFound();
+                return Ok(modificado);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
 
         /// <summary>
         /// Obtiene los pasos de un circuito determinado

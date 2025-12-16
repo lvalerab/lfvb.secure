@@ -1,4 +1,5 @@
-﻿using lfvb.secure.domain.Entities.Circuitos.Circuito;
+﻿using lfvb.secure.domain.Entities.Circuitos.BandejaTramite;
+using lfvb.secure.domain.Entities.Circuitos.Circuito;
 using lfvb.secure.domain.Entities.Circuitos.Estado;
 using lfvb.secure.domain.Entities.Circuitos.EstadoElemento;
 using lfvb.secure.domain.Entities.Circuitos.PasoAccion;
@@ -16,11 +17,13 @@ namespace lfvb.secure.domain.Entities.Circuitos.Paso
         public string CodEstadoSiguiente { get; set; } = string.Empty;
         public string Nombre { get; set; }
         public Guid? IdCircuitoSiguiente { get; set; }
+        public Guid? IdBandeja { get; set; }    
 
         public CircuitoEntity Circuito { get; set; }
         public EstadoEntity Estado { get; set; }
         public EstadoEntity EstadoSiguiente { get; set; }   
         public CircuitoEntity CircuitoSiguiente { get; set; }
+        public BandejaTramiteEntity Bandeja { get; set; }
 
         public ICollection<PermisoPasoGrupoEntity> PermisosGrupos { get;set; }
         public ICollection<PermisoPasoUsuarioEntity> PermisoUsuarios { get; set; }  

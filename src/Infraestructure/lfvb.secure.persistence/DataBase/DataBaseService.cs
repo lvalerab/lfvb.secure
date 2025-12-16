@@ -3,6 +3,7 @@ using lfvb.secure.domain.Entities.Aplicacion;
 using lfvb.secure.domain.Entities.Circuitos.Accion;
 using lfvb.secure.domain.Entities.Circuitos.AccionTipoElemento;
 using lfvb.secure.domain.Entities.Circuitos.AccionUsuario;
+using lfvb.secure.domain.Entities.Circuitos.BandejaTramite;
 using lfvb.secure.domain.Entities.Circuitos.Circuito;
 using lfvb.secure.domain.Entities.Circuitos.Estado;
 using lfvb.secure.domain.Entities.Circuitos.EstadoElemento;
@@ -85,6 +86,7 @@ namespace lfvb.secure.persistence.DataBase
         public DbSet<TipoElementoCircuitoEntity> TiposElementosCircuitos { get; set; }  
         public DbSet<TramiteEntity> Tramites { get; set; }  
         public DbSet<PasoSiguienteEntity> PasosSiguientes { get; set; }
+        public DbSet<BandejaTramiteEntity> BandejasTramites { get; set; }
 
 
         #region "Gestion de propiedades de los elementos"
@@ -149,6 +151,7 @@ namespace lfvb.secure.persistence.DataBase
             new TipoElementoCircuitoConfiguration(modelBuilder.Entity<TipoElementoCircuitoEntity>());   
             new TramiteConfiguration(modelBuilder.Entity<TramiteEntity>());
             new PasoSiguienteConfiguration(modelBuilder.Entity<PasoSiguienteEntity>()); 
+            new BandejaTramiteConfiguration(modelBuilder.Entity<BandejaTramiteEntity>());   
 
 
             new VWElementoConfiguration(modelBuilder.Entity<VWElementoEntity>());

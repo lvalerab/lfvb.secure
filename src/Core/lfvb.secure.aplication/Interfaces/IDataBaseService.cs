@@ -2,6 +2,7 @@
 using lfvb.secure.domain.Entities.Circuitos.Accion;
 using lfvb.secure.domain.Entities.Circuitos.AccionTipoElemento;
 using lfvb.secure.domain.Entities.Circuitos.AccionUsuario;
+using lfvb.secure.domain.Entities.Circuitos.BandejaTramite;
 using lfvb.secure.domain.Entities.Circuitos.Circuito;
 using lfvb.secure.domain.Entities.Circuitos.Estado;
 using lfvb.secure.domain.Entities.Circuitos.EstadoElemento;
@@ -75,6 +76,7 @@ namespace lfvb.secure.aplication.Interfaces
         DbSet<TipoElementoCircuitoEntity> TiposElementosCircuitos { get; set; }
         DbSet<TramiteEntity> Tramites { get; set; }
         DbSet<PasoSiguienteEntity> PasosSiguientes { get; set; }
+        DbSet<BandejaTramiteEntity> BandejasTramites { get; set; }
         #endregion
 
         #region "Modulo de propiedades"

@@ -23,11 +23,13 @@ namespace lfvb.secure.persistence.Configuraciones.Circuitos
             builder.Property(x => x.CodEstadoSiguiente).HasColumnName("COD_ESTA_SIG");
             builder.Property(x => x.IdCircuitoSiguiente).HasColumnName("COD_CIRC_SIG");
             builder.Property(x => x.Nombre).HasColumnName("NOMBRE_PASO");
+            builder.Property(x=> x.IdBandeja).HasColumnName("ID_BATR");  
 
             builder.HasOne(x => x.Circuito).WithMany(c => c.Pasos).HasForeignKey(x => x.IdCircuito);
             builder.HasOne(x => x.Estado).WithMany(e => e.Pasos).HasForeignKey(x => x.CodEstado);
             //builder.HasOne(x => x.EstadoSiguiente).WithMany(e=>e.).HasForeignKey(x => x.CodEstadoSiguiente);
             //builder.HasOne(x => x.CircuitoSiguiente).WithMany().HasForeignKey(x => x.IdCircuitoSiguiente);
+            builder.HasOne(x => x.Bandeja).WithMany(b => b.Pasos).HasForeignKey(x => x.IdBandeja);
 
             builder.HasMany(x => x.PermisosGrupos).WithOne(pg => pg.Paso).HasForeignKey(x => x.IdPaso);
             builder.HasMany(x => x.PermisoUsuarios).WithOne(pu => pu.Paso).HasForeignKey(x => x.IdPaso);

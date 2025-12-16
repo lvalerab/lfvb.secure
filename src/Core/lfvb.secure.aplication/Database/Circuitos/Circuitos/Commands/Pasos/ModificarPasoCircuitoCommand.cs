@@ -2,6 +2,7 @@
 using lfvb.secure.aplication.Database.Circuitos.Circuitos.Models;
 using lfvb.secure.aplication.Interfaces;
 using lfvb.secure.domain.Entities.Circuitos.Paso;
+using lfvb.secure.domain.Entities.Circuitos.PermisoPasoUsuario;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,34 @@ namespace lfvb.secure.aplication.Database.Circuitos.Circuitos.Commands.Pasos
                 pasoEntity.CodEstadoSiguiente = paso.EstadoNuevo != null ? paso.EstadoNuevo.Codigo : pasoEntity.CodEstadoSiguiente;
                 pasoEntity.IdCircuitoSiguiente = paso.CircuitoSiguiente != null ? paso.CircuitoSiguiente.Id : pasoEntity.IdCircuitoSiguiente;
                 pasoEntity.Nombre = paso.Nombre;
+
+                pasoEntity.IdBandeja= paso.Bandeja != null ? paso.Bandeja.Id : null;    
+
+                //Borramos los usuarios tramitadores actuales
+                _db.PermisosPasosUsuarios.RemoveRange(_db.PermisosPasosUsuarios.Where(ppu => ppu.IdPaso == pasoEntity.Id));
+                foreach (var usuario in paso.UsuariosTramitadores)
+                {
+                    var permisoUsuario = new PermisoPasoUsuarioEntity
+                    {
+                        IdPaso = pasoEntity.Id,
+                        IdUsuario = usuario.Id
+                    };
+                    await _db.PermisosPasosUsuarios.AddAsync(permisoUsuario);
+                }
+
+                //Borramos los grupos tramitadores actuales
+                _db.PermisosPasosGrupos.RemoveRange(_db.PermisosPasosGrupos.Where(ppg => ppg.IdPaso == pasoEntity.Id));
+
+                foreach (var grupo in paso.GruposTramitadores)
+                {
+                    var permisoGrupo = new domain.Entities.Circuitos.PermisoPasoGrupo.PermisoPasoGrupoEntity
+                    {
+                        IdPaso = pasoEntity.Id,
+                        IdGrupoUsuario = grupo.Id??Guid.Empty
+                    };
+                    await _db.PermisosPasosGrupos.AddAsync(permisoGrupo);
+                }
+
                 await _db.SaveAsync();
             }
             return paso;
