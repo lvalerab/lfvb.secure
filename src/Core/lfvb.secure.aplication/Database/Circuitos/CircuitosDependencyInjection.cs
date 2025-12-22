@@ -1,5 +1,6 @@
 ﻿using lfvb.secure.aplication.Database.Circuitos.Acciones.Queries;
 using lfvb.secure.aplication.Database.Circuitos.AccionesPasos.Queries;
+using lfvb.secure.aplication.Database.Circuitos.BandejaTramites.Queries;
 using lfvb.secure.aplication.Database.Circuitos.Circuitos.Commands;
 using lfvb.secure.aplication.Database.Circuitos.Circuitos.Commands.Pasos;
 using lfvb.secure.aplication.Database.Circuitos.Circuitos.Queries;
@@ -51,6 +52,8 @@ namespace lfvb.secure.aplication.Database.Circuitos
             services.AddTransient<IGetAllAccionesQuery, GetAllAccionesQuery>();
 
             services.AddTransient<IGetAccionesPasoQuery, GetAccionesPasoQuery>();
+
+            services.AddTransient<IListaBandejasSistemaQuery, ListaBandejasSistemaQuery>();
 
 
             return services;
