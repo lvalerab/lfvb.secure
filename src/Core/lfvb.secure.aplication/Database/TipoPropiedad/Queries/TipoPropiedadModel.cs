@@ -14,5 +14,6 @@ namespace lfvb.secure.aplication.Database.TipoPropiedad.Queries
         public bool Historico { get; set; } 
         public bool Intervalo { get; set; }
         public string Tipo { get; set; }
+        public bool ListaValores { get; set; }
     }
 }

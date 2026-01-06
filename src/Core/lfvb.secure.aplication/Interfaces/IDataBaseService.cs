@@ -22,6 +22,7 @@ using lfvb.secure.domain.Entities.GrupoUsuarioAplicacion;
 using lfvb.secure.domain.Entities.PasswordCredencial;
 using lfvb.secure.domain.Entities.Propiedad;
 using lfvb.secure.domain.Entities.PropiedadElemento;
+using lfvb.secure.domain.Entities.PropiedadValoresSql;
 using lfvb.secure.domain.Entities.RelacionGrupoUsuarioElementoAplicacionTipoPermisoAplicacion;
 using lfvb.secure.domain.Entities.RelacionTipoElementoPropiedad;
 using lfvb.secure.domain.Entities.RelacionTipoElementoTipoPermiso;
@@ -87,6 +88,7 @@ namespace lfvb.secure.aplication.Interfaces
         DbSet<ValorPropiedadElementoEntity> ValoresPropiedadesElementos { get; set; }
         DbSet<TipoElementoEntity> TiposElementos { get; set; }
         DbSet<RelacionTipoElementoPropiedadEntity> RelacionesTiposElementosPropiedades { get; set; }
+        DbSet<PropiedadValoresSqlEntity> PropiedadesValoresSql { get; set; }
         #endregion
 
         #region "Elementos de vistas"
@@ -94,5 +96,7 @@ namespace lfvb.secure.aplication.Interfaces
         #endregion
 
         Task<bool> SaveAsync();
+
+        IQueryable<T> FromSql<T>(string sql, params object?[] parametros) where T : class;   
     }
 }

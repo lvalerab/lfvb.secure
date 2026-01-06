@@ -2,8 +2,10 @@
 using lfvb.secure.api.ParametrosModel;
 using lfvb.secure.aplication.Database.Aplicaciones.Queries.PermisoElementoAplicacion;
 using lfvb.secure.aplication.Database.Propiedades.Commands.NuevaPropiedadElemento;
+using lfvb.secure.aplication.Database.Propiedades.Models;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetAllPropiedades;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetPropiedadesElemento;
+using lfvb.secure.aplication.Database.Propiedades.Queries.GetValoresSqlPropiedad;
 using lfvb.secure.aplication.Database.TipoPropiedad.Queries;
 using lfvb.secure.common.JWT;
 using Microsoft.AspNetCore.Authorization;
@@ -22,6 +24,7 @@ namespace lfvb.secure.api.Controllers
         private IGetAllPropiedadesQuery _getAllPropiedadesQuery;  
         private IGetPropiedadesElementoQuery _getPropiedadesElementoQuery;
         private INuevaActualizaPropiedadElementoCommand _nuevaActualizaPropiedadElementoCommand;
+        private IGetValoresSqlPropiedadQuery _getValoresSqlPropiedadQuery;  
         private IPermisoElementoAplicacionQuery _permisoElementoAplicacionQuery;
         private readonly string secret;
         private readonly int expires;
@@ -32,7 +35,8 @@ namespace lfvb.secure.api.Controllers
                                    IGetAllPropiedadesQuery getAllPropiedades, 
                                    IGetPropiedadesElementoQuery getPropiedadesElementoQuery,
                                    INuevaActualizaPropiedadElementoCommand nuevaActualizaPropiedadElementoCommand,
-                                   IPermisoElementoAplicacionQuery permisoElementoAplicacionQuery)
+                                   IPermisoElementoAplicacionQuery permisoElementoAplicacionQuery,
+                                   IGetValoresSqlPropiedadQuery getValoresSqlPropiedadQuery)
         {
             this._logger = logger;
             this._jwtTokenUtils = jwtUtils;
@@ -42,6 +46,7 @@ namespace lfvb.secure.api.Controllers
             this._getPropiedadesElementoQuery = getPropiedadesElementoQuery;
             this._nuevaActualizaPropiedadElementoCommand = nuevaActualizaPropiedadElementoCommand;
             this._permisoElementoAplicacionQuery = permisoElementoAplicacionQuery;
+            this._getValoresSqlPropiedadQuery= getValoresSqlPropiedadQuery;
         }
 
         /// <summary>
@@ -67,6 +72,36 @@ namespace lfvb.secure.api.Controllers
             List<PropiedadModel> propiedades = await this._getAllPropiedadesQuery.Execute(codPadrePropiedad,codTipoElemento);
             return Ok(propiedades);
         }
+
+        /// <summary>
+        /// Obtiene los valores permitidos de una propiedad de tipo sql 
+        /// </summary>
+        /// <param name="codPropiedad"></param>
+        /// <param name="idElemento"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("valores/permitidos/{codPropiedad}")]
+        [Authorize]
+        public async Task<IActionResult> GetValoresSqlPropiedad(string codPropiedad)
+        {
+            List<GrupoValorEtiquetaModel> valores = await this._getValoresSqlPropiedadQuery.execute(codPropiedad, Guid.Empty.ToString());
+            return Ok(valores);
+        }
+
+        /// <summary>
+        /// Obtiene los valores permitidos de una propiedad de tipo sql indicando el elemento para filtrar
+        /// </summary>
+        /// <param name="codPropiedad"></param>
+        /// <param name="idElemento"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("valores/permitidos/{codPropiedad}/elemento/{idElemento}")]
+        [Authorize]
+        public async Task<IActionResult> GetValoresSqlPropiedad(string codPropiedad, string idElemento)
+        {
+            List<GrupoValorEtiquetaModel> valores = await this._getValoresSqlPropiedadQuery.execute(codPropiedad, idElemento);
+            return Ok(valores);
+        }   
 
         /// <summary>
         /// Obtiene el listado de propieddades de un elemento dado

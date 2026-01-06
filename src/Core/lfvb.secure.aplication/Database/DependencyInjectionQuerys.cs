@@ -14,6 +14,7 @@ using lfvb.secure.aplication.Database.Grupos.Queries.GetGruposUsuario;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetUsuariosGrupo;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetAllPropiedades;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetPropiedadesElemento;
+using lfvb.secure.aplication.Database.Propiedades.Queries.GetValoresSqlPropiedad;
 using lfvb.secure.aplication.Database.TipoCrendecial.Queries.GetAllTiposCredenciales;
 using lfvb.secure.aplication.Database.TipoElemento.Queries;
 using lfvb.secure.aplication.Database.TipoElementoAplicacion.Queries.GetAllTiposElementosAplicacion;
@@ -76,6 +77,7 @@ namespace lfvb.secure.aplication.Database
             #region "Querys de propiedades"
             services.AddTransient<IGetAllPropiedadesQuery, GetAllPropiedadesQuery>();
             services.AddTransient<IGetPropiedadesElementoQuery, GetPropiedadElementoQuery>();
+            services.AddTransient<IGetValoresSqlPropiedadQuery, GetValoresSqlPropiedadQuery>(); 
             #endregion
 
             #region "Querys de vistas"

@@ -1,4 +1,5 @@
 ﻿using lfvb.secure.domain.Entities.PropiedadElemento;
+using lfvb.secure.domain.Entities.PropiedadValoresSql;
 using lfvb.secure.domain.Entities.RelacionTipoElementoPropiedad;
 using lfvb.secure.domain.Entities.TipoPropiedad;
 using System;
@@ -20,6 +21,7 @@ namespace lfvb.secure.domain.Entities.Propiedad
 
         public virtual ICollection<PropiedadEntity> PropiedadesHijas { get; set; }
         public virtual ICollection<PropiedadElementoEntity>? PropiedadesElementos { get; set; } 
-        public virtual ICollection<RelacionTipoElementoPropiedadEntity> RelacionTiposElementos { get; set; }    
+        public virtual ICollection<RelacionTipoElementoPropiedadEntity> RelacionTiposElementos { get; set; }  
+        public virtual ICollection<PropiedadValoresSqlEntity>? ValoresSql { get; set; } 
     }
 }

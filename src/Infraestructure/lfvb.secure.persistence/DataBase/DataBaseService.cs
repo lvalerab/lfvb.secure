@@ -23,6 +23,7 @@ using lfvb.secure.domain.Entities.GrupoUsuarioAplicacion;
 using lfvb.secure.domain.Entities.PasswordCredencial;
 using lfvb.secure.domain.Entities.Propiedad;
 using lfvb.secure.domain.Entities.PropiedadElemento;
+using lfvb.secure.domain.Entities.PropiedadValoresSql;
 using lfvb.secure.domain.Entities.RelacionGrupoUsuarioElementoAplicacionTipoPermisoAplicacion;
 using lfvb.secure.domain.Entities.RelacionTipoElementoPropiedad;
 using lfvb.secure.domain.Entities.RelacionTipoElementoTipoPermiso;
@@ -97,6 +98,7 @@ namespace lfvb.secure.persistence.DataBase
         public DbSet<ValorPropiedadElementoEntity> ValoresPropiedadesElementos { get; set; }
         public DbSet<TipoElementoEntity> TiposElementos { get; set; }
         public DbSet<RelacionTipoElementoPropiedadEntity> RelacionesTiposElementosPropiedades { get; set; }
+        public DbSet<PropiedadValoresSqlEntity> PropiedadesValoresSql { get; set; }
         #endregion
 
 
@@ -130,6 +132,7 @@ namespace lfvb.secure.persistence.DataBase
             new ElementoConfiguration(modelBuilder.Entity<ElementoEntity>());
             new TipoPropiedadConfiguracion(modelBuilder.Entity<TipoPropiedadEntity>());
             new PropiedadConfiguration(modelBuilder.Entity<PropiedadEntity>());
+            new PropiedadValoresSqlConfiguration(modelBuilder.Entity<PropiedadValoresSqlEntity>()); 
             new PropiedadElementoConfiguration(modelBuilder.Entity<PropiedadElementoEntity>());
             new ValorPropiedadElementoConfiguration(modelBuilder.Entity<ValorPropiedadElementoEntity>());
             new TipoElementoConfiguration(modelBuilder.Entity<TipoElementoEntity>());
@@ -163,6 +166,17 @@ namespace lfvb.secure.persistence.DataBase
             base.OnModelCreating(modelBuilder);
             EntityConfiguration(modelBuilder);
         }
-        
+
+        public IQueryable<T> FromSql<T>(string sql, params object?[] parametros) where T : class
+        {
+            List<string> palabrasProhibidas = new List<string> { "DELETE", "INSERT", "UPDATE", "DROP", "ALTER", "--", ";" };
+            //Comprobamos que la consulta no contenga palabras prohibidas
+            bool contienePalabraProhibida = palabrasProhibidas.Any(palabra => sql.ToUpper().Contains(palabra));
+            if (contienePalabraProhibida)
+            {
+                throw new InvalidOperationException("La consulta SQL contiene palabras prohibidas.");
+            }
+            return this.Database.SqlQueryRaw<T>(sql, parametros);  
+        }
     }
 }
