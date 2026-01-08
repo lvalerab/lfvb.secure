@@ -3,6 +3,7 @@ using lfvb.secure.aplication.Database.Circuitos.Circuitos.Models;
 using lfvb.secure.aplication.Interfaces;
 using lfvb.secure.domain.Entities.Circuitos.Paso;
 using lfvb.secure.domain.Entities.Circuitos.PermisoPasoUsuario;
+using lfvb.secure.domain.Entities.EstadoEsperadoPaso;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -44,7 +45,22 @@ namespace lfvb.secure.aplication.Database.Circuitos.Circuitos.Commands.Pasos
                 pasoEntity.IdCircuitoSiguiente = paso.CircuitoSiguiente != null ? paso.CircuitoSiguiente.Id : pasoEntity.IdCircuitoSiguiente;
                 pasoEntity.Nombre = paso.Nombre;
 
-                pasoEntity.IdBandeja= paso.Bandeja != null ? paso.Bandeja.Id : null;    
+                pasoEntity.IdBandeja= paso.Bandeja != null ? paso.Bandeja.Id : null;
+
+                //Borramos los estados esperados actuales   
+                _db.EstadosEsperadosPasos.RemoveRange(_db.EstadosEsperadosPasos.Where(eep => eep.IdPaso == pasoEntity.Id));
+                //Si tiene estados esperados los agregamos
+                foreach(var eep in paso.EstadosEsperados)
+                {
+                    var estadoEsperadoEntity = new EstadoEsperadoPasoEntity
+                    {
+                        IdPaso = pasoEntity.Id,
+                        CodTipoElemento = eep.TipoElemento.Codigo,
+                        CodEstado = eep.Estado.Codigo,
+                        TipoEstadoEsperado = eep.TipoEstadoEsperado
+                    };
+                    await _db.EstadosEsperadosPasos.AddAsync(estadoEsperadoEntity);
+                }
 
                 //Borramos los usuarios tramitadores actuales
                 _db.PermisosPasosUsuarios.RemoveRange(_db.PermisosPasosUsuarios.Where(ppu => ppu.IdPaso == pasoEntity.Id));

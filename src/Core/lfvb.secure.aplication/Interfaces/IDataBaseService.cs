@@ -18,6 +18,8 @@ using lfvb.secure.domain.Entities.Circuitos.Tramite;
 using lfvb.secure.domain.Entities.Credencial;
 using lfvb.secure.domain.Entities.Elemento;
 using lfvb.secure.domain.Entities.ElementoAplicacion;
+using lfvb.secure.domain.Entities.EstadoEsperadoPaso;
+using lfvb.secure.domain.Entities.GrupoUnidadOrganizativa;
 using lfvb.secure.domain.Entities.GrupoUsuarioAplicacion;
 using lfvb.secure.domain.Entities.PasswordCredencial;
 using lfvb.secure.domain.Entities.Propiedad;
@@ -32,7 +34,10 @@ using lfvb.secure.domain.Entities.TipoElemento;
 using lfvb.secure.domain.Entities.TipoElementoAplicacion;
 using lfvb.secure.domain.Entities.TipoPermisoElementoAplicacion;
 using lfvb.secure.domain.Entities.TipoPropiedad;
+using lfvb.secure.domain.Entities.TipoUnidadOrganizativa;
 using lfvb.secure.domain.Entities.TokenCredencial;
+using lfvb.secure.domain.Entities.UnidadOrganizativa;
+using lfvb.secure.domain.Entities.UnidadOrganizativaElemento;
 using lfvb.secure.domain.Entities.Usuario;
 using lfvb.secure.domain.Entities.ValorPropiedadElemento;
 using lfvb.secure.domain.Entities.Views.VWElemento;
@@ -78,6 +83,8 @@ namespace lfvb.secure.aplication.Interfaces
         DbSet<TramiteEntity> Tramites { get; set; }
         DbSet<PasoSiguienteEntity> PasosSiguientes { get; set; }
         DbSet<BandejaTramiteEntity> BandejasTramites { get; set; }
+        DbSet<EstadoElementoSiguienteEntity> EstadoElementoSiguientes { get; set; }
+        DbSet<EstadoEsperadoPasoEntity> EstadosEsperadosPasos { get; set; } 
         #endregion
 
         #region "Modulo de propiedades"
@@ -89,6 +96,13 @@ namespace lfvb.secure.aplication.Interfaces
         DbSet<TipoElementoEntity> TiposElementos { get; set; }
         DbSet<RelacionTipoElementoPropiedadEntity> RelacionesTiposElementosPropiedades { get; set; }
         DbSet<PropiedadValoresSqlEntity> PropiedadesValoresSql { get; set; }
+        #endregion
+
+        #region "Unidades organizativas"
+        DbSet<TipoUnidadOrganizativaEntity> TiposUnidadesOrganizativas { get; set; }
+        DbSet<UnidadOrganizativaEntity> UnidadesOrganizativas { get; set; }
+        DbSet<GrupoUnidadOrganizativaEntity> GruposUnidadesOrganizativas { get; set; }
+        DbSet<UnidadOrganizativaElementoEntity> UnidadesOrganizativasElementos { get; set; }
         #endregion
 
         #region "Elementos de vistas"

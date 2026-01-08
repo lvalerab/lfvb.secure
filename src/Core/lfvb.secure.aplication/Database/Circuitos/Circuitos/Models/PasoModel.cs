@@ -22,5 +22,6 @@ namespace lfvb.secure.aplication.Database.Circuitos.Circuitos.Models
         public List<Guid>? PasosSiguientes { get; set; }=new List<Guid>();
         public List<UsuarioEntity> UsuariosTramitadores { get; set; } = new List<UsuarioEntity>();
         public List<GrupoModel> GruposTramitadores { get; set; }= new List<GrupoModel>();   
+        public List<EstadoEsperadoPasoModel> EstadosEsperados { get; set; }= new List<EstadoEsperadoPasoModel>();   
     }
 }

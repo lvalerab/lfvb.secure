@@ -2,6 +2,7 @@
 using lfvb.secure.aplication.Database.Circuitos.BandejaTramites.Models;
 using lfvb.secure.aplication.Database.Circuitos.Circuitos.Models;
 using lfvb.secure.aplication.Database.Grupos.Models;
+using lfvb.secure.aplication.Database.TipoElemento.Models;
 using lfvb.secure.aplication.Database.Usuario.Models;
 using lfvb.secure.aplication.Interfaces;
 using lfvb.secure.domain.Entities.Usuario;
@@ -95,7 +96,29 @@ namespace lfvb.secure.aplication.Database.Circuitos.Circuitos.Queries.Pasos
                                                 .Select(ps => ps.IdPasoSiguiente))
                                                 .ToListAsync();
                 paso.PasosSiguientes = pasosSiguientesIds;
-            };
+
+                var pasosEsperados = await (_db.EstadosEsperadosPasos
+                                                .Include(e => e.TipoElemento)
+                                                .Include(e => e.Estado)
+                                                .Where(pe => pe.IdPaso == paso.Id)
+                                                .Select(pe=>new EstadoEsperadoPasoModel
+                                                {
+                                                    Paso=paso,
+                                                    TipoElemento=new TipoElementoModel
+                                                    {
+                                                        Codigo=pe.TipoElemento.Codigo,
+                                                        Nombre =pe.TipoElemento.Nombre
+                                                    },
+                                                    TipoEstadoEsperado=pe.TipoEstadoEsperado,
+                                                    Estado=new EstadoModel
+                                                    {
+                                                        Codigo=pe.Estado.Codigo,
+                                                        Nombre=pe.Estado.Nombre,
+                                                        Descripcion=pe.Estado.Descripcion
+                                                    }
+                                                }).ToListAsync());
+            }
+            ;
 
             return pasos;
         }

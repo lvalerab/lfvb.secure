@@ -33,6 +33,10 @@ namespace lfvb.secure.persistence.Configuraciones
                 .WithOne(a=>a.TipoElemento)
                 .HasForeignKey(a=>a.CodigoTipoElemento);
 
+            entityBuilder.HasMany(x => x.EstadosEsperadosPaso)
+                .WithOne(ep => ep.TipoElemento)
+                .HasForeignKey(x => x.CodTipoElemento);    
+
         }
     }
 }

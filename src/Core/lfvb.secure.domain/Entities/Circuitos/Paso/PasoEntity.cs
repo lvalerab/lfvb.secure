@@ -6,6 +6,7 @@ using lfvb.secure.domain.Entities.Circuitos.PasoAccion;
 using lfvb.secure.domain.Entities.Circuitos.PasoSiguiente;
 using lfvb.secure.domain.Entities.Circuitos.PermisoPasoGrupo;
 using lfvb.secure.domain.Entities.Circuitos.PermisoPasoUsuario;
+using lfvb.secure.domain.Entities.EstadoEsperadoPaso;
 
 namespace lfvb.secure.domain.Entities.Circuitos.Paso
 {
@@ -33,5 +34,7 @@ namespace lfvb.secure.domain.Entities.Circuitos.Paso
         public ICollection<PasoSiguienteEntity> PasosSiguientes { get; set; }
 
         public ICollection<EstadoElementoEntity> EstadosElementos { get; set; }
+
+        public ICollection<EstadoEsperadoPasoEntity> EstadosEsperadosPaso { get; set; }
     }
 }

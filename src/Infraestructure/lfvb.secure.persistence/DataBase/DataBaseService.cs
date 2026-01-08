@@ -19,6 +19,8 @@ using lfvb.secure.domain.Entities.Circuitos.Tramite;
 using lfvb.secure.domain.Entities.Credencial;
 using lfvb.secure.domain.Entities.Elemento;
 using lfvb.secure.domain.Entities.ElementoAplicacion;
+using lfvb.secure.domain.Entities.EstadoEsperadoPaso;
+using lfvb.secure.domain.Entities.GrupoUnidadOrganizativa;
 using lfvb.secure.domain.Entities.GrupoUsuarioAplicacion;
 using lfvb.secure.domain.Entities.PasswordCredencial;
 using lfvb.secure.domain.Entities.Propiedad;
@@ -33,12 +35,16 @@ using lfvb.secure.domain.Entities.TipoElemento;
 using lfvb.secure.domain.Entities.TipoElementoAplicacion;
 using lfvb.secure.domain.Entities.TipoPermisoElementoAplicacion;
 using lfvb.secure.domain.Entities.TipoPropiedad;
+using lfvb.secure.domain.Entities.TipoUnidadOrganizativa;
 using lfvb.secure.domain.Entities.TokenCredencial;
+using lfvb.secure.domain.Entities.UnidadOrganizativa;
+using lfvb.secure.domain.Entities.UnidadOrganizativaElemento;
 using lfvb.secure.domain.Entities.Usuario;
 using lfvb.secure.domain.Entities.ValorPropiedadElemento;
 using lfvb.secure.domain.Entities.Views.VWElemento;
 using lfvb.secure.persistence.Configuraciones;
 using lfvb.secure.persistence.Configuraciones.Circuitos;
+using lfvb.secure.persistence.Configuraciones.UnidadesOrganizativas;
 using lfvb.secure.persistence.Configuraciones.Views;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -71,6 +77,7 @@ namespace lfvb.secure.persistence.DataBase
         public DbSet<TipoPermisoElementoAplicacionEntity> TiposPermisosTipoElementosAplicaciones { get; set; }
         public DbSet<RelacionGrupoUsuarioElementoAplicacionTipoPermisoAplicacionEntity> RelacionElementosConTiposPermisosConGruposUsuarios { get; set; }
 
+        #region "Circuitos"
         //Circuitos 
         public DbSet<AccionEntity> Acciones { get; set; }   
         public DbSet<AccionTipoElementoEntity> AccionesTiposElementos { get; set; } 
@@ -88,7 +95,9 @@ namespace lfvb.secure.persistence.DataBase
         public DbSet<TramiteEntity> Tramites { get; set; }  
         public DbSet<PasoSiguienteEntity> PasosSiguientes { get; set; }
         public DbSet<BandejaTramiteEntity> BandejasTramites { get; set; }
-
+        public DbSet<EstadoElementoSiguienteEntity> EstadoElementoSiguientes { get; set; }
+        public DbSet<EstadoEsperadoPasoEntity> EstadosEsperadosPasos { get; set; }
+        #endregion
 
         #region "Gestion de propiedades de los elementos"
         public DbSet<ElementoEntity> Elementos { get; set; }
@@ -99,6 +108,13 @@ namespace lfvb.secure.persistence.DataBase
         public DbSet<TipoElementoEntity> TiposElementos { get; set; }
         public DbSet<RelacionTipoElementoPropiedadEntity> RelacionesTiposElementosPropiedades { get; set; }
         public DbSet<PropiedadValoresSqlEntity> PropiedadesValoresSql { get; set; }
+        #endregion
+
+        #region "Unidades organizativas"
+        public DbSet<TipoUnidadOrganizativaEntity> TiposUnidadesOrganizativas { get; set; } 
+        public DbSet<UnidadOrganizativaEntity> UnidadesOrganizativas { get; set; }  
+        public DbSet<GrupoUnidadOrganizativaEntity> GruposUnidadesOrganizativas { get; set; }
+        public DbSet<UnidadOrganizativaElementoEntity> UnidadesOrganizativasElementos { get; set; }
         #endregion
 
 
@@ -155,6 +171,16 @@ namespace lfvb.secure.persistence.DataBase
             new TramiteConfiguration(modelBuilder.Entity<TramiteEntity>());
             new PasoSiguienteConfiguration(modelBuilder.Entity<PasoSiguienteEntity>()); 
             new BandejaTramiteConfiguration(modelBuilder.Entity<BandejaTramiteEntity>());   
+            new EstadoElementoSiguienteConfiguration(modelBuilder.Entity<EstadoElementoSiguienteEntity>());
+            new EstadoEsperadoPasoConfiguration(modelBuilder.Entity<EstadoEsperadoPasoEntity>());
+
+
+            #region "Unidades organizativas"
+            new TipoUnidadOrganizativaConfiguration(modelBuilder.Entity<TipoUnidadOrganizativaEntity>());
+            new UnidadOrganizativaConfiguration(modelBuilder.Entity<UnidadOrganizativaEntity>());
+            new GrupoUnidadOrganizativaConfiguration(modelBuilder.Entity<GrupoUnidadOrganizativaEntity>());
+            new UnidadOrganizativaElementoConfiguration(modelBuilder.Entity<UnidadOrganizativaElementoEntity>());
+            #endregion
 
 
             new VWElementoConfiguration(modelBuilder.Entity<VWElementoEntity>());

@@ -2,6 +2,7 @@
 using lfvb.secure.aplication.Database.Circuitos.BandejaTramites.Models;
 using lfvb.secure.aplication.Database.Circuitos.Circuitos.Models;
 using lfvb.secure.aplication.Database.Grupos.Models;
+using lfvb.secure.aplication.Database.TipoElemento.Models;
 using lfvb.secure.aplication.Database.Usuario.Models;
 using lfvb.secure.aplication.Interfaces;
 using lfvb.secure.domain.Entities.Usuario;
@@ -165,6 +166,28 @@ namespace lfvb.secure.aplication.Database.Circuitos.Circuitos.Queries.Pasos
                                                      Id = gr.Id,
                                                      Nombre = gr.Nombre
                                                  }).ToListAsync();
+
+                paso.EstadosEsperados = await (from eep in _db.EstadosEsperadosPasos
+                                               .Include(eep=>eep.TipoElemento)
+                                               .Include(eep=>eep.Estado)
+                                              where eep.IdPaso == paso.Id
+                                              select new EstadoEsperadoPasoModel
+                                              {
+                                                  Paso = paso,
+                                                  TipoElemento = new TipoElementoModel
+                                                  {
+                                                      Codigo = eep.TipoElemento.Codigo,
+                                                      Nombre = eep.TipoElemento.Nombre
+                                                  },
+                                                  Estado = new EstadoModel
+                                                  {
+                                                      Codigo = eep.Estado.Codigo,
+                                                      Nombre = eep.Estado.Nombre,
+                                                      Descripcion = eep.Estado.Descripcion
+                                                  },
+                                                  TipoEstadoEsperado = eep.TipoEstadoEsperado
+                                              }).ToListAsync();
+
             }
 
             return paso;

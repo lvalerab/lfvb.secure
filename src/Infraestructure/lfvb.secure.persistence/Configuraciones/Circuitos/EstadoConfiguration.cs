@@ -28,6 +28,10 @@ namespace lfvb.secure.persistence.Configuraciones.Circuitos
             builder.HasMany(x => x.PasosSiguientes)
                 .WithOne(e => e.EstadoSiguiente)
                 .HasForeignKey(e => e.CodEstadoSiguiente);
+
+            builder.HasMany(x => x.EstadosEsperadosPaso)
+                .WithOne(ep => ep.Estado)
+                .HasForeignKey(x => x.CodEstado);
         }
     }
 }
