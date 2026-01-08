@@ -15,6 +15,7 @@ namespace lfvb.secure.domain.Entities.TipoPropiedad
         public String Historico { get; set; }
         public String Intervalo { get; set; }
         public String Tipo { get; set; }
+        public String ListaValores { get; set; }
 
 
         public virtual ICollection<PropiedadEntity>? Propiedades { get; set; }

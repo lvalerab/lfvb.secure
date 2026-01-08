@@ -40,6 +40,11 @@ namespace lfvb.secure.persistence.Configuraciones
                 .WithOne(x=>x.Propiedad)
                 .HasForeignKey(x=>x.CodigoPropiedad);
 
+            builder
+                .HasMany(x => x.ValoresSql)
+                .WithOne(x => x.Propiedad)
+                .HasForeignKey(x => x.Codigo);
+
 
         }
     }

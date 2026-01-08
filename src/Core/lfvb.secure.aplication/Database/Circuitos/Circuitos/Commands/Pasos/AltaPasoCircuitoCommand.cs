@@ -3,6 +3,7 @@ using lfvb.secure.aplication.Database.Circuitos.Circuitos.Models;
 using lfvb.secure.aplication.Interfaces;
 using lfvb.secure.domain.Entities.Circuitos.Paso;
 using lfvb.secure.domain.Entities.Elemento;
+using lfvb.secure.domain.Entities.EstadoEsperadoPaso;
 
 
 namespace lfvb.secure.aplication.Database.Circuitos.Circuitos.Commands.Pasos
@@ -46,6 +47,22 @@ namespace lfvb.secure.aplication.Database.Circuitos.Circuitos.Commands.Pasos
             };
 
             await _db.Pasos.AddAsync(pasoEntity);
+
+            //Si tiene estados esperados los agregamos
+            if (pasoModel.EstadosEsperados != null && pasoModel.EstadosEsperados.Count > 0)
+            {
+                foreach (var estadoEsperado in pasoModel.EstadosEsperados)
+                {
+                    EstadoEsperadoPasoEntity estadoEsperadoEntity = new EstadoEsperadoPasoEntity
+                    {
+                        IdPaso = pasoEntity.Id,
+                        CodTipoElemento = estadoEsperado.TipoElemento.Codigo,
+                        CodEstado = estadoEsperado.Estado.Codigo,
+                        TipoEstadoEsperado = estadoEsperado.TipoEstadoEsperado
+                    };
+                    await _db.EstadosEsperadosPasos.AddAsync(estadoEsperadoEntity);
+                }
+            }
 
             await _db.SaveAsync();
 

@@ -2,6 +2,7 @@
 using lfvb.secure.domain.Entities.Circuitos.Circuito;
 using lfvb.secure.domain.Entities.Circuitos.TipoElementoCircuito;
 using lfvb.secure.domain.Entities.Elemento;
+using lfvb.secure.domain.Entities.EstadoEsperadoPaso;
 using lfvb.secure.domain.Entities.RelacionTipoElementoPropiedad;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,6 @@ namespace lfvb.secure.domain.Entities.TipoElemento
         public ICollection<TipoElementoCircuitoEntity> RelacionCircuitos { get; set; }  
         public ICollection<AccionTipoElementoEntity> Acciones { get; set; }
 
-
+        public ICollection<EstadoEsperadoPasoEntity> EstadosEsperadosPaso { get; set; }
     }
 }

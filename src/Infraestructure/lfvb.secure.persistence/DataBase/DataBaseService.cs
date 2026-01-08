@@ -3,6 +3,7 @@ using lfvb.secure.domain.Entities.Aplicacion;
 using lfvb.secure.domain.Entities.Circuitos.Accion;
 using lfvb.secure.domain.Entities.Circuitos.AccionTipoElemento;
 using lfvb.secure.domain.Entities.Circuitos.AccionUsuario;
+using lfvb.secure.domain.Entities.Circuitos.BandejaTramite;
 using lfvb.secure.domain.Entities.Circuitos.Circuito;
 using lfvb.secure.domain.Entities.Circuitos.Estado;
 using lfvb.secure.domain.Entities.Circuitos.EstadoElemento;
@@ -18,10 +19,13 @@ using lfvb.secure.domain.Entities.Circuitos.Tramite;
 using lfvb.secure.domain.Entities.Credencial;
 using lfvb.secure.domain.Entities.Elemento;
 using lfvb.secure.domain.Entities.ElementoAplicacion;
+using lfvb.secure.domain.Entities.EstadoEsperadoPaso;
+using lfvb.secure.domain.Entities.GrupoUnidadOrganizativa;
 using lfvb.secure.domain.Entities.GrupoUsuarioAplicacion;
 using lfvb.secure.domain.Entities.PasswordCredencial;
 using lfvb.secure.domain.Entities.Propiedad;
 using lfvb.secure.domain.Entities.PropiedadElemento;
+using lfvb.secure.domain.Entities.PropiedadValoresSql;
 using lfvb.secure.domain.Entities.RelacionGrupoUsuarioElementoAplicacionTipoPermisoAplicacion;
 using lfvb.secure.domain.Entities.RelacionTipoElementoPropiedad;
 using lfvb.secure.domain.Entities.RelacionTipoElementoTipoPermiso;
@@ -31,12 +35,16 @@ using lfvb.secure.domain.Entities.TipoElemento;
 using lfvb.secure.domain.Entities.TipoElementoAplicacion;
 using lfvb.secure.domain.Entities.TipoPermisoElementoAplicacion;
 using lfvb.secure.domain.Entities.TipoPropiedad;
+using lfvb.secure.domain.Entities.TipoUnidadOrganizativa;
 using lfvb.secure.domain.Entities.TokenCredencial;
+using lfvb.secure.domain.Entities.UnidadOrganizativa;
+using lfvb.secure.domain.Entities.UnidadOrganizativaElemento;
 using lfvb.secure.domain.Entities.Usuario;
 using lfvb.secure.domain.Entities.ValorPropiedadElemento;
 using lfvb.secure.domain.Entities.Views.VWElemento;
 using lfvb.secure.persistence.Configuraciones;
 using lfvb.secure.persistence.Configuraciones.Circuitos;
+using lfvb.secure.persistence.Configuraciones.UnidadesOrganizativas;
 using lfvb.secure.persistence.Configuraciones.Views;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -69,6 +77,7 @@ namespace lfvb.secure.persistence.DataBase
         public DbSet<TipoPermisoElementoAplicacionEntity> TiposPermisosTipoElementosAplicaciones { get; set; }
         public DbSet<RelacionGrupoUsuarioElementoAplicacionTipoPermisoAplicacionEntity> RelacionElementosConTiposPermisosConGruposUsuarios { get; set; }
 
+        #region "Circuitos"
         //Circuitos 
         public DbSet<AccionEntity> Acciones { get; set; }   
         public DbSet<AccionTipoElementoEntity> AccionesTiposElementos { get; set; } 
@@ -85,7 +94,10 @@ namespace lfvb.secure.persistence.DataBase
         public DbSet<TipoElementoCircuitoEntity> TiposElementosCircuitos { get; set; }  
         public DbSet<TramiteEntity> Tramites { get; set; }  
         public DbSet<PasoSiguienteEntity> PasosSiguientes { get; set; }
-
+        public DbSet<BandejaTramiteEntity> BandejasTramites { get; set; }
+        public DbSet<EstadoElementoSiguienteEntity> EstadoElementoSiguientes { get; set; }
+        public DbSet<EstadoEsperadoPasoEntity> EstadosEsperadosPasos { get; set; }
+        #endregion
 
         #region "Gestion de propiedades de los elementos"
         public DbSet<ElementoEntity> Elementos { get; set; }
@@ -95,6 +107,14 @@ namespace lfvb.secure.persistence.DataBase
         public DbSet<ValorPropiedadElementoEntity> ValoresPropiedadesElementos { get; set; }
         public DbSet<TipoElementoEntity> TiposElementos { get; set; }
         public DbSet<RelacionTipoElementoPropiedadEntity> RelacionesTiposElementosPropiedades { get; set; }
+        public DbSet<PropiedadValoresSqlEntity> PropiedadesValoresSql { get; set; }
+        #endregion
+
+        #region "Unidades organizativas"
+        public DbSet<TipoUnidadOrganizativaEntity> TiposUnidadesOrganizativas { get; set; } 
+        public DbSet<UnidadOrganizativaEntity> UnidadesOrganizativas { get; set; }  
+        public DbSet<GrupoUnidadOrganizativaEntity> GruposUnidadesOrganizativas { get; set; }
+        public DbSet<UnidadOrganizativaElementoEntity> UnidadesOrganizativasElementos { get; set; }
         #endregion
 
 
@@ -128,6 +148,7 @@ namespace lfvb.secure.persistence.DataBase
             new ElementoConfiguration(modelBuilder.Entity<ElementoEntity>());
             new TipoPropiedadConfiguracion(modelBuilder.Entity<TipoPropiedadEntity>());
             new PropiedadConfiguration(modelBuilder.Entity<PropiedadEntity>());
+            new PropiedadValoresSqlConfiguration(modelBuilder.Entity<PropiedadValoresSqlEntity>()); 
             new PropiedadElementoConfiguration(modelBuilder.Entity<PropiedadElementoEntity>());
             new ValorPropiedadElementoConfiguration(modelBuilder.Entity<ValorPropiedadElementoEntity>());
             new TipoElementoConfiguration(modelBuilder.Entity<TipoElementoEntity>());
@@ -149,6 +170,17 @@ namespace lfvb.secure.persistence.DataBase
             new TipoElementoCircuitoConfiguration(modelBuilder.Entity<TipoElementoCircuitoEntity>());   
             new TramiteConfiguration(modelBuilder.Entity<TramiteEntity>());
             new PasoSiguienteConfiguration(modelBuilder.Entity<PasoSiguienteEntity>()); 
+            new BandejaTramiteConfiguration(modelBuilder.Entity<BandejaTramiteEntity>());   
+            new EstadoElementoSiguienteConfiguration(modelBuilder.Entity<EstadoElementoSiguienteEntity>());
+            new EstadoEsperadoPasoConfiguration(modelBuilder.Entity<EstadoEsperadoPasoEntity>());
+
+
+            #region "Unidades organizativas"
+            new TipoUnidadOrganizativaConfiguration(modelBuilder.Entity<TipoUnidadOrganizativaEntity>());
+            new UnidadOrganizativaConfiguration(modelBuilder.Entity<UnidadOrganizativaEntity>());
+            new GrupoUnidadOrganizativaConfiguration(modelBuilder.Entity<GrupoUnidadOrganizativaEntity>());
+            new UnidadOrganizativaElementoConfiguration(modelBuilder.Entity<UnidadOrganizativaElementoEntity>());
+            #endregion
 
 
             new VWElementoConfiguration(modelBuilder.Entity<VWElementoEntity>());
@@ -160,6 +192,17 @@ namespace lfvb.secure.persistence.DataBase
             base.OnModelCreating(modelBuilder);
             EntityConfiguration(modelBuilder);
         }
-        
+
+        public IQueryable<T> FromSql<T>(string sql, params object?[] parametros) where T : class
+        {
+            List<string> palabrasProhibidas = new List<string> { "DELETE", "INSERT", "UPDATE", "DROP", "ALTER", "--", ";" };
+            //Comprobamos que la consulta no contenga palabras prohibidas
+            bool contienePalabraProhibida = palabrasProhibidas.Any(palabra => sql.ToUpper().Contains(palabra));
+            if (contienePalabraProhibida)
+            {
+                throw new InvalidOperationException("La consulta SQL contiene palabras prohibidas.");
+            }
+            return this.Database.SqlQueryRaw<T>(sql, parametros);  
+        }
     }
 }

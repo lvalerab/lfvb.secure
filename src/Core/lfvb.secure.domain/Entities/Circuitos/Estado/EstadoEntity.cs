@@ -1,5 +1,6 @@
 ﻿using lfvb.secure.domain.Entities.Circuitos.EstadoElemento;
 using lfvb.secure.domain.Entities.Circuitos.Paso;
+using lfvb.secure.domain.Entities.EstadoEsperadoPaso;
 
 namespace lfvb.secure.domain.Entities.Circuitos.Estado
 {
@@ -12,5 +13,6 @@ namespace lfvb.secure.domain.Entities.Circuitos.Estado
         public ICollection<PasoEntity> Pasos { get; set; }
         public ICollection<PasoEntity> PasosSiguientes { get; set; }
         public ICollection<EstadoElementoEntity> EstadosElemento { get; set; }
+        public ICollection<EstadoEsperadoPasoEntity> EstadosEsperadosPaso { get; set; }
     }
 }

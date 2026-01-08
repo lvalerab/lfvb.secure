@@ -14,10 +14,12 @@ using lfvb.secure.aplication.Database.Grupos.Queries.GetGruposUsuario;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetUsuariosGrupo;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetAllPropiedades;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetPropiedadesElemento;
+using lfvb.secure.aplication.Database.Propiedades.Queries.GetValoresSqlPropiedad;
 using lfvb.secure.aplication.Database.TipoCrendecial.Queries.GetAllTiposCredenciales;
 using lfvb.secure.aplication.Database.TipoElemento.Queries;
 using lfvb.secure.aplication.Database.TipoElementoAplicacion.Queries.GetAllTiposElementosAplicacion;
 using lfvb.secure.aplication.Database.TipoPropiedad.Queries;
+using lfvb.secure.aplication.Database.UnidadesOrganizativas;
 using lfvb.secure.aplication.Database.Usuario.Queries.ElementosUsuario;
 using lfvb.secure.aplication.Database.Usuario.Queries.GetAllUsuarios;
 using lfvb.secure.aplication.Database.Usuario.Queries.GetCredencialesUsuario;
@@ -76,6 +78,7 @@ namespace lfvb.secure.aplication.Database
             #region "Querys de propiedades"
             services.AddTransient<IGetAllPropiedadesQuery, GetAllPropiedadesQuery>();
             services.AddTransient<IGetPropiedadesElementoQuery, GetPropiedadElementoQuery>();
+            services.AddTransient<IGetValoresSqlPropiedadQuery, GetValoresSqlPropiedadQuery>(); 
             #endregion
 
             #region "Querys de vistas"
@@ -91,6 +94,8 @@ namespace lfvb.secure.aplication.Database
             #endregion
 
             CircuitosDependencyInjection.AddQuerys(services);   
+
+            UnidadesOrganizativasDependencyInjection.AddQuerys(services);
 
 
             return services;

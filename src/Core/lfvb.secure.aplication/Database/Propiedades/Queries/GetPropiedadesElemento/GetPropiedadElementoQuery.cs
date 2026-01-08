@@ -45,7 +45,12 @@ namespace lfvb.secure.aplication.Database.Propiedades.Queries.GetPropiedadesElem
                                                                     TipoPropiedad = new TipoPropiedadModel
                                                                     {
                                                                         Codigo = p.Propiedad.TipoPropiedad.Codigo,
-                                                                        Nombre = p.Propiedad.TipoPropiedad.Nombre
+                                                                        Nombre = p.Propiedad.TipoPropiedad.Nombre,
+                                                                        Historico = p.Propiedad.TipoPropiedad.Historico.Equals("S"),
+                                                                        Intervalo = p.Propiedad.TipoPropiedad.Intervalo.Equals("S"),
+                                                                        ListaValores = p.Propiedad.TipoPropiedad.ListaValores.Equals("S"),
+                                                                        Multiple = p.Propiedad.TipoPropiedad.Multiple.Equals("S"),
+                                                                        Tipo = p.Propiedad.TipoPropiedad.Tipo
                                                                     }
                                                                 },
                                                                 FechaValor = p.FechaValor,
@@ -88,7 +93,12 @@ namespace lfvb.secure.aplication.Database.Propiedades.Queries.GetPropiedadesElem
                                                                      TipoPropiedad = new TipoPropiedadModel
                                                                      {
                                                                          Codigo = p.Propiedad.TipoPropiedad.Codigo,
-                                                                         Nombre = p.Propiedad.TipoPropiedad.Nombre
+                                                                         Nombre = p.Propiedad.TipoPropiedad.Nombre,
+                                                                         Historico = p.Propiedad.TipoPropiedad.Historico.Equals("S"),
+                                                                         Intervalo = p.Propiedad.TipoPropiedad.Intervalo.Equals("S"),
+                                                                         ListaValores = p.Propiedad.TipoPropiedad.ListaValores.Equals("S"),
+                                                                         Multiple = p.Propiedad.TipoPropiedad.Multiple.Equals("S"),
+                                                                         Tipo = p.Propiedad.TipoPropiedad.Tipo
                                                                      }
                                                                  },
                                                                  FechaValor = p.FechaValor,
@@ -131,7 +141,12 @@ namespace lfvb.secure.aplication.Database.Propiedades.Queries.GetPropiedadesElem
                                                                      TipoPropiedad = new TipoPropiedadModel
                                                                      {
                                                                          Codigo = p.Propiedad.TipoPropiedad.Codigo,
-                                                                         Nombre = p.Propiedad.TipoPropiedad.Nombre
+                                                                         Nombre = p.Propiedad.TipoPropiedad.Nombre,
+                                                                         Historico = p.Propiedad.TipoPropiedad.Historico.Equals("S"),
+                                                                         Intervalo = p.Propiedad.TipoPropiedad.Intervalo.Equals("S"),
+                                                                         ListaValores = p.Propiedad.TipoPropiedad.ListaValores.Equals("S"),
+                                                                         Multiple = p.Propiedad.TipoPropiedad.Multiple.Equals("S"),
+                                                                         Tipo = p.Propiedad.TipoPropiedad.Tipo
                                                                      }
                                                                  },
                                                                  FechaValor = p.FechaValor,

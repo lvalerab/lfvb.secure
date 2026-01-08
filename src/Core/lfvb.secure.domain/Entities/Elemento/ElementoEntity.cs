@@ -1,6 +1,7 @@
 ﻿using lfvb.secure.domain.Entities.Circuitos.EstadoElemento;
 using lfvb.secure.domain.Entities.PropiedadElemento;
 using lfvb.secure.domain.Entities.TipoElemento;
+using lfvb.secure.domain.Entities.UnidadOrganizativaElemento;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,7 @@ namespace lfvb.secure.domain.Entities.Elemento
         public ICollection<PropiedadElementoEntity>? Propiedades { get; set; }
 
         public ICollection<EstadoElementoEntity> Estados { get; set; }
+
+        public ICollection<UnidadOrganizativaElementoEntity> UnidadesOrganizativas { get; set; }
     }
 }

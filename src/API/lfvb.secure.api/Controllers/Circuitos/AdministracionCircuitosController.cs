@@ -4,6 +4,8 @@ using lfvb.secure.aplication.Database.Circuitos.Acciones.Models;
 using lfvb.secure.aplication.Database.Circuitos.Acciones.Queries;
 using lfvb.secure.aplication.Database.Circuitos.AccionesPasos.Models;
 using lfvb.secure.aplication.Database.Circuitos.AccionesPasos.Queries;
+using lfvb.secure.aplication.Database.Circuitos.BandejaTramites.Models;
+using lfvb.secure.aplication.Database.Circuitos.BandejaTramites.Queries;
 using lfvb.secure.aplication.Database.Circuitos.Circuitos.Commands;
 using lfvb.secure.aplication.Database.Circuitos.Circuitos.Commands.Pasos;
 using lfvb.secure.aplication.Database.Circuitos.Circuitos.Models;
@@ -38,6 +40,7 @@ namespace lfvb.secure.api.Controllers.Circuitos
         private IGetCircuitosQuery _cmdGetCircuitosQuery;
         private IGetCircuitoQuery _cmdGetCircuitoQuery;
         private IAltaCircuitoCommand _cmdAltaCircuitoCommand;
+        private IModificacionCircuitoCommand _cmdModificarCircuitoCommand; 
 
         private IGetPasosCircuitoQuery _qryPasosCircuito;
         private IGetPasoCircuitoQuery _qryPasoCircuito;
@@ -52,6 +55,9 @@ namespace lfvb.secure.api.Controllers.Circuitos
         private IGetAllAccionesQuery _qryAllAcciones; 
         
         private IGetAccionesPasoQuery _qryAccionesPaso;
+
+
+        private IListaBandejasSistemaQuery _qryListaBandejas;
 
         /// <summary>
         /// Controlador para aministrar los circuitos de tramitacion, necesita permisos en ADM_GEST_CIRCUITOS
@@ -81,12 +87,14 @@ namespace lfvb.secure.api.Controllers.Circuitos
                                                  IGetPasosCircuitoQuery qryPasosCircuito,
                                                  IGetPasoCircuitoQuery qryPasoCircuito,
                                                  IAltaPasoCircuitoCommand cmdAltaPasoCircuitoCommand,
+                                                 IModificacionCircuitoCommand  cmdModificarCircuitoCommand,
                                                  IModificarPasoCircuitoCommand cmdModificarPasoCircuitoCommand,  
                                                  IEliminarPasoCircuitoCommand cmdEliminarPasoCircuitoCommand,
                                                  IAltaPasoSiguienteCircuitoCommand cmdAltaPasoSiguienteCommando,
                                                  IEliminarPasosSiguienteCircuitoCommand cmdEliminarPasosSiguientesCommando,
                                                  IGetAllAccionesQuery qryAllAcciones,
-                                                 IGetAccionesPasoQuery qryAccionesPaso
+                                                 IGetAccionesPasoQuery qryAccionesPaso,
+                                                 IListaBandejasSistemaQuery qryListaBandejas
             )
         {
             _logger = logger;
@@ -98,6 +106,7 @@ namespace lfvb.secure.api.Controllers.Circuitos
             _cmdGetCircuitosQuery = cmdGetCircuitosQuery;
             _cmdGetCircuitoQuery = cmdGetCircuitoQuery; 
             _cmdAltaCircuitoCommand = cmdAltaCircuitoCommand;
+            _cmdModificarCircuitoCommand = cmdModificarCircuitoCommand;
             _qryPasoCircuito = qryPasoCircuito;
             _qryPasosCircuito= qryPasosCircuito;
             _qryPasoCircuito = qryPasoCircuito;
@@ -108,6 +117,7 @@ namespace lfvb.secure.api.Controllers.Circuitos
             _cmdEliminarPasosSiguientesCommando = cmdEliminarPasosSiguientesCommando;
             _qryAllAcciones = qryAllAcciones;
             _qryAccionesPaso = qryAccionesPaso;
+            _qryListaBandejas = qryListaBandejas;
         }
 
         #region "Relativos a los tramites de la aplicacion"
@@ -329,6 +339,29 @@ namespace lfvb.secure.api.Controllers.Circuitos
             }
         }
 
+        /// <summary>
+        /// Metedo para modificar un circuito existente, requiere permisos en [ADM_GEST_CIRCUITOS, SW_MOD_ADM_CIRC_MOD, LLSWEP] 
+        /// </summary>
+        /// <param name="modelo"></param>
+        /// <returns></returns>
+        [HttpPut("circuitos/modificacion")]
+        [Authorize]
+        [DbAuthorize("ADM_GEST_CIRCUITOS", "SW_MOD_ADM_CIRC_MOD", "LLSWEP")]
+        public async Task<IActionResult> ModificacionCircuito(CircuitoModel modelo)
+        {
+            try
+            {
+                CircuitoModel? modificado = await _cmdModificarCircuitoCommand.execute(modelo);
+                if (modificado == null)
+                    return NotFound();
+                return Ok(modificado);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
 
         /// <summary>
         /// Obtiene los pasos de un circuito determinado
@@ -534,6 +567,29 @@ namespace lfvb.secure.api.Controllers.Circuitos
             try
             {
                 List<AccionPasoModel> lista = await this._qryAccionesPaso.execute(pasoId);
+                return Ok(lista);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        #endregion
+
+        #region "Relativos a las bandejas de tramites del sistema"
+        /// <summary>
+        /// Obtiene el listado de bandejas de tramites del sistema  
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("bandejas")]
+        [Authorize]
+        public async Task<IActionResult> GetBandejasSistema()
+        {
+            try
+            {
+                List<BandejaTramiteModel> lista = await this._qryListaBandejas.execute();
                 return Ok(lista);
             }
             catch (Exception ex)

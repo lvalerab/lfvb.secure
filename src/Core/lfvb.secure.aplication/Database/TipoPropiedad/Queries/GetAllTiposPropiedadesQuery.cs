@@ -30,7 +30,8 @@ namespace lfvb.secure.aplication.Database.TipoPropiedad.Queries
                                                         Multiple = tp.Multiple.Equals("S"),
                                                         Historico = tp.Historico.Equals("S"),
                                                         Intervalo = tp.Intervalo.Equals("S"),
-                                                        Tipo = tp.Tipo
+                                                        Tipo = tp.Tipo,
+                                                        ListaValores = tp.ListaValores.Equals("S")
                                                     }).ToListAsync<TipoPropiedadModel>();
             return tipos;
         }

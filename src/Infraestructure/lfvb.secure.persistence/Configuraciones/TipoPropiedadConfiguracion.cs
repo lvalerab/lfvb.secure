@@ -23,7 +23,8 @@ namespace lfvb.secure.persistence.Configuraciones
             builder.Property(x => x.Historico).HasColumnName("HISTO").IsRequired().HasMaxLength(1).HasDefaultValue("N");
             builder.Property(x => x.Intervalo).HasColumnName("INTERVALO").IsRequired().HasMaxLength(1).HasDefaultValue("N");
             builder.Property(x => x.Tipo).HasColumnName("TIPO_VALOR").IsRequired();
-            
+            builder.Property(x => x.ListaValores).HasColumnName("VALORES_SQL").IsRequired().HasMaxLength(1).HasDefaultValue("N");
+
             builder.HasMany(x => x.Propiedades)
                 .WithOne(x => x.TipoPropiedad)
                 .HasForeignKey(x => x.CodTipoPropiedad);

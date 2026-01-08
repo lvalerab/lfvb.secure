@@ -29,17 +29,18 @@ namespace lfvb.secure.aplication.Database.Circuitos.Circuitos.Commands.Pasos
             {
                 foreach (var idPasoSiguiente in idsPasosSiguientes)
                 {
-                    if (!await _db.PasosSiguientes.AnyAsync(ps => ps.IdPaso == idPaso && ps.IdPasoSiguiente == idPasoSiguiente))
+                  
+                    var pasoSiguienteEntity = new PasoSiguienteEntity
                     {
-                        var pasoSiguienteEntity = new PasoSiguienteEntity
-                        {
-                            IdPaso = idPaso,
-                            IdPasoSiguiente = idPasoSiguiente
-                        };
-                        await _db.PasosSiguientes.Where(ps => ps.IdPaso == idPaso && ps.IdPasoSiguiente == idPasoSiguiente)
-                            .ExecuteDeleteAsync();
+                        IdPaso = idPaso,
+                        IdPasoSiguiente = idPasoSiguiente
+                    };
+                    var encontrado= await _db.PasosSiguientes.FirstOrDefaultAsync(ps => ps.IdPaso == idPaso && ps.IdPasoSiguiente == idPasoSiguiente);
+                    if (encontrado != null) { 
+                        _db.PasosSiguientes.Remove(encontrado);
                         pasosSiguientesEliminados.Add(idPasoSiguiente);
                     }
+                  
                 }
             }
             await _db.SaveAsync();

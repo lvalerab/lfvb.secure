@@ -8,6 +8,7 @@ using lfvb.secure.aplication.Database.Elementos;
 using lfvb.secure.aplication.Database.Grupos.Commands.ActualizaGrupoUsuariosPerisos;
 using lfvb.secure.aplication.Database.Grupos.Commands.AltaGrupoUsuariosPermisos;
 using lfvb.secure.aplication.Database.Propiedades.Commands.NuevaPropiedadElemento;
+using lfvb.secure.aplication.Database.UnidadesOrganizativas;
 using lfvb.secure.aplication.Database.Usuario.Commands.ActualizaUsuario;
 using lfvb.secure.aplication.Database.Usuario.Commands.AgregarGrupoPermisosUsuario;
 using lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario;
@@ -61,6 +62,8 @@ namespace lfvb.secure.aplication.Database
             #endregion
 
             CircuitosDependencyInjection.AddCommands(services);
+
+            UnidadesOrganizativasDependencyInjection.AddCommands(services);
 
             return services;
         }

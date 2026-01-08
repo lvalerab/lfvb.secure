@@ -39,6 +39,7 @@ namespace lfvb.secure.aplication.Database.Propiedades.Queries.GetAllPropiedades
                                                 Historico = p.TipoPropiedad.Historico == "S",
                                                 Intervalo = p.TipoPropiedad.Intervalo == "S",
                                                 Multiple = p.TipoPropiedad.Multiple == "S",
+                                                ListaValores = p.TipoPropiedad.ListaValores == "S",
                                                 Tipo = p.TipoPropiedad.Tipo
                                             }
                                         }).ToListAsync<PropiedadModel>());

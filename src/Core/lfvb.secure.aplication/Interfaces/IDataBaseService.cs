@@ -2,6 +2,7 @@
 using lfvb.secure.domain.Entities.Circuitos.Accion;
 using lfvb.secure.domain.Entities.Circuitos.AccionTipoElemento;
 using lfvb.secure.domain.Entities.Circuitos.AccionUsuario;
+using lfvb.secure.domain.Entities.Circuitos.BandejaTramite;
 using lfvb.secure.domain.Entities.Circuitos.Circuito;
 using lfvb.secure.domain.Entities.Circuitos.Estado;
 using lfvb.secure.domain.Entities.Circuitos.EstadoElemento;
@@ -17,10 +18,13 @@ using lfvb.secure.domain.Entities.Circuitos.Tramite;
 using lfvb.secure.domain.Entities.Credencial;
 using lfvb.secure.domain.Entities.Elemento;
 using lfvb.secure.domain.Entities.ElementoAplicacion;
+using lfvb.secure.domain.Entities.EstadoEsperadoPaso;
+using lfvb.secure.domain.Entities.GrupoUnidadOrganizativa;
 using lfvb.secure.domain.Entities.GrupoUsuarioAplicacion;
 using lfvb.secure.domain.Entities.PasswordCredencial;
 using lfvb.secure.domain.Entities.Propiedad;
 using lfvb.secure.domain.Entities.PropiedadElemento;
+using lfvb.secure.domain.Entities.PropiedadValoresSql;
 using lfvb.secure.domain.Entities.RelacionGrupoUsuarioElementoAplicacionTipoPermisoAplicacion;
 using lfvb.secure.domain.Entities.RelacionTipoElementoPropiedad;
 using lfvb.secure.domain.Entities.RelacionTipoElementoTipoPermiso;
@@ -30,7 +34,10 @@ using lfvb.secure.domain.Entities.TipoElemento;
 using lfvb.secure.domain.Entities.TipoElementoAplicacion;
 using lfvb.secure.domain.Entities.TipoPermisoElementoAplicacion;
 using lfvb.secure.domain.Entities.TipoPropiedad;
+using lfvb.secure.domain.Entities.TipoUnidadOrganizativa;
 using lfvb.secure.domain.Entities.TokenCredencial;
+using lfvb.secure.domain.Entities.UnidadOrganizativa;
+using lfvb.secure.domain.Entities.UnidadOrganizativaElemento;
 using lfvb.secure.domain.Entities.Usuario;
 using lfvb.secure.domain.Entities.ValorPropiedadElemento;
 using lfvb.secure.domain.Entities.Views.VWElemento;
@@ -75,6 +82,9 @@ namespace lfvb.secure.aplication.Interfaces
         DbSet<TipoElementoCircuitoEntity> TiposElementosCircuitos { get; set; }
         DbSet<TramiteEntity> Tramites { get; set; }
         DbSet<PasoSiguienteEntity> PasosSiguientes { get; set; }
+        DbSet<BandejaTramiteEntity> BandejasTramites { get; set; }
+        DbSet<EstadoElementoSiguienteEntity> EstadoElementoSiguientes { get; set; }
+        DbSet<EstadoEsperadoPasoEntity> EstadosEsperadosPasos { get; set; } 
         #endregion
 
         #region "Modulo de propiedades"
@@ -85,6 +95,14 @@ namespace lfvb.secure.aplication.Interfaces
         DbSet<ValorPropiedadElementoEntity> ValoresPropiedadesElementos { get; set; }
         DbSet<TipoElementoEntity> TiposElementos { get; set; }
         DbSet<RelacionTipoElementoPropiedadEntity> RelacionesTiposElementosPropiedades { get; set; }
+        DbSet<PropiedadValoresSqlEntity> PropiedadesValoresSql { get; set; }
+        #endregion
+
+        #region "Unidades organizativas"
+        DbSet<TipoUnidadOrganizativaEntity> TiposUnidadesOrganizativas { get; set; }
+        DbSet<UnidadOrganizativaEntity> UnidadesOrganizativas { get; set; }
+        DbSet<GrupoUnidadOrganizativaEntity> GruposUnidadesOrganizativas { get; set; }
+        DbSet<UnidadOrganizativaElementoEntity> UnidadesOrganizativasElementos { get; set; }
         #endregion
 
         #region "Elementos de vistas"
@@ -92,5 +110,7 @@ namespace lfvb.secure.aplication.Interfaces
         #endregion
 
         Task<bool> SaveAsync();
+
+        IQueryable<T> FromSql<T>(string sql, params object?[] parametros) where T : class;   
     }
 }
