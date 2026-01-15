@@ -42,6 +42,7 @@ namespace lfvb.secure.api.Controllers.UnidadesOrganizativas
         /// </summary>
         /// <returns></returns>
         [HttpGet("tipos")]
+        [Authorize]
         public async Task<IActionResult> Hola()
         {
             var tipos = await _qryGetAllTiposUnidades.execute();
