@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using lfvb.secure.api.Atributos.Secure;
 using lfvb.secure.aplication.Database.UnidadesOrganizativas.Models;
 using lfvb.secure.aplication.Database.UnidadesOrganizativas.Commads.Tipos;
+using System.Threading.Tasks;
+using lfvb.secure.aplication.Database.UnidadesOrganizativas.Commads.Unidades;
 
 namespace lfvb.secure.api.Controllers.UnidadesOrganizativas
 {
@@ -23,15 +25,22 @@ namespace lfvb.secure.api.Controllers.UnidadesOrganizativas
         private IAltaTipoUnidadOrganizativaCommand _altaTipoUnidadOrganizativaCommand;
         private IModificarTipoUnidadOrganizativaCommand _modificacionTipoUnidadOrganizativaCommand;
 
+        private IAltaUnidadOrganizativaCommand _altaUnidadOrganizativaCommand;
+        private IModificarUnidadAdministrativaCommand _modificacionUnidadOrganizativaCommand;
+
         public AdministracionUnidadesOrganizativasController(ILogger<PermisosController> logger,
                                                              IJwtTokenUtils jwtTokenUtils,
                                                              IAltaTipoUnidadOrganizativaCommand altaTipoUnidadOrganizativaCommand,
-                                                             IModificarTipoUnidadOrganizativaCommand modificacionTipoUnidadOrganizativaCommand)
+                                                             IModificarTipoUnidadOrganizativaCommand modificacionTipoUnidadOrganizativaCommand,
+                                                             IAltaUnidadOrganizativaCommand altaUnidadOrganizativaCommand,
+                                                             IModificarUnidadAdministrativaCommand modificacionUnidadOrganizativaCommand  )
         {
             _logger = logger;
             _jwtTokenUtils = jwtTokenUtils;
             _altaTipoUnidadOrganizativaCommand = altaTipoUnidadOrganizativaCommand;
             _modificacionTipoUnidadOrganizativaCommand = modificacionTipoUnidadOrganizativaCommand;
+            _altaUnidadOrganizativaCommand = altaUnidadOrganizativaCommand;
+            _modificacionUnidadOrganizativaCommand = modificacionUnidadOrganizativaCommand;
         }
 
         /// <summary>
@@ -40,7 +49,8 @@ namespace lfvb.secure.api.Controllers.UnidadesOrganizativas
         /// <param name="tipo"></param>
         /// <returns></returns>
         [HttpPost("tipo/unidad")]
-        [DbAuthorize("MOD_ADM_UNOR", "SW_ALTA_TIPO_UNOR", "LLSWEB")]
+        [Authorize]
+        [DbAuthorize("MOD_ADM_UNOR", "SW_ALTA_TIPO_UNOR", "LLSWEP")]
         public async Task<IActionResult> AltaTipoUnidadOrganizativa([FromBody] TipoUnidadOrganizativaModel tipo)
         {
             try
@@ -61,7 +71,8 @@ namespace lfvb.secure.api.Controllers.UnidadesOrganizativas
         /// <param name="tipo"></param>
         /// <returns></returns>
         [HttpPut("tipo/unidad")]
-        [DbAuthorize("MOD_ADM_UNOR", "SW_MODI_TIPO_UNOR", "LLSWEB")]
+        [Authorize]
+        [DbAuthorize("MOD_ADM_UNOR", "SW_MODI_TIPO_UNOR", "LLSWEP")]
         public async Task<IActionResult> ModificacionTipoUnidadOrganizativa([FromBody] TipoUnidadOrganizativaModel tipo)
         {
             try
@@ -82,10 +93,19 @@ namespace lfvb.secure.api.Controllers.UnidadesOrganizativas
         /// <param name="unidad"></param>
         /// <returns></returns>
         [HttpPost("unidad")]
-        [DbAuthorize("MOD_ADM_UNOR", "SW_ALTA_UNOR", "LLSWEB")]
-        public IActionResult AltaUnidadOrganizativa([FromBody] UnidadOrganizativaModel unidad)
+        [Authorize]
+        [DbAuthorize("MOD_ADM_UNOR", "SW_ALTA_UNOR", "LLSWEP")]
+        public async Task<IActionResult> AltaUnidadOrganizativa([FromBody] UnidadOrganizativaModel unidad)
         {
-            return Ok();
+            try {
+                UnidadOrganizativaModel resultado =await  _altaUnidadOrganizativaCommand.execute(unidad);
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error al dar de alta la unidad organizativa: {0}", ex.Message);
+                return BadRequest(ex.Message);
+            }   
         }
 
         /// <summary>
@@ -94,10 +114,19 @@ namespace lfvb.secure.api.Controllers.UnidadesOrganizativas
         /// <param name="unidad"></param>
         /// <returns></returns>
         [HttpPut("unidad")]
-        [DbAuthorize("MOD_ADM_UNOR", "SW_MODI_UNOR", "LLSWEB")]
+        [Authorize]
+        [DbAuthorize("MOD_ADM_UNOR", "SW_MODI_UNOR", "LLSWEP")]
         public IActionResult ModificacionUnidadOrganizativa([FromBody] UnidadOrganizativaModel unidad)
         {
-            return Ok();
+            try {
+                UnidadOrganizativaModel resultado =  _modificacionUnidadOrganizativaCommand.execute(unidad).Result;
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error al modificar la unidad organizativa: {0}", ex.Message);
+                return BadRequest(ex.Message);
+            }   
         }
 
         /// <summary>
@@ -108,7 +137,8 @@ namespace lfvb.secure.api.Controllers.UnidadesOrganizativas
         /// <param name="CodUnor">The unique identifier of the organizational unit with which to associate the element.</param>
         /// <returns>An <see cref="IActionResult"/> indicating the result of the association operation.</returns>
         [HttpGet("unidad/{CodUnor:guid}/elemento/{IdElemento:guid}")]
-        [DbAuthorize("MOD_ADM_UNOR","SW_ASOC_ELEM_UNOR", "LLSWEB")]
+        [Authorize]
+        [DbAuthorize("MOD_ADM_UNOR","SW_ASOC_ELEM_UNOR", "LLSWEP")]
         public IActionResult RelacionarElementoConUnor(Guid IdElemento, Guid CodUnor)
         {
             return Ok();

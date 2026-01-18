@@ -24,8 +24,7 @@ namespace lfvb.secure.aplication.Database.UnidadesOrganizativas.Queries.Unidades
         public async Task<List<UnidadOrganizativaModel>> execute(Guid? codPadre = null, Guid? Tipo = null, int nivelMax = 999, int nivelActual = 1)
         {
             List<UnidadOrganizativaModel> unidades = await (from uo in _db.UnidadesOrganizativas.Include(uo => uo.TipoUnidadOrganizativa)
-                                                            where (codPadre == null ||
-                                                                   (codPadre != null && uo.CodUnorPadre == codPadre))
+                                                            where uo.CodUnorPadre == codPadre
                                                          && (Tipo == null || uo.CodTuno == Tipo)
                                                             select new UnidadOrganizativaModel
                                                             {
@@ -37,6 +36,7 @@ namespace lfvb.secure.aplication.Database.UnidadesOrganizativas.Queries.Unidades
                                                                     Nombre = uo.TipoUnidadOrganizativa.Nombre,
                                                                     Descripcion = uo.TipoUnidadOrganizativa.Descripcion
                                                                 },
+                                                                Padre=codPadre==null?null:new UnidadOrganizativaModel { Codigo=codPadre, Nombre=(from uup in _db.UnidadesOrganizativas where uup.Codigo==codPadre select uup.Nombre).FirstOrDefault()},
                                                                 Unidades = new List<UnidadOrganizativaModel>()
                                                             }).ToListAsync();
             if (nivelActual < nivelMax)

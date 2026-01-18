@@ -37,7 +37,7 @@ namespace lfvb.secure.aplication.Database.UnidadesOrganizativas.Commads.Tipos
                 if(entidad == null)
                     throw new ArgumentException("El tipo de unidad organizativa no existe en la base de datos.");
                 entidad.Nombre = tipo.Nombre!;
-                entidad.Descripcion = tipo.Descripcion!;
+                entidad.Descripcion = tipo.Descripcion!;                
                 _db.TiposUnidadesOrganizativas.Update(entidad);
                 await _db.SaveAsync();
                 return tipo;

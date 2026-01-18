@@ -1,4 +1,5 @@
 ﻿using lfvb.secure.aplication.Database.UnidadesOrganizativas.Commads.Tipos;
+using lfvb.secure.aplication.Database.UnidadesOrganizativas.Commads.Unidades;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,9 @@ namespace lfvb.secure.aplication.Database.UnidadesOrganizativas
         {
             services.AddTransient<IAltaTipoUnidadOrganizativaCommand, AltaTipoUnidadOrganizativaCommand>();
             services.AddTransient<IModificarTipoUnidadOrganizativaCommand, ModificarTipoUnidadOrganizativaCommand>();
+
+            services.AddTransient<IAltaUnidadOrganizativaCommand, AltaUnidadOrganizativaCommand>();
+            services.AddTransient<IModificarUnidadAdministrativaCommand, ModificarUnidadAdministrativaCommand>();   
 
             return services;
         }

@@ -28,7 +28,6 @@
     <Folder Include="Database\TipoElementoAplicacion\Commands\" />
     <Folder Include="Database\TipoElemento\Commands\" />
     <Folder Include="Database\TipoPropiedad\Commands\" />
-    <Folder Include="Database\UnidadesOrganizativas\Commads\Unidades\" />
   </ItemGroup>
 
 </Project>

@@ -21,3 +21,10 @@ CREATE TABLE UNEL_UNOR_ELEMENTO (COD_UNOR VARCHAR(36), ID_ELEM VARCHAR(36));
 ALTER TABLE unel_unor_elemento ADD CONSTRAINT PRIMARY KEY (COD_UNOR, ID_ELEM);
 ALTER TABLE unel_unor_elemento ADD CONSTRAINT FK_UNEL_UNOR FOREIGN KEY (COD_UNOR) references unor_unidad_organizativa (COD_UNOR);
 ALTER TABLE unel_unor_elemento ADD CONSTRAINT FK_UNEL_ELEM FOREIGN KEY (ID_ELEM) references elem_elemento (ID_ELEM);
+
+
+SELECT UUID();
+
+INSERT INTO elem_elemento (ID_ELEM, COD_TIEL) VALUES ('3b175926-ecc7-11f0-a950-d843ae0e027c','tuno');
+
+INSERT INTO tuno_tipo_unor (COD_TUNO, NOMBRE_TUNO, DESCRIPCION_TUNO) VALUES ('3b175926-ecc7-11f0-a950-d843ae0e027c','Unidades personal','Relativas a la gerarquia de personal');
