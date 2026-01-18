@@ -54,8 +54,17 @@ namespace lfvb.secure.aplication.Database.UnidadesOrganizativas.Commads.Unidades
             } else
             {
                 elemento.Nombre=unidad.Nombre;
-                elemento.CodTuno=unidad.TipoUnidadOrganizativa.Codigo??Guid.Empty;
-                
+                if(unidad.Padre==null || unidad.Padre.Codigo==null)
+                {
+                    //Si no tiene padre, el tipo de unidad organizativa es el que se le pasa
+                    elemento.CodUnorPadre=null;
+                    elemento.CodTuno = unidad.TipoUnidadOrganizativa.Codigo ?? Guid.Empty;
+                } else
+                {
+                    //Si tiene padre, el tipo de unidad organizativa debe ser el del padre
+                    elemento.CodUnorPadre = unidad.Padre?.Codigo;
+                    elemento.CodTuno = unidad.Padre?.TipoUnidadOrganizativa?.Codigo ?? Guid.Empty;
+                }
                 _db.UnidadesOrganizativas.Update(elemento);
                 await _db.SaveAsync();
 
