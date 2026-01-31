@@ -21,6 +21,7 @@ using lfvb.secure.domain.Entities.ElementoAplicacion;
 using lfvb.secure.domain.Entities.EstadoEsperadoPaso;
 using lfvb.secure.domain.Entities.GrupoUnidadOrganizativa;
 using lfvb.secure.domain.Entities.GrupoUsuarioAplicacion;
+using lfvb.secure.domain.Entities.i18N;
 using lfvb.secure.domain.Entities.PasswordCredencial;
 using lfvb.secure.domain.Entities.Propiedad;
 using lfvb.secure.domain.Entities.PropiedadElemento;
@@ -103,6 +104,18 @@ namespace lfvb.secure.aplication.Interfaces
         DbSet<UnidadOrganizativaEntity> UnidadesOrganizativas { get; set; }
         DbSet<GrupoUnidadOrganizativaEntity> GruposUnidadesOrganizativas { get; set; }
         DbSet<UnidadOrganizativaElementoEntity> UnidadesOrganizativasElementos { get; set; }
+        #endregion
+
+        #region "i18N"
+        DbSet<IdiomaEntity> Idiomas { get; set; }
+        DbSet<AgrupacionIdiomaEntity> AgrupacionesIdiomas { get; set; }
+        DbSet<TextoIdiomaEntity> TextosIdiomas { get; set; }
+        DbSet<TextoEntity> Textos { get; set; }
+        DbSet<ColumnaTextoIdiomaEntity> ColumnasTextosIdiomas { get; set; }
+        DbSet<VariableTextoEntity> VariablesTextos { get; set; }
+        DbSet<ColeccionTextoEntity> ColeccionesTextos { get; set; }
+        DbSet<CampoTextoEntity> CamposTextos { get; set; }
+        DbSet<OpcionTextoEntity> OpcionesTextos { get; set; }
         #endregion
 
         #region "Elementos de vistas"

@@ -12,6 +12,7 @@ using lfvb.secure.aplication.Database.Grupos.Queries.GetAllGrupos;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetGrupo;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetGruposUsuario;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetUsuariosGrupo;
+using lfvb.secure.aplication.Database.i18N;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetAllPropiedades;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetPropiedadesElemento;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetValoresSqlPropiedad;
@@ -91,6 +92,10 @@ namespace lfvb.secure.aplication.Database
 
             #region "Credenciales"
             services.AddTransient<IGetAllTiposCredencialesQuery, GetAllTiposCredencialesQuery>();
+            #endregion
+
+            #region "i18N"
+            DependencyI18NInjectionQueries.AddQuerys(services);
             #endregion
 
             CircuitosDependencyInjection.AddQuerys(services);   
