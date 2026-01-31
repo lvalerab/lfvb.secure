@@ -1,0 +1,30 @@
+CREATE TABLE tuno_tipo_unor (COD_TUNO VARCHAR(36), NOMBRE_TUNO VARCHAR(255), DESCRIPCION_TUNO TEXT);
+ALTER TABLE tuno_tipo_unor ADD CONSTRAINT PRIMARY KEY (COD_TUNO);
+INSERT INTO tiel_tipo_elemento (COD_TIEL, NOMBRE_TIEL) VALUES ('tuno','Tipo de unidad organizativa');
+
+CREATE TABLE unor_unidad_organizativa (COD_UNOR VARCHAR(36),
+													COD_TUNO VARCHAR(36),
+													NOMBRE_UNOR VARCHAR(255),
+													DESCRIPCION_UNOR TEXT,
+													COD_UNOR_PADRE VARCHAR(36) DEFAULT NULL);
+ALTER TABLE unor_unidad_organizativa ADD CONSTRAINT PRIMARY KEY (COD_UNOR);
+ALTER TABLE unor_unidad_organizativa ADD CONSTRAINT FK_UNOR_TUNO FOREIGN KEY (COD_TUNO) REFERENCES tuno_tipo_unor (COD_TUNO);													
+ALTER TABLE unor_unidad_organizativa ADD CONSTRAINT FK_UNOR_UNOR FOREIGN KEY (COD_UNOR_PADRE) REFERENCES unor_unidad_organizativa (COD_UNOR);
+INSERT INTO tiel_tipo_elemento (COD_TIEL, NOMBRE_TIEL) VALUES ('unor','Unidad organizativa');
+
+CREATE TABLE gruo_grupo_unor (COD_UNOR VARCHAR(36), COD_UNOR_RELA VARCHAR(36));
+ALTER TABLE gruo_grupo_unor ADD CONSTRAINT PRIMARY KEY (COD_UNOR, COD_UNOR_RELA);
+ALTER TABLE gruo_grupo_unor ADD CONSTRAINT FK_GRUO_UNOR FOREIGN KEY (COD_UNOR) REFERENCES unor_unidad_organizativa (COD_UNOR);
+ALTER TABLE gruo_grupo_unor ADD CONSTRAINT FK_GRUO_UNOR_REL FOREIGN KEY (COD_UNOR_RELA) REFERENCES unor_unidad_organizativa (COD_UNOR);
+
+CREATE TABLE UNEL_UNOR_ELEMENTO (COD_UNOR VARCHAR(36), ID_ELEM VARCHAR(36));
+ALTER TABLE unel_unor_elemento ADD CONSTRAINT PRIMARY KEY (COD_UNOR, ID_ELEM);
+ALTER TABLE unel_unor_elemento ADD CONSTRAINT FK_UNEL_UNOR FOREIGN KEY (COD_UNOR) references unor_unidad_organizativa (COD_UNOR);
+ALTER TABLE unel_unor_elemento ADD CONSTRAINT FK_UNEL_ELEM FOREIGN KEY (ID_ELEM) references elem_elemento (ID_ELEM);
+
+
+SELECT UUID();
+
+INSERT INTO elem_elemento (ID_ELEM, COD_TIEL) VALUES ('3b175926-ecc7-11f0-a950-d843ae0e027c','tuno');
+
+INSERT INTO tuno_tipo_unor (COD_TUNO, NOMBRE_TUNO, DESCRIPCION_TUNO) VALUES ('3b175926-ecc7-11f0-a950-d843ae0e027c','Unidades personal','Relativas a la gerarquia de personal');

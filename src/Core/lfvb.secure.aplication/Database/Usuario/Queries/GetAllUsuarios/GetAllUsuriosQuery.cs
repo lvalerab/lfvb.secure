@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using lfvb.secure.aplication.Database.Usuario.Models;
 using lfvb.secure.aplication.Interfaces;
+using lfvb.secure.domain.Entities.Credencial;
 using lfvb.secure.domain.Entities.Usuario;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -21,10 +23,19 @@ namespace lfvb.secure.aplication.Database.Usuario.Queries.GetAllUsuarios
             this._mapper = mapper;
         }
 
-        public async Task<List<GetAllUsuariosModel>> Execute()
+        public async Task<List<UsuarioModel>> Execute(int? pagina=null, int? elementos=null)
         {
-            List<UsuarioEntity> lista = await this._db.Usuarios.ToListAsync();
-            return this._mapper.Map<List<GetAllUsuariosModel>>(lista);
+            List<UsuarioModel> lista = await (from u in _db.Usuarios                                               
+                                               select new UsuarioModel
+                                               {
+                                                   Id=u.Id,
+                                                   Usuario=u.Usuario,
+                                                   Nombre=u.Nombre,
+                                                   Apellido1=u.Apellido1,
+                                                   Apellido2=u.Apellido2,
+                                                   Email=u.Email   
+                                               } ).ToListAsync<UsuarioModel>();
+            return lista;
         }
     }
 }

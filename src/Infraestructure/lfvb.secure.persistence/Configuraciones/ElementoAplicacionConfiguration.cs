@@ -19,6 +19,7 @@ namespace lfvb.secure.persistence.Configuraciones
                 .HasKey(x => x.Id);
 
             builder.Property(x => x.Id).HasColumnName("ID_ELAP").IsRequired();
+            builder.Property(x => x.Codigo).HasColumnName("COD_ELAP").IsRequired();
             builder.Property(x => x.CodigoTipoElemento).HasColumnName("COD_TEAP").IsRequired();
             builder.Property(x => x.IdAplicacion).HasColumnName("ID_APLI").IsRequired();
             builder.Property(x => x.Nombre).HasColumnName("NOMBRE_ELAP").IsRequired();
@@ -28,7 +29,7 @@ namespace lfvb.secure.persistence.Configuraciones
             builder
                 .HasOne(x => x.Padre)
                 .WithMany(x => x.Descendientes)
-                .HasPrincipalKey(x => x.IdPadre);
+                .HasForeignKey(x => x.IdPadre);
 
             builder.HasOne(x => x.Aplicacion)
                     .WithMany(x => x.Elementos)

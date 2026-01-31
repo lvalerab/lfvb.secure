@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="14.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="9.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Abstractions" Version="9.0.4" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.3" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.3" />
     <PackageReference Include="MySql.EntityFrameworkCore" Version="9.0.0" />
@@ -15,6 +17,17 @@
 
   <ItemGroup>
     <ProjectReference Include="..\lfvb.secure.domain\lfvb.secure.domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Database\Circuitos\AccionesPasos\Commands\" />
+    <Folder Include="Database\Circuitos\Acciones\Commands\" />
+    <Folder Include="Database\Credencial\Querys\" />
+    <Folder Include="Database\Elementos\Querys\" />
+    <Folder Include="Database\TipoCrendecial\Commands\" />
+    <Folder Include="Database\TipoElementoAplicacion\Commands\" />
+    <Folder Include="Database\TipoElemento\Commands\" />
+    <Folder Include="Database\TipoPropiedad\Commands\" />
   </ItemGroup>
 
 </Project>

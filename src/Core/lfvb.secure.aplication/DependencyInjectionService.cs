@@ -1,10 +1,14 @@
 ﻿using AutoMapper;
 using lfvb.secure.aplication.Configurations;
+using lfvb.secure.aplication.Database;
 using lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario;
 using lfvb.secure.aplication.Database.Usuario.Commands.UpdateUsuario;
 using lfvb.secure.aplication.Database.Usuario.Queries.GetAllUsuarios;
 using lfvb.secure.aplication.Database.Usuario.Queries.LoginToken;
 using lfvb.secure.aplication.Database.Usuario.Queries.LoginUsuarioPassword;
+using lfvb.secure.aplication.PASSWORD;
+using lfvb.secure.common.PASSWORD;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -30,11 +34,15 @@ namespace lfvb.secure.aplication
             services.AddSingleton(mapper.CreateMapper());
 
             //Registramos los commands y los querys
-            services.AddTransient<ICreateUsuarioCommand, CreateUsuarioCommand>();
-            services.AddTransient<IUpdateUsuarioCommand, UpdateUsuarioCommand>();
-            services.AddTransient<IGetAllUsuariosQuery, GetAllUsuriosQuery>();
-            services.AddTransient<ILoginUsuarioPasswordQuery,LoginUsuarioPasswordQuery>();
-            services.AddTransient<ILoginTokenQuery, LoginTokenQuery>();
+            DependecyinjectionCommands.AddCommands(services);
+            DependencyInjectionQuerys.AddQuerys(services);
+
+            //Configuramos el servicio de DataProtection
+            //services.AddDataProtection().SetApplicationName("lfvb.secure.api").SetDefaultKeyLifetime(TimeSpan.FromDays(30));
+
+            //Registramos los utiles de datos
+            //services.AddTransient<ISecurePassword, SecurePasswordDataProtector>();
+            services.AddTransient<ISecurePassword, SecurePasswordAesMethod>();
 
             return services;
         }

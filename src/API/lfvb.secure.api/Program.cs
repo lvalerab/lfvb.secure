@@ -1,15 +1,10 @@
 using lfvb.secure.api;
 using lfvb.secure.aplication;
-using lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario;
-using lfvb.secure.aplication.Database.Usuario.Queries.GetAllUsuarios;
-using lfvb.secure.aplication.Interfaces;
 using lfvb.secure.common;
 using lfvb.secure.external;
 using lfvb.secure.persistence;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
-using System.Security.Cryptography.Xml;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -72,6 +67,7 @@ builder.Services.AddSwaggerGen(options=>
 #region "Configuracion de la inyección de dependencias"
 
 builder.Services
+        .AddCorsZones(builder.Configuration) //Para configurar las zonas de cors
         .AddJwtSecurity(builder.Configuration) //Para insertar la configuracion de la securizacion por JWT
         .AddWebApi() //Para los servidios de web api
         .AddCommon(builder.Configuration) //Para incluir la capa de Common
@@ -80,9 +76,7 @@ builder.Services
         .AddAplication(builder.Configuration); //PAra incluir la capa de aplicacion (Core)
 #endregion
 
-
-
-
+//builder.WebHost.UseUrls("http://+:7005", "https://+:7006");
 
 var app = builder.Build();
 
@@ -94,6 +88,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+if(app.Environment.IsDevelopment())
+{
+    app.UseCors("LOCAL");    
+} else
+{
+    app.UseCors("PRODUCCION");
+}
+
+
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
@@ -101,62 +105,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
-#endregion
-
-#region "Minimal api para pruebas"
-
-app.MapPost("/addUsuario", async (ICreateUsuarioCommand cm) =>
-{
-    List<CreateUsuarioModel> lista = new();
-    CreateUsuarioModel modelo = new CreateUsuarioModel
-    {
-        Nombre="Luis Fernando",
-        Apellido1="Valera",
-        Apellido2="Bernal",
-        Usuario="lvalerab2",
-        Password="123456"
-    };
-
-    modelo = await cm.Execute(modelo);
-    lista.Add(modelo);
-
-    
-    modelo = new CreateUsuarioModel
-    {
-        Nombre = "Luis Fernando",
-        Apellido1 = "Valera",
-        Apellido2 = "Bernal",
-        Usuario = "lvalerab3",
-        Token = Guid.NewGuid().ToString()
-    };
-
-    modelo = await cm.Execute(modelo);
-    lista.Add(modelo);
-
-    modelo = new CreateUsuarioModel
-    {
-        Nombre = "Luis Fernando",
-        Apellido1 = "Valera",
-        Apellido2 = "Bernal",
-        Usuario = "lvalerab4",
-        Password="HolaDonPepito",
-        Token = Guid.NewGuid().ToString()
-    };
-
-    modelo = await cm.Execute(modelo);
-    lista.Add(modelo);
-
-    return modelo;
-});
-
-app.MapGet("/usuarios", async (IGetAllUsuariosQuery query) =>
-{
-    var usuarios = await query.Execute();
-
-    return usuarios;
-    
-});
 
 #endregion
 

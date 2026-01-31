@@ -25,6 +25,7 @@ namespace lfvb.secure.persistence.Configuraciones
             entityBuilder.Property(x => x.Apellido1).HasColumnName("APELLIDO1_USUA");
             entityBuilder.Property(x => x.Apellido2).HasColumnName("APELLIDO2_USUA");
             entityBuilder.Property(x => x.Usuario).IsRequired().HasColumnName("USER_USUA").HasConversion(v=>v.ToLower(),v=>v.ToLower());
+            entityBuilder.Property(x => x.Email).IsRequired().HasColumnName("EMAIL_USUA").HasConversion(v=>v.ToLower(),v=>v.ToLower());
 
             //Relaciones
             entityBuilder.HasMany(x => x.Credenciales)
@@ -34,6 +35,18 @@ namespace lfvb.secure.persistence.Configuraciones
             entityBuilder.HasMany(x => x.RelacionGrupos)
                          .WithOne(x => x.Usuario)
                          .HasForeignKey(x => x.IdUsuario);
+
+            entityBuilder.HasMany(x => x.PermisosPasos)
+                         .WithOne(x => x.Usuario)
+                         .HasForeignKey(x => x.IdUsuario);
+
+            entityBuilder.HasMany(x => x.Tramitadores)
+                         .WithOne(x => x.UsuarioTramitador)
+                         .HasForeignKey(x => x.IdUsuarioTramitador);
+
+            entityBuilder.HasMany(x => x.EnvioEstados)
+                         .WithOne(x => x.UsuarioEnvio)
+                         .HasForeignKey(x => x.IdUsuarioEnvio);
         }        
     }
 }
