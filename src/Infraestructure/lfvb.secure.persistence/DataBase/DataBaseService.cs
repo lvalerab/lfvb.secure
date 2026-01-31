@@ -22,6 +22,7 @@ using lfvb.secure.domain.Entities.ElementoAplicacion;
 using lfvb.secure.domain.Entities.EstadoEsperadoPaso;
 using lfvb.secure.domain.Entities.GrupoUnidadOrganizativa;
 using lfvb.secure.domain.Entities.GrupoUsuarioAplicacion;
+using lfvb.secure.domain.Entities.i18N;
 using lfvb.secure.domain.Entities.PasswordCredencial;
 using lfvb.secure.domain.Entities.Propiedad;
 using lfvb.secure.domain.Entities.PropiedadElemento;
@@ -44,6 +45,7 @@ using lfvb.secure.domain.Entities.ValorPropiedadElemento;
 using lfvb.secure.domain.Entities.Views.VWElemento;
 using lfvb.secure.persistence.Configuraciones;
 using lfvb.secure.persistence.Configuraciones.Circuitos;
+using lfvb.secure.persistence.Configuraciones.i18N;
 using lfvb.secure.persistence.Configuraciones.UnidadesOrganizativas;
 using lfvb.secure.persistence.Configuraciones.Views;
 using Microsoft.EntityFrameworkCore;
@@ -117,6 +119,17 @@ namespace lfvb.secure.persistence.DataBase
         public DbSet<UnidadOrganizativaElementoEntity> UnidadesOrganizativasElementos { get; set; }
         #endregion
 
+        #region "i18N"
+        public DbSet<IdiomaEntity> Idiomas { get; set; }
+        public DbSet<AgrupacionIdiomaEntity> AgrupacionesIdiomas { get; set; }
+        public DbSet<TextoIdiomaEntity> TextosIdiomas { get; set; }
+        public DbSet<TextoEntity> Textos { get; set; }
+        public DbSet<ColumnaTextoIdiomaEntity> ColumnasTextosIdiomas { get; set; }
+        public DbSet<VariableTextoEntity> VariablesTextos { get; set; }
+        public DbSet<ColeccionTextoEntity> ColeccionesTextos { get; set; }
+        public DbSet<CampoTextoEntity> CamposTextos { get; set; }
+        public DbSet<OpcionTextoEntity> OpcionesTextos { get; set; }
+        #endregion
 
         #region "Elementos de vistas"
         public DbSet<VWElementoEntity> VistaElementos { get; set; }
@@ -182,6 +195,18 @@ namespace lfvb.secure.persistence.DataBase
             new UnidadOrganizativaElementoConfiguration(modelBuilder.Entity<UnidadOrganizativaElementoEntity>());
             #endregion
 
+
+            #region "i18N"
+            new IdiomaConfiguration(modelBuilder.Entity<IdiomaEntity>());
+            new AgrupacionIdiomaConfiguration(modelBuilder.Entity<AgrupacionIdiomaEntity>());
+            new TextoConfiguration(modelBuilder.Entity<TextoEntity>());
+            new TextoIdiomaConfiguration(modelBuilder.Entity<TextoIdiomaEntity>());
+            new ColumnaTextoIdiomaConfiguration(modelBuilder.Entity<ColumnaTextoIdiomaEntity>());
+            new VariableTextoConfiguration(modelBuilder.Entity<VariableTextoEntity>());
+            new ColeccionTextoConfiguration(modelBuilder.Entity<ColeccionTextoEntity>());
+            new CampoTextoConfiguration(modelBuilder.Entity<CampoTextoEntity>());
+            new OpcionTextoConfiguration(modelBuilder.Entity<OpcionTextoEntity>());
+            #endregion
 
             new VWElementoConfiguration(modelBuilder.Entity<VWElementoEntity>());
         }
