@@ -13,6 +13,7 @@ using lfvb.secure.aplication.Database.Grupos.Queries.GetGrupo;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetGruposUsuario;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetUsuariosGrupo;
 using lfvb.secure.aplication.Database.i18N;
+using lfvb.secure.aplication.Database.Nucleo;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetAllPropiedades;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetPropiedadesElemento;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetValoresSqlPropiedad;
@@ -38,6 +39,8 @@ namespace lfvb.secure.aplication.Database
         {
 
             DependencyInjectionElementos.AddQuerys(services);
+
+            DependencyNucleoInjection.AddQuerys(services);
 
             #region "Querys de usuario"
             services.AddTransient<IGetAllUsuariosQuery, GetAllUsuriosQuery>();

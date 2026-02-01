@@ -22,6 +22,7 @@ using lfvb.secure.domain.Entities.EstadoEsperadoPaso;
 using lfvb.secure.domain.Entities.GrupoUnidadOrganizativa;
 using lfvb.secure.domain.Entities.GrupoUsuarioAplicacion;
 using lfvb.secure.domain.Entities.i18N;
+using lfvb.secure.domain.Entities.NucleoSistema;
 using lfvb.secure.domain.Entities.PasswordCredencial;
 using lfvb.secure.domain.Entities.Propiedad;
 using lfvb.secure.domain.Entities.PropiedadElemento;
@@ -53,6 +54,8 @@ namespace lfvb.secure.aplication.Interfaces
 {
     public interface IDataBaseService
     {
+        DbSet<NucleoSistemaEntity> NucleosSistemas { get; set; }
+
         DbSet<UsuarioEntity> Usuarios { get; set; }
         DbSet<TipoCredencialEntity> TiposCredenciales { get; set; }
         DbSet<CredencialEntity> Credenciales { get; set; }

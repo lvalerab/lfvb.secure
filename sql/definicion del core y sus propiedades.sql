@@ -1,0 +1,27 @@
+SELECT * FROM tiel_tipo_elemento WHERE cod_tiel='core'
+
+INSERT INTO tiel_tipo_elemento (COD_TIEL, NOMBRE_TIEL) VALUES ('core','Nucleo del sistema');
+
+
+SELECT * FROM elem_elemento WHERE cod_tiel='core'
+
+INSERT INTO elem_elemento (ID_ELEM, COD_TIEL) VALUES (UUID(),'core');
+
+CREATE TABLE NUSI_NUCLEO_SISTEMA (COD_TIEL VARCHAR(36), ID_NUSI VARCHAR(36));
+ALTER TABLE NUSI_NUCLEO_SISTEMA ADD PRIMARY KEY (COD_TIEL);
+ALTER TABLE NUSI_NUCLEO_SISTEMA ADD CONSTRAINT FK_NUSI_ELEM FOREIGN KEY (COD_TIEL, ID_NUSI) REFERENCES elem_elemento (COD_TIEL, ID_ELEM);
+
+INSERT INTO NUSI_NUCLEO_SISTEMA (COD_TIEL, ID_NUSI) VALUES ('core','05992580-ff64-11f0-b6eb-d843ae0e027c');
+
+
+SELECT * FROM prop_propiedad
+
+INSERT INTO prop_propiedad (COD_PROP, COD_PROP_PADRE, COD_TPPR,NOMBRE_PROP) VALUES ('CORE_PROP',NULL,'TXT','Propiedades del nucleo del sistema');
+INSERT INTO prop_propiedad (COD_PROP, COD_PROP_PADRE, COD_TPPR,NOMBRE_PROP) VALUES ('CORE_DEFS','CORE_PROP','TXT','Propiedades por defecto del sistema');
+INSERT INTO prop_propiedad (COD_PROP, COD_PROP_PADRE, COD_TPPR,NOMBRE_PROP) VALUES ('CORE_IDIO','CORE_DEFS','LISTAFIJ','Idioma por defecto del sistema');
+INSERT INTO prop_propiedad (COD_PROP, COD_PROP_PADRE, COD_TPPR,NOMBRE_PROP) VALUES ('CORE_USPU','CORE_DEFS','LISTAFIJ','Usuario público en caso de no estar validado');
+
+INSERT INTO prop_propiedad (COD_PROP, COD_PROP_PADRE, COD_TPPR,NOMBRE_PROP) VALUES ('CORE_IMGS','CORE_PROP','TXT','Imagenes (pequeñas) de la aplicacion');
+
+
+INSERT INTO prop_propiedad (COD_PROP, COD_PROP_PADRE, COD_TPPR,NOMBRE_PROP) VALUES ('CORE_HIDR','CORE_PROP','TXT','Configuracion por defecto de los clientes LFVB HYDRA');

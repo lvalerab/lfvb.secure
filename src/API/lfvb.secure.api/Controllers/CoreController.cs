@@ -1,5 +1,6 @@
 ﻿using lfvb.secure.aplication.Database.Circuitos.Estados;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetGruposUsuario;
+using lfvb.secure.aplication.Database.Nucleo.Querys;
 using lfvb.secure.aplication.Database.Propiedades.Commands.NuevaPropiedadElemento;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetPropiedadesElemento;
 using lfvb.secure.aplication.Database.TipoElemento.Queries;
@@ -26,18 +27,40 @@ namespace lfvb.secure.api.Controllers
 
         private IGetAllTiposElementosQuery _getAllTiposElementos;
         private IEstadosElementosQuery _qryEstadosElementos;
+        private IGetIdentificadorNucleoSistemaQuery _getIdentificadorNucleoSistema;
 
         /// <summary>
         /// Constructor
         /// </summary>
         public CoreController(ILogger<LoginController> logger,
             IGetAllTiposElementosQuery getAllTiposElementos,
-            IEstadosElementosQuery qryEstadosElementos
+            IEstadosElementosQuery qryEstadosElementos,
+            IGetIdentificadorNucleoSistemaQuery getIdentificadorNucleoSistema
             )
         {
             _logger = logger;
             _getAllTiposElementos = getAllTiposElementos;
             _qryEstadosElementos = qryEstadosElementos;
+            _getIdentificadorNucleoSistema = getIdentificadorNucleoSistema;
+        }
+
+        /// <summary>
+        /// Obtiene el identificador del nucleo del sistema
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("nucleo/sistema/identificador")]
+        public async Task<IActionResult> GetIdentificadorNucleoSistema()
+        {
+            try
+            {
+                var result = await _getIdentificadorNucleoSistema.execute();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error obteniendo identificador nucleo sistema");
+                return StatusCode(500, "Error interno del servidor");
+            }
         }
 
         /// <summary>

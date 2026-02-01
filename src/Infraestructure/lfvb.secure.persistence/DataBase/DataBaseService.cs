@@ -23,6 +23,7 @@ using lfvb.secure.domain.Entities.EstadoEsperadoPaso;
 using lfvb.secure.domain.Entities.GrupoUnidadOrganizativa;
 using lfvb.secure.domain.Entities.GrupoUsuarioAplicacion;
 using lfvb.secure.domain.Entities.i18N;
+using lfvb.secure.domain.Entities.NucleoSistema;
 using lfvb.secure.domain.Entities.PasswordCredencial;
 using lfvb.secure.domain.Entities.Propiedad;
 using lfvb.secure.domain.Entities.PropiedadElemento;
@@ -46,6 +47,7 @@ using lfvb.secure.domain.Entities.Views.VWElemento;
 using lfvb.secure.persistence.Configuraciones;
 using lfvb.secure.persistence.Configuraciones.Circuitos;
 using lfvb.secure.persistence.Configuraciones.i18N;
+using lfvb.secure.persistence.Configuraciones.NucleoSistema;
 using lfvb.secure.persistence.Configuraciones.UnidadesOrganizativas;
 using lfvb.secure.persistence.Configuraciones.Views;
 using Microsoft.EntityFrameworkCore;
@@ -63,7 +65,7 @@ namespace lfvb.secure.persistence.DataBase
             
         }
 
-        
+        public DbSet<NucleoSistemaEntity> NucleosSistemas { get; set; }
 
         public DbSet<UsuarioEntity> Usuarios { get; set; }
         public DbSet<TipoCredencialEntity> TiposCredenciales { get; set; }
@@ -144,6 +146,10 @@ namespace lfvb.secure.persistence.DataBase
 
         private void EntityConfiguration(ModelBuilder modelBuilder)
         {
+            //Nucleo del sistema
+            new NucleoSistemaConfiguration(modelBuilder.Entity<NucleoSistemaEntity>());
+
+            //Modulo de seguridad
             new UsuarioConfiguration(modelBuilder.Entity<UsuarioEntity>());
             new TipoCredencialConfiguration(modelBuilder.Entity<TipoCredencialEntity>());
             new CredencialConfiguration(modelBuilder.Entity<CredencialEntity>());

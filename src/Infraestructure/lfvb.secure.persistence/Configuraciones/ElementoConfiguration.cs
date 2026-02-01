@@ -33,6 +33,10 @@ namespace lfvb.secure.persistence.Configuraciones
                 .WithOne(uoe => uoe.Elemento)
                 .HasForeignKey(uoe => uoe.IdElem);
 
+            builder.HasMany(x => x.Nucleos)
+                .WithOne(ns => ns.Elemento)
+                .HasForeignKey(ns => ns.IdNucleo);
+
         }
     }
 }
