@@ -18,7 +18,7 @@ namespace lfvb.secure.persistence.Configuraciones.i18N
 
             builder.Property(e => e.Id).HasColumnName("ID_TEXT");
             builder.Property(e => e.CodIdioma).HasColumnName("COD_IDIO").HasMaxLength(10);
-            builder.Property(e => e.Contenido).HasColumnName("CONTENIDO_TEID").IsUnicode(true);
+            builder.Property(e => e.Contenido).HasColumnName("TEXTO_TEID").IsUnicode(true);
             
             
             builder.HasOne(e => e.Texto)

@@ -5,6 +5,8 @@ using lfvb.secure.aplication.Database.i18N.Idiomas.Queries;
 using lfvb.secure.common.JWT;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Crypto.Operators;
+using System.Runtime.CompilerServices;
 
 
 namespace lfvb.secure.api.Controllers.i18N
@@ -20,20 +22,44 @@ namespace lfvb.secure.api.Controllers.i18N
         private ILogger<i18NAdministracionController> _logger;
         private IJwtTokenUtils _jwtTokenUtils;
 
+        private IGetAllIdiomasQuery _qryGetIdiomas;
         private IAltaIdiomaCommand _cmdAltaIdioma;
         private IModificarIdiomaCommand _cmdModificarIdioma;
         
         
         public i18NAdministracionController(ILogger<i18NAdministracionController> logger,
                               IJwtTokenUtils jwtTokenUtils,
+                              IGetAllIdiomasQuery qryGetIdiomas,
                               IAltaIdiomaCommand cmdAltaIdioma,
                               IModificarIdiomaCommand cmdModificarIdioma
                               )
         {
             this._logger = logger;
             this._jwtTokenUtils = jwtTokenUtils;
+            _qryGetIdiomas = qryGetIdiomas;
             _cmdAltaIdioma = cmdAltaIdioma;
             _cmdModificarIdioma = cmdModificarIdioma;
+        }
+
+
+        /// <summary>
+        /// Obtiene los idiomas simples y compuestos dados de alta en la aplicación
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("idiomas/todos")]
+        [DbAuthorize("ADM_IDIOMAS","SW_LST_ALL_IDIOMA", "LLSWEP")]
+        public async Task<IActionResult> GetTodosIdiomas()
+        {
+            try
+            {
+                List<IdiomaModel> idiomas =await _qryGetIdiomas.execute(true);
+                return Ok(idiomas);
+            } catch (Exception err)
+            {
+                this._logger.LogError("No se ha podido obtener el listado de todos los idiomas", err);
+                return BadRequest("No se ha podido obtener todos los idiomas");
+            }
         }
 
         /// <summary>
