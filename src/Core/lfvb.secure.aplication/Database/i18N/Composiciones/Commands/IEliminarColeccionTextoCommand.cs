@@ -8,6 +8,6 @@ namespace lfvb.secure.aplication.Database.i18N.Composiciones.Commands
 {
     public interface IEliminarColeccionTextoCommand
     {
-        public Task<bool> execute(Guid id, bool EliminarTextos);  
+        public Task<bool> execute(Guid id, bool EliminarTextos, bool transacion=true);  
     }
 }
