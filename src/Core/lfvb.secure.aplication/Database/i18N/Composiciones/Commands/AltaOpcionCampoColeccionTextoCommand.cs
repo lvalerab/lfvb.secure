@@ -32,9 +32,11 @@ namespace lfvb.secure.aplication.Database.i18N.Composiciones.Commands
                 await _db.OpcionesTextos.AddAsync(new domain.Entities.i18N.OpcionTextoEntity
                 {
                     Id = model.Id.Value,
+                    Opcion= model.Nombre,
                     IdCampo = model.Campo.Id.Value,
                     IdTexto = model.Texto.Id.Value,
                 });
+                await _db.SaveAsync();
                 return model;
             }
         }

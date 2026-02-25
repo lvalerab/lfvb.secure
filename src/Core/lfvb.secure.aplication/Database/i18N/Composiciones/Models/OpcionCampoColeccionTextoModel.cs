@@ -10,7 +10,8 @@ namespace lfvb.secure.aplication.Database.i18N.Composiciones.Models
     public class OpcionCampoColeccionTextoModel
     {
 
-        public Guid? Id { get; set; }        
+        public Guid? Id { get; set; }
+        public String? Nombre {get;set;}
         public CampoColeccionTextoModel? Campo { get; set; }  
         public TextoModel? Texto { get; set; }
     }

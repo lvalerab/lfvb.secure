@@ -14,7 +14,7 @@ namespace lfvb.secure.persistence.Configuraciones.i18N
         public TextoIdiomaConfiguration(EntityTypeBuilder<TextoIdiomaEntity> builder)
         {
             builder.ToTable("teid_texto_idioma")
-                   .HasKey(e => e.Id);
+                   .HasKey(e => new { e.Id, e.CodIdioma });
 
             builder.Property(e => e.Id).HasColumnName("ID_TEXT");
             builder.Property(e => e.CodIdioma).HasColumnName("COD_IDIO").HasMaxLength(10);

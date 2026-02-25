@@ -4,6 +4,8 @@ using lfvb.secure.aplication.Database.i18N.Composiciones.Models;
 using lfvb.secure.aplication.Database.i18N.Idiomas.Commands;
 using lfvb.secure.aplication.Database.i18N.Idiomas.Models;
 using lfvb.secure.aplication.Database.i18N.Idiomas.Queries;
+using lfvb.secure.aplication.Database.i18N.Textos.Commads;
+using lfvb.secure.aplication.Database.i18N.Textos.Models;
 using lfvb.secure.common.JWT;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -40,6 +42,13 @@ namespace lfvb.secure.api.Controllers.i18N
         private IModificaOpcionCampoColeccionTextoCommand _cmdModificaOpcionCampoColeccionTexto;
         private IEliminarOpcionCamposColeccionTextosCommand _cmdEliminarOpcionCamposColeccionTextos;
 
+        private IAltaTextoCommand _cmdAltaTexto;
+        private IModificarTextoCommand _cmdModificarTexto;
+        private IEliminarTextoCommand _cmdEliminarTexto;
+
+        private IAltaVariableTextoCommand _cmdAltaVariableTexto;
+        private IEliminarVariableTextoModel _cmdEliminarVariableTextoModel;
+
 
         public i18NAdministracionController(ILogger<i18NAdministracionController> logger,
                               IJwtTokenUtils jwtTokenUtils,
@@ -53,7 +62,12 @@ namespace lfvb.secure.api.Controllers.i18N
                               IEliminarCamposColeccionTextoCommand cmdEliminarCamposColeccionTexto,
                               IAltaOpcionCampoColeccionTextoCommand cmdAltaOpcionCampoColeccionTexto,
                               IModificaOpcionCampoColeccionTextoCommand cmdModificaOpcionCampoColeccionTexto,
-                              IEliminarOpcionCamposColeccionTextosCommand cmdEliminarOpcionCamposColeccionTextos)
+                              IEliminarOpcionCamposColeccionTextosCommand cmdEliminarOpcionCamposColeccionTextos,
+                              IAltaTextoCommand cmdAltaTextoCommand,
+                              IModificarTextoCommand cmdModificarTexto,
+                              IEliminarTextoCommand cmdEliminarTexto,
+                              IAltaVariableTextoCommand cmdAltaVariableTexto,
+                              IEliminarVariableTextoModel cmdEliminarVariableTextoModel)
         {
             this._logger = logger;
             this._jwtTokenUtils = jwtTokenUtils;
@@ -68,6 +82,15 @@ namespace lfvb.secure.api.Controllers.i18N
             _cmdAltaOpcionCampoColeccionTexto = cmdAltaOpcionCampoColeccionTexto;
             _cmdModificaOpcionCampoColeccionTexto = cmdModificaOpcionCampoColeccionTexto;
             _cmdEliminarOpcionCamposColeccionTextos = cmdEliminarOpcionCamposColeccionTextos;
+            _cmdModificarTexto = cmdModificarTexto;
+            _cmdEliminarTexto = cmdEliminarTexto;
+            _cmdAltaVariableTexto = cmdAltaVariableTexto;
+            _cmdEliminarVariableTextoModel = cmdEliminarVariableTextoModel;
+            _cmdAltaTexto = cmdAltaTextoCommand;
+            _cmdModificarTexto = cmdModificarTexto;
+            _cmdEliminarTexto = cmdEliminarTexto;
+            _cmdAltaVariableTexto = cmdAltaVariableTexto;
+            _cmdEliminarVariableTextoModel = cmdEliminarVariableTextoModel;
         }
 
 
@@ -329,6 +352,111 @@ namespace lfvb.secure.api.Controllers.i18N
             {
                 this._logger.LogError("No se ha podido eliminar la opción del campo de la colección de texto", err);
                 return BadRequest("No se ha podido eliminar la opción del campo de la colección de texto");
+            }
+        }
+
+        /// <summary>
+        /// Da de alta un texto en concreto. El texto se asocia a una colección de texto a través de los campos y opciones indicados en el modelo. Si la colección, campos u opciones indicados no existen, se lanzará un error. El texto creado se podrá utilizar posteriormente para mostrar el texto asociado a la colección y campos indicados. 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("texto")]
+        public async Task<IActionResult> AltaTexto(TextoModel model)
+        {
+            try
+            {
+                var retorno = await _cmdAltaTexto.execute(model);
+                return Ok(retorno);
+            }
+            catch (Exception err)
+            {
+                this._logger.LogError("No se ha podido dar de alta el texto", err);
+                return BadRequest("No se ha podido dar de alta el texto");
+            }
+        }
+
+        /// <summary>
+        /// Modifica un texto en concreto. El texto se asocia a una colección de texto a través de los campos y opciones indicados en el modelo. Si la colección, campos u opciones indicados no existen, se lanzará un error. El texto modificado se podrá utilizar posteriormente para mostrar el texto asociado a la colección y campos indicados.   
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("texto")]
+        public async Task<IActionResult> ModificarTexto(TextoModel model)
+        {
+            try
+            {
+                var retorno = await _cmdModificarTexto.execute(model);
+                return Ok(retorno);
+            }
+            catch (Exception err)
+            {
+                this._logger.LogError("No se ha podido modificar el texto", err);
+                return BadRequest("No se ha podido modificar el texto");
+            }
+        }
+
+        /// <summary>
+        /// Elimina un texto en concreto. Si el texto tiene variables asociadas, se eliminarán también dichas variables. Además, se eliminarán las asociaciones del texto con las colecciones de texto a través de los campos y opciones correspondientes.  
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [Route("texto/{id:guid}")]
+        public async Task<IActionResult> EliminarTexto(Guid id)
+        {
+            try
+            {
+                await _cmdEliminarTexto.execute(id);
+                return Ok();
+            }
+            catch (Exception err)
+            {
+                this._logger.LogError("No se ha podido eliminar el texto", err);
+                return BadRequest("No se ha podido eliminar el texto");
+            }
+        }
+
+        /// <summary>
+        /// Da de alta una variable para un texto dado. La variable se asocia al texto indicado en el modelo. Si el texto indicado no existe, se lanzará un error. La variable creada se podrá utilizar posteriormente para mostrar el valor de la variable asociado al texto indicado. 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("texto/variable")]
+        public async Task<IActionResult> AltaVariableTexto(VariableTextoModel model)
+        {
+            try
+            {
+                var retorno = await _cmdAltaVariableTexto.execute(model);
+                return Ok(retorno);
+            }
+            catch (Exception err)
+            {
+                this._logger.LogError("No se ha podido dar de alta la variable del texto", err);
+                return BadRequest("No se ha podido dar de alta la variable del texto");
+            }
+        }
+
+        /// <summary>
+        /// Elimina una variable para un texto dado. Si la variable tiene asociaciones con otras entidades, se eliminarán también dichas asociaciones. Además, se eliminará la asociación de la variable con el texto a través de la entidad correspondiente.   
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [Route("texto/variable/{id:guid}")]
+        public async Task<IActionResult> EliminarVariableTexto(Guid id)
+        {
+            try
+            {
+                await _cmdEliminarVariableTextoModel.execute(id);
+                return Ok();
+            }
+            catch (Exception err)
+            {
+                this._logger.LogError("No se ha podido eliminar la variable del texto", err);
+                return BadRequest("No se ha podido eliminar la variable del texto");
             }
         }
     }

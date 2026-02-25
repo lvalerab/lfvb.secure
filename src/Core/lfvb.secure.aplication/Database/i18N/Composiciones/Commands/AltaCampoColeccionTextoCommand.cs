@@ -22,7 +22,7 @@ namespace lfvb.secure.aplication.Database.i18N.Composiciones.Commands
 
         public async Task<CampoColeccionTextoModel> execute(CampoColeccionTextoModel model)
         {
-            if(model == null || model.Id!=null || model.Id!=Guid.Empty || model.Coleccion==null || model.Coleccion.Id==null || model.Coleccion.Id==Guid.Empty)
+            if(model == null || (model.Id!=null && model.Id!=Guid.Empty) || model.Coleccion==null || model.Coleccion.Id==null || model.Coleccion.Id==Guid.Empty)
             {
                 throw new ArgumentNullException(nameof(model));
             } else
@@ -34,6 +34,7 @@ namespace lfvb.secure.aplication.Database.i18N.Composiciones.Commands
                     Nombre = model.Nombre,
                     IdColeccion = model.Coleccion.Id??Guid.Empty
                 });
+                await _db.SaveAsync();
                 return model;
             }
         }

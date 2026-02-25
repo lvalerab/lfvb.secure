@@ -22,11 +22,11 @@ namespace lfvb.secure.aplication.Database.i18N.Textos.Queries
         public async Task<List<Guid>> execute(string busqueda, bool OmitirMayusculas = false, List<string>? idiomas = null)
         {
             List<Guid> result = await (from ti in _db.TextosIdiomas.Include(ti => ti.Idioma)
-                                       where ((!OmitirMayusculas && ti.Contenido.Contains(busqueda)) || (OmitirMayusculas && ti.Contenido.ToLowerInvariant().Contains(busqueda.ToLowerInvariant()))) && (idiomas == null || idiomas.Contains(ti.Idioma.Codigo))
+                                       where ((!OmitirMayusculas && ti.Contenido.Contains(busqueda)) || (OmitirMayusculas && ti.Contenido.ToLower().Contains(busqueda.ToLower()))) && (idiomas == null || idiomas.Contains(ti.Idioma.Codigo))
                                        select ti.Id).ToListAsync();
 
             result.AddRange(await (from tc in _db.ColumnasTextosIdiomas.Include(tc => tc.AgrupacionIdioma)
-                                   where ((!OmitirMayusculas && tc.Contenido.Contains(busqueda)) || (OmitirMayusculas && tc.Contenido.ToLowerInvariant().Contains(busqueda.ToLowerInvariant()))) && (idiomas == null || idiomas.Contains(tc.AgrupacionIdioma.CodigoIdiomaRelacionado))
+                                   where ((!OmitirMayusculas && tc.Contenido.Contains(busqueda)) || (OmitirMayusculas && tc.Contenido.ToLower().Contains(busqueda.ToLower()))) && (idiomas == null || idiomas.Contains(tc.AgrupacionIdioma.CodigoIdiomaRelacionado))
                                    select tc.Id).ToListAsync());
 
             return result;

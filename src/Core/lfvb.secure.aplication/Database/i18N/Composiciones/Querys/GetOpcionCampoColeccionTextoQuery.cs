@@ -27,6 +27,7 @@ namespace lfvb.secure.aplication.Database.i18N.Composiciones.Querys
                                                             select new OpcionCampoColeccionTextoModel
                                                             {
                                                                 Id = oc.Id,
+                                                                Nombre = oc.Opcion,
                                                                 Campo = new CampoColeccionTextoModel
                                                                 {
                                                                     Id = oc.Campo.Id,

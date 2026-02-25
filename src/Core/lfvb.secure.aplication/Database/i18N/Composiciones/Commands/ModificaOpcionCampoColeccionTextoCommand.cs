@@ -30,6 +30,7 @@ namespace lfvb.secure.aplication.Database.i18N.Composiciones.Commands
                 if (entity != null)
                 {
                     entity.IdTexto = model.Texto.Id.Value;
+                    entity.Opcion = model.Nombre;   
                     _db.OpcionesTextos.Update(entity);
                     await _db.SaveAsync();
                     return model;
