@@ -1,5 +1,6 @@
 ﻿using lfvb.secure.domain.Entities.Circuitos.EstadoElemento;
 using lfvb.secure.domain.Entities.NucleoSistema;
+using lfvb.secure.domain.Entities.Personas;
 using lfvb.secure.domain.Entities.PropiedadElemento;
 using lfvb.secure.domain.Entities.TipoElemento;
 using lfvb.secure.domain.Entities.UnidadOrganizativaElemento;
@@ -26,5 +27,7 @@ namespace lfvb.secure.domain.Entities.Elemento
         public ICollection<UnidadOrganizativaElementoEntity> UnidadesOrganizativas { get; set; }
 
         public ICollection<NucleoSistemaEntity> Nucleos { get; set; }
+
+        public ICollection<ElementoPersonaEntity> ElementosPersona { get; set; }
     }
 }

@@ -36,6 +36,17 @@ namespace lfvb.secure.aplication.Database.i18N.Composiciones.Commands
                         await _eliminarCampos.execute(campo.Id, EliminarTextos, false);
                     }
                     _db.ColeccionesTextos.Remove(entity);
+
+                    if (transacion)
+                        await _db.SaveAsync();
+
+                    //Eliminamos el elemento
+                    var elemento = await _db.Elementos.Where(e => e.Id == id).FirstOrDefaultAsync();
+                    if (elemento != null)
+                    {
+                        _db.Elementos.Remove(elemento);
+                    }
+
                     if (transacion)
                         await _db.SaveAsync();
                     return true;

@@ -17,12 +17,17 @@ namespace lfvb.secure.persistence.Configuraciones.i18N
                    .HasKey(e => e.Id);
 
             builder.Property(e => e.Id).HasColumnName("ID_OPTX");
+            builder.Property(e => e.IdCampo).HasColumnName("ID_CMTX");
             builder.Property(e => e.IdTexto).HasColumnName("ID_TEXT");
             builder.Property(e => e.Opcion).HasColumnName("OPCION_OPTX").HasMaxLength(255).IsUnicode(true);
 
             builder.HasOne(e => e.Texto)
                    .WithMany(t => t.Opciones)
                    .HasForeignKey(e => e.IdTexto);
+
+            builder.HasOne(e => e.Campo)
+                   .WithMany(c => c.Opciones)
+                   .HasForeignKey(e => e.IdCampo);  
         }
     }
 }

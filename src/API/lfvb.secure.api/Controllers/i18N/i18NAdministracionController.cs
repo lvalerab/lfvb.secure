@@ -55,6 +55,7 @@ namespace lfvb.secure.api.Controllers.i18N
                               IGetAllIdiomasQuery qryGetIdiomas,
                               IAltaIdiomaCommand cmdAltaIdioma,
                               IModificarIdiomaCommand cmdModificarIdioma,
+                              IAltaColeccionTextoCommand cmdAltaColeccionTexto,
                               IModificaColeccionTexto cmdModificaColeccionTexto,
                               IEliminarColeccionTextoCommand eliminarColeccionTexto,
                               IAltaCampoColeccionTextoCommand cmdAltaCampoColeccionTexto,
@@ -91,6 +92,7 @@ namespace lfvb.secure.api.Controllers.i18N
             _cmdEliminarTexto = cmdEliminarTexto;
             _cmdAltaVariableTexto = cmdAltaVariableTexto;
             _cmdEliminarVariableTextoModel = cmdEliminarVariableTextoModel;
+            _cmdAltaColeccionTexto= cmdAltaColeccionTexto;
         }
 
 

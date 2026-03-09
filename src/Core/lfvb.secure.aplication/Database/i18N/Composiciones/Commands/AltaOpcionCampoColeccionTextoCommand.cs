@@ -22,7 +22,7 @@ namespace lfvb.secure.aplication.Database.i18N.Composiciones.Commands
 
         public async Task<OpcionCampoColeccionTextoModel> execute(OpcionCampoColeccionTextoModel model)
         {
-            if (model == null || model.Id != null || model.Id != Guid.Empty || model.Campo == null || model.Campo.Id == null || model.Campo.Id == Guid.Empty || model.Texto==null || model.Texto.Id==null || model.Texto.Id==Guid.Empty)
+            if (model == null || (model.Id != null && model.Id != Guid.Empty) || model.Campo == null || (model.Campo.Id == null && model.Campo.Id == Guid.Empty) || model.Texto==null || model.Texto.Id==null || model.Texto.Id==Guid.Empty)
             {
                 throw new ArgumentNullException(nameof(model));
             }

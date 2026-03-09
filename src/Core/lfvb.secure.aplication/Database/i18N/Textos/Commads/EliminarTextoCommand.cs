@@ -38,6 +38,13 @@ namespace lfvb.secure.aplication.Database.i18N.Textos.Commads
                 _db.Textos.Remove(texto);
             }
 
+            //Borramos el elemento
+            var elemento = await _db.Elementos.Where(e => e.Id == id).FirstOrDefaultAsync();
+            if (elemento != null)
+            {
+                _db.Elementos.Remove(elemento);
+            }
+
             await _db.SaveAsync();
             return true;
 

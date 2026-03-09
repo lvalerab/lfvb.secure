@@ -33,6 +33,17 @@ namespace lfvb.secure.aplication.Database.i18N.Composiciones.Commands
                         _db.Textos.RemoveRange(textos);
                     }
                     _db.OpcionesTextos.Remove(entity);
+                    
+                    if(transacion)
+                        await _db.SaveAsync();
+
+                    //Eliminamos el elemento
+                    var elemento = await _db.Elementos.Where(e => e.Id == id).FirstOrDefaultAsync();
+                    if (elemento != null)
+                    {
+                        _db.Elementos.Remove(elemento);
+                    }
+
                     if (transacion)
                         await _db.SaveAsync();
                     return true;
@@ -41,6 +52,7 @@ namespace lfvb.secure.aplication.Database.i18N.Composiciones.Commands
                 {
                     throw new Exception("No se ha encontrado la opción del campo de la colección de texto");
                 }
+
             }
         }
     }

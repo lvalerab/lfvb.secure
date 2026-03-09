@@ -16,6 +16,7 @@ using lfvb.secure.domain.Entities.Circuitos.PermisoPasoUsuario;
 using lfvb.secure.domain.Entities.Circuitos.TipoElementoCircuito;
 using lfvb.secure.domain.Entities.Circuitos.Tramite;
 using lfvb.secure.domain.Entities.Credencial;
+using lfvb.secure.domain.Entities.Direcciones;
 using lfvb.secure.domain.Entities.Elemento;
 using lfvb.secure.domain.Entities.ElementoAplicacion;
 using lfvb.secure.domain.Entities.EstadoEsperadoPaso;
@@ -24,6 +25,7 @@ using lfvb.secure.domain.Entities.GrupoUsuarioAplicacion;
 using lfvb.secure.domain.Entities.i18N;
 using lfvb.secure.domain.Entities.NucleoSistema;
 using lfvb.secure.domain.Entities.PasswordCredencial;
+using lfvb.secure.domain.Entities.Personas;
 using lfvb.secure.domain.Entities.Propiedad;
 using lfvb.secure.domain.Entities.PropiedadElemento;
 using lfvb.secure.domain.Entities.PropiedadValoresSql;
@@ -120,6 +122,30 @@ namespace lfvb.secure.aplication.Interfaces
         DbSet<CampoTextoEntity> CamposTextos { get; set; }
         DbSet<OpcionTextoEntity> OpcionesTextos { get; set; }
         #endregion
+
+
+        #region "Personas"
+        DbSet<TipoPersonaEntity> TiposPersonas { get; set; }
+        DbSet<PersonaEntity> Personas { get; set; }
+        DbSet<ElementoPersonaEntity> ElementosPersona { get; set; }
+        DbSet<TipoIdentificadorPersonaEntity> TiposIdentificadoresPersona { get; set; }
+        DbSet<IdentificadorPersonaEntity> IdentificadoresPersona { get; set; }
+        DbSet<TipoRelacionPersonaEntity> TiposRelacionesPersona { get; set; }
+        DbSet<RelacionPersonaEntity> RelacionesPersona { get; set; }
+        #endregion
+
+        #region "Direcciones y callejero"
+        DbSet<CallejeroEntity> Callejeros { get; set; }
+        DbSet<CodigoGestionTerritorialEntity> CodigosGestionTerritorial { get; set; }
+        DbSet<TipoCodigoGestionTerritorialEntity> TiposCodigosGestionTerritorial { get; set; }
+        DbSet<DireccionEntity> Direcciones { get; set; }
+        DbSet<DireccionNormalizadaEntity> DireccionesNormalizadas { get; set; }
+        DbSet<DireccionNoNormalizadaEntity> DireccionesNoNormalizadas { get; set; }
+        DbSet<TipoEntidadTerritorialEntity> TiposEntidadesTerritoriales { get; set; }
+        DbSet<EntitdadTerritorialEntity> EntidadesTerritoriales { get; set; }
+        DbSet<TipoViaEntity> TiposVias { get; set; }
+        #endregion
+
 
         #region "Elementos de vistas"
         DbSet<VWElementoEntity> VistaElementos { get; set; }
