@@ -17,7 +17,7 @@ namespace lfvb.secure.persistence.Configuraciones.Direcciones
                 .ToTable("tnte_tipo_entidad_territorial")
                 .HasKey(x => x.Codigo); 
 
-            builder.Property(x => x.Id).HasColumnName("ID_TNTE").IsRequired();  
+            builder.Property(x => x.Id).HasColumnName("ID_TNTE");  
             builder.Property(x => x.Codigo).HasColumnName("COD_TNTE").HasMaxLength(10).IsRequired();  
             builder.Property(x => x.Nombre).HasColumnName("NOMBRE_TNTE").HasMaxLength(100).IsRequired();
 

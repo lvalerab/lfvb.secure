@@ -8,7 +8,7 @@ namespace lfvb.secure.domain.Entities.Direcciones
 {
     public class TipoEntidadTerritorialEntity
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
         public string Codigo { get; set; }
         public string Nombre { get; set; }
 

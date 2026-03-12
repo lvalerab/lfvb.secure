@@ -7,6 +7,7 @@ using lfvb.secure.aplication.Database.Aplicaciones.Queries.PermisoElementoAplica
 using lfvb.secure.aplication.Database.Aplicaciones.Queries.PermisosElementosAplicacionPorGrupoYAplicacion;
 using lfvb.secure.aplication.Database.Aplicaciones.Queries.TiposPermisosElementoPorTipoQuery;
 using lfvb.secure.aplication.Database.Circuitos;
+using lfvb.secure.aplication.Database.Direcciones;
 using lfvb.secure.aplication.Database.Elementos;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetAllGrupos;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetGrupo;
@@ -101,7 +102,14 @@ namespace lfvb.secure.aplication.Database
             DependencyI18NInjectionQueries.AddQuerys(services);
             #endregion
 
-            CircuitosDependencyInjection.AddQuerys(services);   
+            #region "Circuitos" 
+            CircuitosDependencyInjection.AddQuerys(services);
+            #endregion
+
+            #region "Direcciones"
+            DependencyDireccionesInjectionQueries.AddQuerys(services);  
+            #endregion
+
 
             UnidadesOrganizativasDependencyInjection.AddQuerys(services);
 

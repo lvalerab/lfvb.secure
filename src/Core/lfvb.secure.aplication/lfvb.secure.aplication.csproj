@@ -23,8 +23,12 @@
     <Folder Include="Database\Circuitos\AccionesPasos\Commands\" />
     <Folder Include="Database\Circuitos\Acciones\Commands\" />
     <Folder Include="Database\Credencial\Querys\" />
+    <Folder Include="Database\Direcciones\Commands\" />
     <Folder Include="Database\Elementos\Querys\" />
     <Folder Include="Database\Nucleo\Commands\" />
+    <Folder Include="Database\Personas\Commands\" />
+    <Folder Include="Database\Personas\Models\" />
+    <Folder Include="Database\Personas\Queries\" />
     <Folder Include="Database\TipoCrendecial\Commands\" />
     <Folder Include="Database\TipoElementoAplicacion\Commands\" />
     <Folder Include="Database\TipoElemento\Commands\" />
