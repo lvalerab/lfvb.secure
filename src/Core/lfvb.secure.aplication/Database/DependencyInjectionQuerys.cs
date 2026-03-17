@@ -7,12 +7,14 @@ using lfvb.secure.aplication.Database.Aplicaciones.Queries.PermisoElementoAplica
 using lfvb.secure.aplication.Database.Aplicaciones.Queries.PermisosElementosAplicacionPorGrupoYAplicacion;
 using lfvb.secure.aplication.Database.Aplicaciones.Queries.TiposPermisosElementoPorTipoQuery;
 using lfvb.secure.aplication.Database.Circuitos;
+using lfvb.secure.aplication.Database.Direcciones;
 using lfvb.secure.aplication.Database.Elementos;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetAllGrupos;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetGrupo;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetGruposUsuario;
 using lfvb.secure.aplication.Database.Grupos.Queries.GetUsuariosGrupo;
 using lfvb.secure.aplication.Database.i18N;
+using lfvb.secure.aplication.Database.Nucleo;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetAllPropiedades;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetPropiedadesElemento;
 using lfvb.secure.aplication.Database.Propiedades.Queries.GetValoresSqlPropiedad;
@@ -38,6 +40,8 @@ namespace lfvb.secure.aplication.Database
         {
 
             DependencyInjectionElementos.AddQuerys(services);
+
+            DependencyNucleoInjection.AddQuerys(services);
 
             #region "Querys de usuario"
             services.AddTransient<IGetAllUsuariosQuery, GetAllUsuriosQuery>();
@@ -98,7 +102,14 @@ namespace lfvb.secure.aplication.Database
             DependencyI18NInjectionQueries.AddQuerys(services);
             #endregion
 
-            CircuitosDependencyInjection.AddQuerys(services);   
+            #region "Circuitos" 
+            CircuitosDependencyInjection.AddQuerys(services);
+            #endregion
+
+            #region "Direcciones"
+            DependencyDireccionesInjectionQueries.AddQuerys(services);  
+            #endregion
+
 
             UnidadesOrganizativasDependencyInjection.AddQuerys(services);
 

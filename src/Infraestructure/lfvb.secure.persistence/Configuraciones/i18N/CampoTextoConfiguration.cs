@@ -24,6 +24,10 @@ namespace lfvb.secure.persistence.Configuraciones.i18N
             builder.HasOne(e => e.Coleccion)
                    .WithMany(c => c.Campos)
                    .HasForeignKey(e => e.IdColeccion);  
+
+            builder.HasMany(e => e.Opciones)
+                   .WithOne(o => o.Campo)
+                   .HasForeignKey(o => o.IdCampo);    
         }
     }
 }

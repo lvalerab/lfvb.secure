@@ -17,13 +17,16 @@ using lfvb.secure.domain.Entities.Circuitos.PermisoPasoUsuario;
 using lfvb.secure.domain.Entities.Circuitos.TipoElementoCircuito;
 using lfvb.secure.domain.Entities.Circuitos.Tramite;
 using lfvb.secure.domain.Entities.Credencial;
+using lfvb.secure.domain.Entities.Direcciones;
 using lfvb.secure.domain.Entities.Elemento;
 using lfvb.secure.domain.Entities.ElementoAplicacion;
 using lfvb.secure.domain.Entities.EstadoEsperadoPaso;
 using lfvb.secure.domain.Entities.GrupoUnidadOrganizativa;
 using lfvb.secure.domain.Entities.GrupoUsuarioAplicacion;
 using lfvb.secure.domain.Entities.i18N;
+using lfvb.secure.domain.Entities.NucleoSistema;
 using lfvb.secure.domain.Entities.PasswordCredencial;
+using lfvb.secure.domain.Entities.Personas;
 using lfvb.secure.domain.Entities.Propiedad;
 using lfvb.secure.domain.Entities.PropiedadElemento;
 using lfvb.secure.domain.Entities.PropiedadValoresSql;
@@ -45,7 +48,10 @@ using lfvb.secure.domain.Entities.ValorPropiedadElemento;
 using lfvb.secure.domain.Entities.Views.VWElemento;
 using lfvb.secure.persistence.Configuraciones;
 using lfvb.secure.persistence.Configuraciones.Circuitos;
+using lfvb.secure.persistence.Configuraciones.Direcciones;
 using lfvb.secure.persistence.Configuraciones.i18N;
+using lfvb.secure.persistence.Configuraciones.NucleoSistema;
+using lfvb.secure.persistence.Configuraciones.Personas;
 using lfvb.secure.persistence.Configuraciones.UnidadesOrganizativas;
 using lfvb.secure.persistence.Configuraciones.Views;
 using Microsoft.EntityFrameworkCore;
@@ -63,7 +69,7 @@ namespace lfvb.secure.persistence.DataBase
             
         }
 
-        
+        public DbSet<NucleoSistemaEntity> NucleosSistemas { get; set; }
 
         public DbSet<UsuarioEntity> Usuarios { get; set; }
         public DbSet<TipoCredencialEntity> TiposCredenciales { get; set; }
@@ -131,6 +137,29 @@ namespace lfvb.secure.persistence.DataBase
         public DbSet<OpcionTextoEntity> OpcionesTextos { get; set; }
         #endregion
 
+        #region "Personas"
+        public DbSet<TipoPersonaEntity> TiposPersonas { get; set; }
+        public DbSet<PersonaEntity> Personas { get; set; }
+        public DbSet<ElementoPersonaEntity> ElementosPersona { get; set; }  
+        public DbSet<TipoIdentificadorPersonaEntity> TiposIdentificadoresPersona { get; set; }
+        public DbSet<IdentificadorPersonaEntity> IdentificadoresPersona { get; set; }   
+        public DbSet<TipoRelacionPersonaEntity> TiposRelacionesPersona { get; set; }
+        public DbSet<RelacionPersonaEntity> RelacionesPersona { get; set; }
+        #endregion
+
+        #region "Direcciones y callejero"
+        public DbSet<CallejeroEntity> Callejeros { get; set; }
+        public DbSet<CodigoGestionTerritorialEntity> CodigosGestionTerritorial { get; set; }
+        public DbSet<TipoCodigoGestionTerritorialEntity> TiposCodigosGestionTerritorial { get; set; }   
+        public DbSet<DireccionEntity> Direcciones { get; set; }
+        public DbSet<DireccionNormalizadaEntity> DireccionesNormalizadas { get; set; }
+        public DbSet<DireccionNoNormalizadaEntity> DireccionesNoNormalizadas { get; set; }  
+        public DbSet<TipoEntidadTerritorialEntity> TiposEntidadesTerritoriales { get; set; } 
+        public DbSet<EntitdadTerritorialEntity> EntidadesTerritoriales { get; set; }
+        public DbSet<TipoViaEntity> TiposVias { get; set; }
+        #endregion
+
+
         #region "Elementos de vistas"
         public DbSet<VWElementoEntity> VistaElementos { get; set; }
         #endregion
@@ -144,6 +173,10 @@ namespace lfvb.secure.persistence.DataBase
 
         private void EntityConfiguration(ModelBuilder modelBuilder)
         {
+            //Nucleo del sistema
+            new NucleoSistemaConfiguration(modelBuilder.Entity<NucleoSistemaEntity>());
+
+            //Modulo de seguridad
             new UsuarioConfiguration(modelBuilder.Entity<UsuarioEntity>());
             new TipoCredencialConfiguration(modelBuilder.Entity<TipoCredencialEntity>());
             new CredencialConfiguration(modelBuilder.Entity<CredencialEntity>());
@@ -206,6 +239,28 @@ namespace lfvb.secure.persistence.DataBase
             new ColeccionTextoConfiguration(modelBuilder.Entity<ColeccionTextoEntity>());
             new CampoTextoConfiguration(modelBuilder.Entity<CampoTextoEntity>());
             new OpcionTextoConfiguration(modelBuilder.Entity<OpcionTextoEntity>());
+            #endregion
+
+            #region "Personas"  
+            new TipoPersonaConfiguration(modelBuilder.Entity<TipoPersonaEntity>());
+            new PersonaConfiguration(modelBuilder.Entity<PersonaEntity>());
+            new ElementoPersonaConfiguration(modelBuilder.Entity<ElementoPersonaEntity>());
+            new TipoIdentificadorPersonaConfiguration(modelBuilder.Entity<TipoIdentificadorPersonaEntity>());
+            new IdentificadorPersonaConfiguration(modelBuilder.Entity<IdentificadorPersonaEntity>());
+            new TipoRelacionPersonaConfiguration(modelBuilder.Entity<TipoRelacionPersonaEntity>());
+            new RelacionPersonaConfiguration(modelBuilder.Entity<RelacionPersonaEntity>());
+            #endregion
+
+            #region "Direcciones y callejero"
+            new CallejeroConfiguration(modelBuilder.Entity<CallejeroEntity>());
+            new CodigoGestionTerritorialConfiguration(modelBuilder.Entity<CodigoGestionTerritorialEntity>());
+            new TipoCodigoGestionTerritorialConfiguration(modelBuilder.Entity<TipoCodigoGestionTerritorialEntity>());   
+            new DireccionConfiguration(modelBuilder.Entity<DireccionEntity>());
+            new DireccionNormalizadaConfiguration(modelBuilder.Entity<DireccionNormalizadaEntity>());
+            new DireccionNoNormalizadaConfiguration(modelBuilder.Entity<DireccionNoNormalizadaEntity>());
+            new TipoEntidadTerritorialConfiguration(modelBuilder.Entity<TipoEntidadTerritorialEntity>());
+            new EntitdadTerritorialConfiguration(modelBuilder.Entity<EntitdadTerritorialEntity>());
+            new TipoViaConfiguration(modelBuilder.Entity<TipoViaEntity>());
             #endregion
 
             new VWElementoConfiguration(modelBuilder.Entity<VWElementoEntity>());

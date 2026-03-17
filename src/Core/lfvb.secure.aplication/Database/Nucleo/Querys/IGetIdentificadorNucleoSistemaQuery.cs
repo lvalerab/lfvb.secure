@@ -1,0 +1,14 @@
+﻿using lfvb.secure.aplication.Database.Nucleo.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace lfvb.secure.aplication.Database.Nucleo.Querys
+{
+    public interface IGetIdentificadorNucleoSistemaQuery
+    {
+        public Task<NucleoSistemaModel> execute();
+    }
+}

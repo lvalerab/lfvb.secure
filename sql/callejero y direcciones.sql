@@ -1,0 +1,52 @@
+CREATE TABLE tnte_tipo_entidad_territorial (COD_TNTE VARCHAR(10), NOMBRE_TNTE VARCHAR(255));
+ALTER TABLE tnte_tipo_entidad_territorial ADD CONSTRAINT PRIMARY KEY (COD_TNTE);
+ALTER TABLE tnte_tipo_entidad_territorial ADD ID_TNTE VARCHAR(36) DEFAULT NULL;
+
+INSERT INTO tiel_tipo_elemento (COD_TIEL, NOMBRE_TIEL) VALUES ('tnte','Tipo Entidad territorial');
+
+CREATE TABLE ente_entidad_territorial (ID_ENTE VARCHAR(36), ID_ENTE_PADRE VARCHAR(36) DEFAULT NULL, COD_TNTE VARCHAR(10), NOMBRE_ENTE VARCHAR(255));
+ALTER TABLE ente_entidad_territorial ADD CONSTRAINT PRIMARY KEY (ID_ENTE);
+ALTER TABLE ente_entidad_territorial ADD CONSTRAINT FK_ENTE_TNTE FOREIGN KEY (COD_TNTE) REFERENCES tnte_tipo_entidad_territorial (COD_TNTE);
+ALTER TABLE ente_entidad_territorial ADD CONSTRAINT FK_ENTE_ENTE FOREIGN KEY (ID_ENTE_PADRE) REFERENCES ente_entidad_territorial (ID_ENTE);
+
+
+
+CREATE TABLE tivi_tipo_via (COD_TIVI VARCHAR(10) PRIMARY KEY, NOMBRE_TIVI VARCHAR(255));
+
+CREATE TABLE calle_callejero (ID_CALLE VARCHAR(36) PRIMARY KEY, ID_ENTE VARCHAR(36), ID_CALLE_SUP VARCHAR(36), COD_TIVI VARCHAR(10), NOMBRE_CALLE VARCHAR(255));
+ALTER TABLE calle_callejero ADD CONSTRAINT FK_CALLE_TIVI FOREIGN KEY (COD_TIVI) REFERENCES tivi_tipo_via (COD_TIVI);
+ALTER TABLE calle_callejero ADD CONSTRAINT FK_CALLE_CALLE FOREIGN KEY (ID_CALLE_SUP) REFERENCES calle_callejero (ID_CALLE);
+ALTER TABLE calle_callejero ADD CONSTRAINT FK_CALLE_ELEM FOREIGN KEY (ID_CALLE) REFERENCES elem_elemento (ID_ELEM);
+
+INSERT INTO tiel_tipo_elemento (COD_TIEL, NOMBRE_TIEL) VALUES ('ente','Entidad territorial');
+INSERT INTO tiel_tipo_elemento (COD_TIEL, NOMBRE_TIEL) VALUES ('calle','Via o calle del callejero');
+
+CREATE TABLE dire_direccion (ID_DIRE VARCHAR(36));
+ALTER TABLE dire_direccion ADD CONSTRAINT PRIMARY KEY (ID_DIRE);
+ALTER TABLE dire_direccion ADD CONSTRAINT FK_DIRE_ELEM FOREIGN KEY (ID_DIRE) REFERENCES elem_elemento(ID_ELEM);
+
+CREATE TABLE dirn_direccion_normalizada (ID_DIRE VARCHAR(36) PRIMARY KEY,  ID_CALLE VARCHAR(36), EDIF_DIRN VARCHAR(60), NUMERO_DIRN VARCHAR(10), PUERTA_DIRN VARCHAR(10), PISO_DIRN VARCHAR(10), ESCA_DIRN VARCHAR(10), BLOQ_DIRN VARCHAR(10), AMPLIACION_DIRN VARCHAR(60));
+ALTER TABLE dirn_direccion_normalizada ADD CONSTRAINT FK_DIRN_CALLE FOREIGN KEY (ID_CALLE) REFERENCES calle_callejero (ID_CALLE);
+ALTER TABLE dirn_direccion_normalizada ADD CONSTRAINT FK_DIRN_DIRE FOREIGN KEY (ID_DIRE) REFERENCES dire_direccion (ID_DIRE);
+
+CREATE TABLE dinn_direccion_no_normalizada (ID_DIRE VARCHAR(36) PRIMARY KEY, ID_CALLE VARCHAR(36) DEFAULT null, ID_ENTE VARCHAR(36) DEFAULT NULL, LINEA_DIRE_1 VARCHAR(120),LINEA_DIRE_2 VARCHAR(120),LINEA_DIRE_3 VARCHAR(120))
+ALTER TABLE dinn_direccion_no_normalizada ADD CONSTRAINT FK_DINN_DIRE FOREIGN KEY (ID_DIRE) REFERENCES dire_direccion (ID_DIRE);
+ALTER TABLE dinn_direccion_no_normalizada ADD CONSTRAINT FK_DINN_CALLE FOREIGN KEY (ID_CALLE) REFERENCES calle_callejero (ID_CALLE);
+ALTER TABLE dinn_direccion_no_normalizada ADD CONSTRAINT FK_DINN_ENTE FOREIGN KEY (ID_ENTE) REFERENCES ente_entidad_territorial (ID_ENTE);
+
+
+CREATE TABLE tpct_tipo_codigo_gestion_territorial (ID_TPCT VARCHAR(36), COD_TPCT VARCHAR(36) PRIMARY key, NOMBRE_TPCT VARCHAR(255));
+ALTER TABLE tpct_tipo_codigo_gestion_territorial ADD CONSTRAINT FK_TPCT_ELEM FOREIGN KEY (ID_TPCT) REFERENCES elem_elemento (id_elem);
+
+INSERT INTO tiel_tipo_elemento (COD_TIEL, NOMBRE_TIEL) VALUES ('tpct','Tipo codigo gestion territorial');
+
+INSERT INTO tpct_tipo_codigo_gestion_territorial (COD_TPCT, nombre_TPCT) VALUES ('POSTAL','Código postal');
+INSERT INTO tpct_tipo_codigo_gestion_territorial (COD_TPCT, nombre_TPCT) VALUES ('INE','Código del instituto nacional de estadística');
+
+CREATE TABLE cgtr_codigos_gestion_territorial (ID_CGTR VARCHAR(36), COD_TPCT VARCHAR(36), ID_ELEM VARCHAR(36), CODIGO VARCHAR(200));
+ALTER TABLE cgtr_codigos_gestion_territorial ADD CONSTRAINT PRIMARY KEY (ID_CGTR);
+ALTER TABLE cgtr_codigos_gestion_territorial ADD CONSTRAINT FK_CGTR_TPCT FOREIGN KEY (COD_TPCT) REFERENCES tpct_tipo_codigo_gestion_territorial (COD_TPCT);
+ALTER TABLE cgtr_codigos_gestion_territorial ADD CONSTRAINT FK_CGTR_ELEM FOREIGN KEY (ID_CGTR) REFERENCES elem_elemento (ID_ELEM);
+ALTER TABLE cgtr_codigos_gestion_territorial ADD CONSTRAINT FK_CGTR_ELEM_ELEM FOREIGN KEY (ID_ELEM) REFERENCES elem_elemento (ID_ELEM);
+
+INSERT INTO tiel_tipo_elemento (COD_TIEL, NOMBRE_TIEL) VALUES ('cgtr','Código gestión territorial');
