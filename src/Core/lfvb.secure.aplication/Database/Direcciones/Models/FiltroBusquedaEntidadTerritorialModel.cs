@@ -10,6 +10,7 @@ namespace lfvb.secure.aplication.Database.Direcciones.Models
     {
         public List<TipoEntidadTerritorialModel>? TiposEntidades { get; set; }
         public List<EntidadTerritorialModel>? Padres { get; set; } 
+        public List<FiltroCodigoEntidadTerritorialModel>? Codigos { get; set; } 
         public string? Nombre { get; set; }  
     }
 }

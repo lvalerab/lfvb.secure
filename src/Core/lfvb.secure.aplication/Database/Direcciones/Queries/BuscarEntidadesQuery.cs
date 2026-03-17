@@ -22,6 +22,7 @@ namespace lfvb.secure.aplication.Database.Direcciones.Queries
         {
             List<string> CodigoTipos=new List<string>();
             List<Guid> idPadres=new List<Guid>();
+            List<string> cgts = new List<string>();
 
             if (filtro.TiposEntidades != null)
             {
@@ -33,12 +34,21 @@ namespace lfvb.secure.aplication.Database.Direcciones.Queries
                 idPadres = filtro.Padres.Select(x => x.Id.Value).ToList();
             }
 
+            if(filtro.Codigos!=null)
+            {
+                cgts = filtro.Codigos.Select(x => x.TipoCodigo.Codigo + "[" + x.codigo + "]").ToList();
+            }
+
             List<EntidadTerritorialModel> resultado=await (from et in _db.EntidadesTerritoriales
                                                                             .Include(et=>et.TipoEntidad)
                                                                             .Include(et=>et.Padre)
+                                                                    join cd in _db.CodigosGestionTerritorial
+                                                                            .Include(cgt=>cgt.TipoCodigoGestionTerritorial) on et.Id equals cd.IdElemento into pconsulta
+                                                                    from p in pconsulta.DefaultIfEmpty()
                                                            where (CodigoTipos.Count == 0 || CodigoTipos.Contains(et.TipoEntidad.Codigo))
                                                             && (idPadres.Count == 0 || (et.Padre != null && idPadres.Contains(et.Padre.Id)))
                                                             && (string.IsNullOrEmpty(filtro.Nombre) || et.Nombre.Contains(filtro.Nombre))
+                                                            && (cgts.Count==0 || cgts.Contains(p.TipoCodigoGestionTerritorial.Codigo+"["+p.Codigo+"]"))
                                                               select new EntidadTerritorialModel
                                                               {
                                                                   Id=et.Id,

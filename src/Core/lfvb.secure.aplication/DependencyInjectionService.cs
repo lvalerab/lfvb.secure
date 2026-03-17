@@ -11,6 +11,7 @@ using lfvb.secure.common.PASSWORD;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,7 @@ namespace lfvb.secure.aplication
             MapperConfiguration mapper = new MapperConfiguration(config =>
             {
                 config.AddProfile(new MapperProfile());
-            });
+            }, new LoggerFactory());
 
             services.AddSingleton(mapper.CreateMapper());
 
