@@ -42,9 +42,9 @@ namespace lfvb.secure.api.Atributos.Secure
            _permiso = permiso;
         }
 
-        public DbAuthorizeAttribute(List<string> permisos):base()
+        public DbAuthorizeAttribute(string[] permisos):base()
         {
-            _permisos = permisos;
+            _permisos = permisos.ToList();
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -86,7 +86,7 @@ namespace lfvb.secure.api.Atributos.Secure
                             {
                                 this._app = parts[0];
                             }
-                            PermisoElementoAplicacionQueryModel authorized = this._permisoElementoAplicacionQuery.ExecuteSync(id ?? Guid.Empty, _app, _componente, perm);
+                            PermisoElementoAplicacionQueryModel authorized = this._permisoElementoAplicacionQuery.ExecuteSync(id ?? Guid.Empty, _app, _componente, _permiso);
                             if (authorized.CodigoTipoPermiso.Count > 0)
                             {
                                 //Si encuentra el permiso, se autoriza y se sale del ciclo, si no encuentra el permiso, se devuelve un 401  

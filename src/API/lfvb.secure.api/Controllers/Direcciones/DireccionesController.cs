@@ -44,7 +44,7 @@ namespace lfvb.secure.api.Controllers.Direcciones
         /// <returns></returns>
         [HttpGet]
         [Authorize]
-        [Route("entidad/territorial/tipos")]
+        [Route("entidad/territorial/tipos")]        
         public async Task<IActionResult> Get()
         {
             try
