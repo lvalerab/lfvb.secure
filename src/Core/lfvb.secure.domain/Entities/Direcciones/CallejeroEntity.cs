@@ -10,7 +10,7 @@ namespace lfvb.secure.domain.Entities.Direcciones
     {
         public Guid Id { get; set; }
         public Guid IdEntidadTerritorial { get; set; }
-        public Guid IdCalleSuperior { get; set; }   
+        public Guid? IdCalleSuperior { get; set; }   
         public string CodigoTipoVia { get; set; }   
         public string Nombre { get; set; }
 

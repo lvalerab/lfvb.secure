@@ -4,6 +4,7 @@ using lfvb.secure.aplication.Database.Aplicaciones.Commands.AltaPermisoElementoA
 using lfvb.secure.aplication.Database.Circuitos;
 using lfvb.secure.aplication.Database.Credencial.Commands.CaducarCredencial;
 using lfvb.secure.aplication.Database.Credencial.Commands.CrearCredencialUsuario;
+using lfvb.secure.aplication.Database.Direcciones;
 using lfvb.secure.aplication.Database.Elementos;
 using lfvb.secure.aplication.Database.Grupos.Commands.ActualizaGrupoUsuariosPerisos;
 using lfvb.secure.aplication.Database.Grupos.Commands.AltaGrupoUsuariosPermisos;
@@ -67,6 +68,8 @@ namespace lfvb.secure.aplication.Database
             UnidadesOrganizativasDependencyInjection.AddCommands(services);
 
             DependencyI18NInjectionCommands.AddCommands(services);
+
+            DependencyDireccionesInjectionCommands.AddCommands(services);
 
             return services;
         }
