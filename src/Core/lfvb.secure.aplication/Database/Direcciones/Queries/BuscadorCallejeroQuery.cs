@@ -60,7 +60,13 @@ namespace lfvb.secure.aplication.Database.Direcciones.Queries
                         EntidadTerritorial=new EntidadTerritorialModel
                         {
                             Id=cl.EntidadTerritorial.Id,
-                            Nombre=cl.EntidadTerritorial.Nombre
+                            Nombre=cl.EntidadTerritorial.Nombre,
+                            Tipo=(from te in _db.TiposEntidadesTerritoriales
+                                  where te.Codigo==cl.EntidadTerritorial.CodigoTipoEntidad
+                                  select new TipoEntidadTerritorialModel { 
+                                    Codigo=te.Codigo,
+                                    Nombre=te.Nombre
+                                  }).FirstOrDefault()
                         },
                         TipoVia=new TipoViaModel
                         {

@@ -64,7 +64,8 @@ namespace lfvb.secure.api
                     policy =>
                     {
                         policy                        
-                        .WithOrigins("http://localhost", "https://localhost")
+                        //.WithOrigins("http://localhost", "https://localhost")
+                        .AllowAnyOrigin()
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                     });

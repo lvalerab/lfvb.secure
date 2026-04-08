@@ -8,5 +8,6 @@ namespace HydraLfvbDaemon.Hubs.Hydra
 {
     public interface IHydraCommands
     {
+        public void Connect();
     }
 }

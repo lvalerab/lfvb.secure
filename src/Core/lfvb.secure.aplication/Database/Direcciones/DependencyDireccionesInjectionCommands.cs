@@ -1,4 +1,5 @@
 ﻿using lfvb.secure.aplication.Database.Direcciones.Commands.Callejero;
+using lfvb.secure.aplication.Database.Direcciones.Commands.Direccion;
 using lfvb.secure.aplication.Database.Direcciones.Commands.EntidadTerritorial;
 using lfvb.secure.aplication.Database.Direcciones.Commands.TipoCodigoEntidadTerritorial;
 using lfvb.secure.aplication.Database.Direcciones.Commands.TipoEntidadTerritorial;
@@ -35,6 +36,10 @@ namespace lfvb.secure.aplication.Database.Direcciones
             services.AddTransient<IAltaViaCommand, AltaViaCommand>();
             services.AddTransient<IModificarViaCommand, ModificarViaCommand>();
             services.AddTransient<IEliminarViaCommand, EliminarViaCommand>();
+            #endregion
+
+            #region "Direcciones"
+            services.AddTransient<IAltaModificacionDireccionCommand, AltaModificacionDireccionCommand>();
             #endregion
 
 
