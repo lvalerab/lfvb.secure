@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>7fe0bec2-7a1e-4f85-aafc-1b2178d4a2c6</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>hydra.comunicaciones</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)websockets\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)http\HttpRestClient.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)http\IHttpRestClient.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)models\estado\CpuModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)models\estado\EstadisticasEstadoHydraModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)models\estado\TaskQeueStatusModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)models\tareas\TareaModel.cs" />
+  </ItemGroup>
+</Project>

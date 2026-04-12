@@ -13,7 +13,7 @@ namespace HydraLfvbDaemon.Hubs.Hydra
     public class HydraCommands:IHydraCommands
     {
 
-        private HubConnection _conSERVER;
+        private HubConnection? _conSERVER;
         private IConfiguration _conf;
         private ILogger<HydraCommands> _logger;
         public LocalTaskPushHandler onLocalTaskPush;    
@@ -47,7 +47,9 @@ namespace HydraLfvbDaemon.Hubs.Hydra
                     }
                 });
 
-              _conSERVER.StartAsync();
+
+                _logger.LogInformation("Iniciando comunicación con el servidor de API (WebSockets)");
+                _conSERVER.StartAsync();
             } catch(Exception ex)
             {
                 _logger.LogError(ex, "Error al conectar al servidor de comandos.");

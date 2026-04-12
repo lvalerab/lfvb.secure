@@ -17,4 +17,6 @@
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="10.0.5" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.13" />
   </ItemGroup>
+
+  <Import Project="..\hydra.comunicaciones\hydra.comunicaciones.projitems" Label="Shared" />
 </Project>

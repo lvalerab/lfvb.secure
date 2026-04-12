@@ -35,6 +35,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Daemon", "Daemon", "{8BDD1E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydraLfvbDaemon", "HydraLfvbDaemon\HydraLfvbDaemon.csproj", "{437B3189-D92C-4A18-B947-188BB1269AE1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Comunicaciones", "Comunicaciones", "{DEECC93C-BF7F-4AC5-BD61-7F09A6D165F3}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "hydra.comunicaciones", "hydra.comunicaciones\hydra.comunicaciones.shproj", "{7FE0BEC2-7A1E-4F85-AAFC-1B2178D4A2C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,8 +97,14 @@ Global
 		{3E6CF1EE-B3CD-496E-ABAC-93134686BE79} = {770D1903-B5F9-4EA5-A5C2-7D256390AC3B}
 		{8BDD1E82-BBC4-4CEE-A837-C8415DC1CF33} = {3E6CF1EE-B3CD-496E-ABAC-93134686BE79}
 		{437B3189-D92C-4A18-B947-188BB1269AE1} = {8BDD1E82-BBC4-4CEE-A837-C8415DC1CF33}
+		{DEECC93C-BF7F-4AC5-BD61-7F09A6D165F3} = {3E6CF1EE-B3CD-496E-ABAC-93134686BE79}
+		{7FE0BEC2-7A1E-4F85-AAFC-1B2178D4A2C6} = {DEECC93C-BF7F-4AC5-BD61-7F09A6D165F3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF040322-B8B8-489A-B032-4BEE4E593873}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		hydra.comunicaciones\hydra.comunicaciones.projitems*{437b3189-d92c-4a18-b947-188bb1269ae1}*SharedItemsImports = 5
+		hydra.comunicaciones\hydra.comunicaciones.projitems*{7fe0bec2-7a1e-4f85-aafc-1b2178d4a2c6}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal
