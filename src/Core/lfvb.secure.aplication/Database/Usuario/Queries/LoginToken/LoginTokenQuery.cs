@@ -30,7 +30,7 @@ namespace lfvb.secure.aplication.Database.Usuario.Queries.LoginToken
         public async Task<LoginTokenModel?> Execute(LoginTokenModel parameters)
         {
             if(parameters!=null) {
-                string hstk = this._securePassword.Crypt(parameters.Token);
+                string hstk = this._securePassword.Crypt(parameters.Token);                
                 LoginTokenModel  encontrado = await(from us in this._db.Usuarios
                                                              join cr in this._db.Credenciales on us.Id equals cr.IdUsuario
                                                              join tk in this._db.Tokens on cr.Id equals tk.Id

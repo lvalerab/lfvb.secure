@@ -14,8 +14,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.9" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="10.0.5" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Hubs\LocalServer\" />
   </ItemGroup>
 
   <Import Project="..\hydra.comunicaciones\hydra.comunicaciones.projitems" Label="Shared" />

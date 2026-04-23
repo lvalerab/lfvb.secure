@@ -1,7 +1,7 @@
 using hydra.comunicaciones.Http;
 using hydra.comunicaciones.models.estado;
 using hydra.comunicaciones.models.tareas;
-using HydraLfvbDaemon.Hubs.Hydra;
+using HydraLfvbDaemon.Hubs.HydraWebSocket;
 
 
 namespace HydraLfvbDaemon
@@ -11,7 +11,7 @@ namespace HydraLfvbDaemon
         private readonly ILogger<HydraWorker> _logger;
         private IConfiguration _config;
 
-        private IHydraCommands _hydraHubContext;
+        private IHydraWebSocketClient _hydraHubContext;
         private IHttpRestClient _clienteRest;
 
         private PriorityQueue<TareaModel, int> tareasLocales = new PriorityQueue<TareaModel, int>();
@@ -22,7 +22,7 @@ namespace HydraLfvbDaemon
 
         public HydraWorker(ILogger<HydraWorker> logger,
                            IConfiguration config,
-                           IHydraCommands hydraCommands,
+                           IHydraWebSocketClient hydraCommands,
                            IHttpRestClient clienteRest
                       ) : base(
                     )

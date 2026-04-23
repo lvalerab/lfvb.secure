@@ -11,7 +11,7 @@ namespace hydra.comunicaciones.Http
 {
     public class HttpRestClient:IHttpRestClient
     {
-        private Guid? _tokenUser = null; //Es lo unico que guardamos del estado del cliente, el token de usuario,
+        private string? _tokenUser = null; //Es lo unico que guardamos del estado del cliente, el token de usuario,
                                          //para poder identificarlo en cada petición y asociarlo a un usuario concreto.
                                          //No guardamos nada más, ni siquiera la IP, para respetar la privacidad del usuario.
         private string? _bearerToken = null; //El token de autenticación, que se usará para autenticar las peticiones al servidor de comandos.
@@ -30,7 +30,7 @@ namespace hydra.comunicaciones.Http
         {
             _config = config;
             _logger = logger;
-            this._tokenUser = this._config.GetValue<Guid>("auth:token");
+            this._tokenUser = this._config.GetValue<string>("auth:token");
         }
 
         public virtual async void SetBearerToken(bool force=false, string? urlToken=null)

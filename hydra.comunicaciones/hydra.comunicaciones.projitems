@@ -9,14 +9,14 @@
     <Import_RootNamespace>hydra.comunicaciones</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)websockets\" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)http\HttpRestClient.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)http\IHttpRestClient.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)models\estado\CpuModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)models\estado\EstadisticasEstadoHydraModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)models\estado\TaskQeueStatusModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)models\tareas\TareaModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)websockets\" />
   </ItemGroup>
 </Project>
