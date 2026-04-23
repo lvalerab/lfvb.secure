@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HydraLfvbDaemon.models.system
+namespace HydraLfvbDaemon.Hubs.Hydra
 {
-    public class BucleModel
+    public interface IHydraCommands
     {
-        public int waitTime { get; set; }   
+        public void Connect();
     }
 }

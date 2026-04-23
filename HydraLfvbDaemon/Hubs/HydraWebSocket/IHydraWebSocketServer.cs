@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HydraLfvbDaemon.Hubs.Hydra
+namespace HydraLfvbDaemon.Hubs.HydraWebSocket
 {
-    public interface IHydraCommands
+    public interface IHydraWebSocketServer
     {
+       
     }
 }
