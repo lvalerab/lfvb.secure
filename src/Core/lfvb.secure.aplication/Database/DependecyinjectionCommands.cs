@@ -1,6 +1,7 @@
 ﻿using lfvb.secure.aplication.Database.Aplicaciones.Commands.AltaActualizacionElementoAplicacion;
 using lfvb.secure.aplication.Database.Aplicaciones.Commands.AltaAplicacion;
 using lfvb.secure.aplication.Database.Aplicaciones.Commands.AltaPermisoElementoAplicacion;
+using lfvb.secure.aplication.Database.Censo;
 using lfvb.secure.aplication.Database.Circuitos;
 using lfvb.secure.aplication.Database.Credencial.Commands.CaducarCredencial;
 using lfvb.secure.aplication.Database.Credencial.Commands.CrearCredencialUsuario;
@@ -70,6 +71,8 @@ namespace lfvb.secure.aplication.Database
             DependencyI18NInjectionCommands.AddCommands(services);
 
             DependencyDireccionesInjectionCommands.AddCommands(services);
+
+            DependencyInjectionCensoCommands.AddCommands(services);
 
             return services;
         }

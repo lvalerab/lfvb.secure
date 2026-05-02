@@ -10,8 +10,8 @@
     <PackageReference Include="AutoMapper" Version="16.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="10.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.Abstractions" Version="10.0.7" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.5" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.7" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.7" />
     <PackageReference Include="MySql.EntityFrameworkCore" Version="10.0.1" />
   </ItemGroup>
 
@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Database\Censo\Commands\" />
     <Folder Include="Database\Circuitos\AccionesPasos\Commands\" />
     <Folder Include="Database\Circuitos\Acciones\Commands\" />
     <Folder Include="Database\Credencial\Querys\" />

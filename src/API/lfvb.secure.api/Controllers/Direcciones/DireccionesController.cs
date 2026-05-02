@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using lfvb.secure.api.Atributos.Secure;
 using lfvb.secure.aplication.Database.Direcciones.Queries;
 using lfvb.secure.aplication.Database.Direcciones.Models;
+using lfvb.secure.aplication.Database.Direcciones.Commands.Direccion;
 
 namespace lfvb.secure.api.Controllers.Direcciones
 {
@@ -20,13 +21,23 @@ namespace lfvb.secure.api.Controllers.Direcciones
         private IGetEntidadTerritorialQuery _qryGetEntidadTerritorial;
         private IBuscadorCallejeroQuery _qryBuscadorCallejero;
 
+        private IGetDireccionesPersonaQuery _qryDireccionesPersona;
+        private IGetDireccionQuery _qryDireccion;
+        private IGetArbolEntidadTerritorialQuery _qryArbolEntidadTerritorial;
+
+        private IAltaModificacionDireccionCommand _cmdAltaModificacionDireccion;
+
         public DireccionesController(ILogger<DireccionesController> logger,
                                     IJwtTokenUtils jwtTokenUtils,
                                     IGetAllTiposEntidadesTerritorialesQuery qryAllTiposEntiTerri,
                                     IBuscarEntidadesQuery qryBuscarEntidades,
                                     IGetAllTiposViasQuery qryAllTiposVias,
                                     IGetEntidadTerritorialQuery qryGetEntidadTerritorial,
-                                    IBuscadorCallejeroQuery qryBuscadorCallejero)
+                                    IBuscadorCallejeroQuery qryBuscadorCallejero,
+                                    IGetDireccionesPersonaQuery qryDireccionesPersona,
+                                    IGetDireccionQuery qryDireccion,
+                                    IAltaModificacionDireccionCommand cmdAltaModificacionDireccion,
+                                    IGetArbolEntidadTerritorialQuery qryArbolEntidadTerritorial)
         {
             this._logger = logger;
             this._jwtTokenUtils = jwtTokenUtils;
@@ -35,6 +46,10 @@ namespace lfvb.secure.api.Controllers.Direcciones
             _qryAllTiposVias = qryAllTiposVias;
             _qryGetEntidadTerritorial = qryGetEntidadTerritorial;
             _qryBuscadorCallejero = qryBuscadorCallejero;
+            _qryDireccionesPersona = qryDireccionesPersona;
+            _qryDireccion = qryDireccion;
+            _cmdAltaModificacionDireccion = cmdAltaModificacionDireccion;
+            _qryArbolEntidadTerritorial = qryArbolEntidadTerritorial;
         }
 
         /// <summary>
@@ -44,7 +59,7 @@ namespace lfvb.secure.api.Controllers.Direcciones
         /// <returns></returns>
         [HttpGet]
         [Authorize]
-        [Route("entidad/territorial/tipos")]        
+        [Route("entidad/territorial/tipos")]
         public async Task<IActionResult> Get()
         {
             try
@@ -54,6 +69,26 @@ namespace lfvb.secure.api.Controllers.Direcciones
             } catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al obtener los tipos de entidades territoriales");
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Obtiene el arbol de la entidad territorial indicada
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Authorize]
+        [Route("entidad/territorial/{id:guid}/arbol")]
+        public async Task<IActionResult> GetArbolEntidadTerritorial(Guid id)
+        {
+            try
+            {
+                EntidadTerritorialModel entidad=await this._qryArbolEntidadTerritorial.execute(id);
+                return Ok(entidad);
+            } catch (Exception ex) {
+                _logger.LogError(ex, "Error al obtener el arbol de la entidad territorial indicada");
                 return BadRequest(ex.Message);
             }
         }
@@ -143,6 +178,71 @@ namespace lfvb.secure.api.Controllers.Direcciones
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Error al buscar en el callejero con el filtro {filtro}");
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Obtiene las direcciones de una persona
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Authorize]
+        [Route("persona/{id:guid}")]
+        public async Task<IActionResult> GetDireccionesPersonas(Guid id)
+        {
+            try
+            {
+                List<DireccionModel> direcciones = await _qryDireccionesPersona.execute(id);
+                return Ok(direcciones);
+            } catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error obtener las direcciones de la persona {id}");
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Obtiene los datos de una direccion
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Authorize]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> GetDireccion(Guid id)
+        {
+            try
+            {
+                DireccionModel dir = await _qryDireccion.execute(id);
+                return Ok(dir);
+            } catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error al obtener la direccion {id}");
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Data de alta o modifica una direccion, la asignación de esta direccion, se hara con los metodos de asignacion de elementos a personas, facturas, etc...
+        /// que se encuentran en los controladores de cada elemento. Este método se encargará únicamente de dar de alta o modificar la dirección en sí, 
+        /// sin asignarla a ningún elemento específico. De esta manera, se mantiene una separación clara entre la gestión de direcciones y la asignación de estas a otros elementos del sistema.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize]
+        [Route("")]
+        public async Task<IActionResult> AltaModificacionDireccion([FromBody] DireccionModel model)
+        {
+            try
+            {
+                DireccionModel resultado = await _cmdAltaModificacionDireccion.execute(model);
+                return Ok(resultado);
+            } catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error al dar de alta/modificar la dirección");
                 return BadRequest(ex.Message);
             }
         }

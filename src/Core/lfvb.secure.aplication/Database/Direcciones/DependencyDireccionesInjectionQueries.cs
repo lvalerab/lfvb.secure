@@ -20,9 +20,11 @@ namespace lfvb.secure.aplication.Database.Direcciones
             services.AddTransient<IGetAllTiposEntidadesTerritorialesQuery, GetAllTiposEntidadesTerritorialesQuery>();
             services.AddTransient<IGetAllTiposViasQuery, GetAllTiposViasQuery>();
             services.AddTransient<IGetEntidadTerritorialQuery,GetEntidadTerritorialQuery>();
+            services.AddTransient<IGetArbolEntidadTerritorialQuery, GetArbolEntidadTerritorialQuery>(); 
             #endregion
 
-
+            services.AddTransient<IGetDireccionesPersonaQuery, GetDireccionesPersonaQuery>();
+            services.AddTransient<IGetDireccionQuery, GetDireccionQuery>();
             return services;
         }   
     }
