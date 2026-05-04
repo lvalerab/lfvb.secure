@@ -21,12 +21,18 @@ namespace lfvb.secure.persistence.Configuraciones.Personas
             builder.Property(x => x.Nombre).HasColumnName("NOMBRE_PERS").HasMaxLength(255).IsRequired();
             builder.Property(x => x.Apellido1).HasColumnName("APELLIDO1_PERS").HasMaxLength(255).IsRequired();
             builder.Property(x => x.Apellido2).HasColumnName("APELLIDO2_PERS");
+            builder.Property(x => x.CodigoSexo).HasColumnName("COD_TSEX").HasMaxLength(10).IsRequired();
+            builder.Property(x => x.FechaNacimiento).HasColumnName("FECHA_NACIMIENTO");
 
             builder.HasOne(x => x.TipoPersona)
                 .WithMany(x => x.Personas)
                 .HasForeignKey(x => x.CodigoTipoPersona);
 
-           builder.HasMany(x => x.Elementos)
+            builder.HasOne(x => x.TipoSexo)
+                .WithMany(x => x.Personas)
+                .HasForeignKey(x => x.CodigoSexo);  
+
+            builder.HasMany(x => x.Elementos)
                 .WithOne(x => x.Persona)
                 .HasForeignKey(x => x.IdPersona);
 
@@ -41,6 +47,10 @@ namespace lfvb.secure.persistence.Configuraciones.Personas
             builder.HasMany(x => x.Relacionados)
                 .WithOne(x => x.PersonaRelacionada)
                 .HasForeignKey(x => x.IdPersonaRelacionada);
+
+            builder.HasMany(x => x.Situaciones)
+                .WithOne(x => x.Persona)
+                .HasForeignKey(x => x.IdPersona);
         }
     }
 }

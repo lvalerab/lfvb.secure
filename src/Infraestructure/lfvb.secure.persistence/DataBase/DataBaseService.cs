@@ -145,6 +145,9 @@ namespace lfvb.secure.persistence.DataBase
         public DbSet<IdentificadorPersonaEntity> IdentificadoresPersona { get; set; }   
         public DbSet<TipoRelacionPersonaEntity> TiposRelacionesPersona { get; set; }
         public DbSet<RelacionPersonaEntity> RelacionesPersona { get; set; }
+        public DbSet<TipoSituacionPersonaEntity> TiposSituacionesPersona { get; set; }  
+        public DbSet<SituacionPersonaEntity> SituacionesPersona { get; set; }
+        public DbSet<TipoSexoPersonaEntity> TiposSexoPersona { get; set; }  
         #endregion
 
         #region "Direcciones y callejero"
@@ -249,6 +252,9 @@ namespace lfvb.secure.persistence.DataBase
             new IdentificadorPersonaConfiguration(modelBuilder.Entity<IdentificadorPersonaEntity>());
             new TipoRelacionPersonaConfiguration(modelBuilder.Entity<TipoRelacionPersonaEntity>());
             new RelacionPersonaConfiguration(modelBuilder.Entity<RelacionPersonaEntity>());
+            new TipoSituacionPersonaConfiguration(modelBuilder.Entity<TipoSituacionPersonaEntity>());
+            new SituacionPersonaConfiguration(modelBuilder.Entity<SituacionPersonaEntity>());   
+            new TipoSexoPersonaConfiguration(modelBuilder.Entity<TipoSexoPersonaEntity>()); 
             #endregion
 
             #region "Direcciones y callejero"

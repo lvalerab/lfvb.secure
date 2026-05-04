@@ -1,4 +1,5 @@
-﻿using lfvb.secure.domain.Entities.Aplicacion;
+﻿using lfvb.secure.aplication.Database.Censo.Models;
+using lfvb.secure.domain.Entities.Aplicacion;
 using lfvb.secure.domain.Entities.Circuitos.Accion;
 using lfvb.secure.domain.Entities.Circuitos.AccionTipoElemento;
 using lfvb.secure.domain.Entities.Circuitos.AccionUsuario;
@@ -132,6 +133,9 @@ namespace lfvb.secure.aplication.Interfaces
         DbSet<IdentificadorPersonaEntity> IdentificadoresPersona { get; set; }
         DbSet<TipoRelacionPersonaEntity> TiposRelacionesPersona { get; set; }
         DbSet<RelacionPersonaEntity> RelacionesPersona { get; set; }
+        DbSet<TipoSituacionPersonaEntity> TiposSituacionesPersona { get; set; }
+        DbSet<SituacionPersonaEntity> SituacionesPersona { get; set; }
+        DbSet<TipoSexoPersonaEntity> TiposSexoPersona { get; set; }
         #endregion
 
         #region "Direcciones y callejero"

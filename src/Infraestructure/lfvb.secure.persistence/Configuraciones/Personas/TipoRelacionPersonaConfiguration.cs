@@ -19,10 +19,16 @@ namespace lfvb.secure.persistence.Configuraciones.Personas
             builder.Property(x => x.Id).HasColumnName("ID_TRPR");
             builder.Property(x => x.Codigo).HasColumnName("COD_TRPR").HasMaxLength(36).IsRequired();
             builder.Property(x => x.Nombre).HasColumnName("NOMBRE_REPE").HasMaxLength(255).IsRequired();
+            builder.Property(x => x.CodigoReciproco).HasColumnName("COD_TRPR_RECIPROCO").HasMaxLength(36);
 
             builder.HasMany(x => x.Relaciones)
                 .WithOne(r => r.TipoRelacionPersona)
                 .HasForeignKey(r => r.CodigoTipoRelacion);
+
+            builder.HasOne(x => x.TipoReciploco)
+                .WithMany(x => x.TiposReciprocos)
+                .HasForeignKey(x => x.CodigoReciproco);
+
         }
     }
 }

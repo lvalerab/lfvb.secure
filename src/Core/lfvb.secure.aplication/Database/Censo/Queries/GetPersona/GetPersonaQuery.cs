@@ -22,9 +22,11 @@ namespace lfvb.secure.aplication.Database.Censo.Queries.GetPersona
         public async Task<PersonaModel> execute(Guid id)
         {
             PersonaModel resultado = await (from pr in _db.Personas
-                                            .Include(p => p.Identificadores)                                            
-                                            .Include(p => p.Relaciones)
+                                            .Include(p => p.TipoSexo)   
+                                            .Include(p => p.Identificadores).ThenInclude(i => i.TipoIdentificadorPersona)  
+                                            .Include(p => p.Relaciones).ThenInclude(r => r.PersonaRelacionada)    
                                             .Include(p => p.TipoPersona)
+                                            .Include(p => p.Situaciones).ThenInclude(s=>s.TipoSituacionPersona)   
                                             where pr.Id == id
                                             select new PersonaModel
                                             {
@@ -34,19 +36,23 @@ namespace lfvb.secure.aplication.Database.Censo.Queries.GetPersona
                                                     Codigo = pr.TipoPersona.Codigo,
                                                     Nombre = pr.TipoPersona.Nombre
                                                 },
+                                                Sexo = new TipoSexoPersonaModel
+                                                {
+                                                    Codigo = pr.TipoSexo.Codigo,
+                                                    Nombre = pr.TipoSexo.Nombre
+                                                },  
                                                 Nombre = pr.Nombre,
                                                 Apellido1 = pr.Apellido1,
                                                 Apellido2 = pr.Apellido2,
+                                                FechaNacimiento = pr.FechaNacimiento,
                                                 Identificaciones = pr.Identificadores.Select(i => new IdentificacionPersonaModel
                                                 {
                                                     Id = i.Id,                                                    
-                                                    Tipo = (from ti in _db.TiposIdentificadoresPersona
-                                                                          where ti.Codigo==i.CodigoTipoIdentificador
-                                                                          select new TipoIdentificacionPersonaModel
-                                                                          {
-                                                                                Codigo = ti.Codigo,
-                                                                                Nombre = ti.Nombre
-                                                                          }).FirstOrDefault(),
+                                                    Tipo = new TipoIdentificacionPersonaModel
+                                                    {
+                                                        Codigo = i.TipoIdentificadorPersona.Codigo,
+                                                        Nombre = i.TipoIdentificadorPersona.Nombre  
+                                                    },
                                                     Dato1 = i.Dato1,
                                                     Dato2 = i.Dato2,
                                                     FechaInicioVigencia = i.InicioVigencia,
@@ -54,20 +60,13 @@ namespace lfvb.secure.aplication.Database.Censo.Queries.GetPersona
                                                 }).ToList(),
                                                 Relaciones = pr.Relaciones.Select(r => new RelacionPersonaModel
                                                 {
-                                                    Persona2 = (from prr in _db.Personas
-                                                                          where prr.Id == r.IdPersonaRelacionada
-                                                                          select new PersonaModel
-                                                                          {
-                                                                              Id = prr.Id,
-                                                                              Tipo = new TipoPersonaModel
-                                                                              {
-                                                                                  Codigo = prr.TipoPersona.Codigo,
-                                                                                  Nombre = prr.TipoPersona.Nombre
-                                                                              },
-                                                                              Nombre = prr.Nombre,
-                                                                              Apellido1 = prr.Apellido1,
-                                                                              Apellido2 = prr.Apellido2
-                                                                          }).FirstOrDefault(),
+                                                    Persona2 = new PersonaModel
+                                                    {
+                                                        Id = r.PersonaRelacionada.Id,
+                                                        Nombre = r.PersonaRelacionada.Nombre,
+                                                        Apellido1 = r.PersonaRelacionada.Apellido1,
+                                                        Apellido2 = r.PersonaRelacionada.Apellido2
+                                                    },
                                                     Tipo = (from tr in _db.TiposRelacionesPersona
                                                                     where tr.Codigo == r.CodigoTipoRelacion
                                                                     select new TipoRelacionPersonaModel
@@ -75,6 +74,18 @@ namespace lfvb.secure.aplication.Database.Censo.Queries.GetPersona
                                                                         Codigo = tr.Codigo,
                                                                         Nombre = tr.Nombre
                                                                     }).FirstOrDefault()
+                                                }).ToList(),
+                                                Situaciones = pr.Situaciones.Select(s => new SituacionPersonaModel
+                                                {
+                                                    Id = s.Id,
+                                                    Tipo = new TipoSituacionPersonaModel
+                                                    {
+                                                        Codigo = s.TipoSituacionPersona.Codigo,
+                                                        Nombre = s.TipoSituacionPersona.Nombre
+                                                    },
+                                                    Observaciones = s.Observaciones,
+                                                    FechaInicio = s.FechaDesde,
+                                                    FechaFin = s.FechaHasta
                                                 }).ToList()
                                             }).FirstOrDefaultAsync();
 

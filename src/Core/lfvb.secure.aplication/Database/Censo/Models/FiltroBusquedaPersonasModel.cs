@@ -12,6 +12,6 @@ namespace lfvb.secure.aplication.Database.Censo.Models
         public string? Nombre { get; set; }=null;
         public string? Apellido1 { get; set; }=null;
         public string? Apellido2 { get; set; }=null;
-        public List<IdentificacionPersonaModel> Identificaciones { get; set; }=new List<IdentificacionPersonaModel>();  
+        public List<FiltroBusquedaPorIdentPersona>? Identificaciones { get; set; }=new List<FiltroBusquedaPorIdentPersona>();  
     }
 }

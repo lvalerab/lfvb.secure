@@ -35,3 +35,22 @@ ALTER TABLE repe_relacion_persona ADD CONSTRAINT FK_REPE_TRPR FOREIGN KEY (COD_T
 
 INSERT INTO tiel_tipo_elemento (COD_TIEL, NOMBRE_TIEL) VALUES ('pers','Persona');
 
+
+CREATE TABLE sitp_tipo_situacion_persona (COD_SITP VARCHAR(10) PRIMARY KEY, NOMBRE_SITP VARCHAR(60));
+
+CREATE TABLE sipe_situacion_persona (ID_SIPE VARCHAR(36) PRIMARY key, ID_PERS VARCHAR(36), COD_SITP VARCHAR(10), FECHA_INICIO DATETIME, FECHA_FIN DATETIME, OBSERVACIONES_SIPE TEXT);
+ALTER TABLE sipe_situacion_persona ADD CONSTRAINT FK_SIPE_PERS FOREIGN KEY (ID_PERS) REFERENCES pers_persona (ID_PERS);
+ALTER TABLE sipe_situacion_persona ADD CONSTRAINT FK_SIPE_SITP FOREIGN KEY (COD_SITP) REFERENCES sitp_tipo_situacion_persona (COD_SITP);
+
+CREATE TABLE tsex_tipo_sexo_persona (COD_TSEX VARCHAR(10) PRIMARY key, NOMBRE_TSEX VARCHAR(60));
+
+ALTER TABLE pers_persona ADD COLUMN (COD_TSEX VARCHAR(10));
+ALTER TABLE pers_persona ADD CONSTRAINT FK_PERS_TSEX FOREIGN KEY (COD_TSEX) REFERENCES tsex_tipo_sexo_persona(COD_TSEX);
+
+ALTER TABLE pers_persona ADD COLUMN (FECHA_NACIMIENTO DATETIME DEFAULT NULL);
+
+INSERT INTO tiel_tipo_elemento (COD_TIEL, NOMBRE_TIEL) VALUES ('sipe','Situación persona');
+INSERT INTO tiel_tipo_elemento (COD_TIEL, NOMBRE_TIEL) VALUES ('trpr','Tipo relacion entre personas');
+INSERT INTO tiel_tipo_elemento (COD_TIEL, NOMBRE_TIEL) VALUES ('tiid','Tipo identificación de persona');
+INSERT INTO tiel_tipo_elemento (COD_TIEL, NOMBRE_TIEL) VALUES ('idpe','Identificación de persona');
+SIPE

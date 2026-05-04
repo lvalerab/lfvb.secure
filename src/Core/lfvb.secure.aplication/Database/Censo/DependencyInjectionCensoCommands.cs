@@ -11,7 +11,19 @@ namespace lfvb.secure.aplication.Database.Censo
     {
         public static IServiceCollection AddCommands(IServiceCollection services)
         {
-              return services;
+            services.AddTransient<Commands.AltaPersona.IAltaPersonaCommand, Commands.AltaPersona.AltaPersonaCommand>();
+            services.AddTransient<Commands.ModificaPersona.IModificarPersonaCommand, Commands.ModificaPersona.ModificarPersonaCommand>();
+
+            services.AddTransient<Commands.AltaSituacionPersona.IAltaSituacionPersonaCommand, Commands.AltaSituacionPersona.AltaSituacionPersonaCommand>();
+            services.AddTransient<Commands.ModificarSituacionPersona.IModificarSituacionPersonaCommand, Commands.ModificarSituacionPersona.ModificarSituacionPersonaCommand>();
+
+            services.AddTransient<Commands.AltaRelacionPersona.IAltaModificacionRelacionPersonaCommand, Commands.AltaRelacionPersona.AltaModificacionRelacionPersonaCommand>();
+
+            services.AddTransient<Commands.AgregarIdentificacion.IAltaModificacionIdentificacionPersonaCommand, Commands.AgregarIdentificacion.AltaModificacionIdentificacionPersonaCommand>();
+
+            services.AddTransient<Commands.RelacionarElementoPersona.IRelacionarElementoPersonaCommand, Commands.RelacionarElementoPersona.RelacionarElementoPersonaCommand>();
+
+            return services;
         }
     }
 }
