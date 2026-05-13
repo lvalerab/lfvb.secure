@@ -2,6 +2,7 @@
 using lfvb.secure.aplication.Database.Censo.Exceptions;
 using lfvb.secure.aplication.Database.Censo.Models;
 using lfvb.secure.aplication.Database.Censo.Queries.BuscadorPersonas;
+using lfvb.secure.aplication.Database.Censo.Queries.GetPersona;
 using lfvb.secure.aplication.Database.Elementos.Commands;
 using lfvb.secure.aplication.Interfaces;
 using lfvb.secure.domain.Entities.Personas;
@@ -20,17 +21,20 @@ namespace lfvb.secure.aplication.Database.Censo.Commands.AltaPersona
         private readonly IBuscadorPersonaQuery _qryBuscador;
         private readonly IAltaElementoCommand _cmdAltaElemento;
         private readonly IAltaModificacionIdentificacionPersonaCommand _cmdAltaModiIdent;
+        private readonly IGetPersonaQuery _qryGetPersona;
 
         public AltaPersonaCommand(IDataBaseService db,
             IBuscadorPersonaQuery qryBuscador,
             IAltaElementoCommand cmdAltaElemento,
-            IAltaModificacionIdentificacionPersonaCommand cmdAltaModiIdent
+            IAltaModificacionIdentificacionPersonaCommand cmdAltaModiIdent,
+            IGetPersonaQuery qryGetPersona
             )
         {
             _db = db;
             _qryBuscador = qryBuscador;
             _cmdAltaElemento = cmdAltaElemento;
             _cmdAltaModiIdent = cmdAltaModiIdent;
+            _qryGetPersona = qryGetPersona;
         }   
 
         public async Task<PersonaModel> execute(PersonaModel persona, bool SinComprobarBusqueda=false)
@@ -103,7 +107,7 @@ namespace lfvb.secure.aplication.Database.Censo.Commands.AltaPersona
 
             await _db.SaveAsync();
 
-            return persona;
+            return await _qryGetPersona.execute(persona.Id??Guid.Empty);
         }
     }
 }

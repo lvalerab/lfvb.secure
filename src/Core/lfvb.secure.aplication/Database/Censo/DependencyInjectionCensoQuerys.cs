@@ -3,6 +3,7 @@ using lfvb.secure.aplication.Database.Censo.Queries.GetIdentificadores;
 using lfvb.secure.aplication.Database.Censo.Queries.GetPersona;
 using lfvb.secure.aplication.Database.Censo.Queries.GetRelaciones;
 using lfvb.secure.aplication.Database.Censo.Queries.GetSituaciones;
+using lfvb.secure.aplication.Database.Censo.Queries.LineaTemporalPersona;
 using lfvb.secure.aplication.Database.Censo.Queries.Maestros;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -31,6 +32,8 @@ namespace lfvb.secure.aplication.Database.Censo
             services.AddTransient<IGetIdentificadoresPersonaQuery, GetIdentificadoresPersonaQuery>();
             services.AddTransient<IGetRelacionesPersonaQuery, GetRelacionesPersonaQuery>();
             services.AddTransient<IGetSituacionesPersonalesQuery, GetSituacionesPersonalesQuery>();
+
+            services.AddTransient<ILineaTemporalPersonaQuery, LineaTemporalPersonaQuery>();
 
             return services;
         }

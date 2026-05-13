@@ -29,3 +29,12 @@ INSERT INTO trpr_tipo_relacion_persona (COD_TRPR, NOMBRE_REPE) VALUES ('TIO','Ti
 INSERT INTO trpr_tipo_relacion_persona (COD_TRPR, NOMBRE_REPE) VALUES ('PRIM','Primo/a de la persona');
 INSERT INTO trpr_tipo_relacion_persona (COD_TRPR, NOMBRE_REPE) VALUES ('2GAF','2º Grado de afinidad');
 INSERT INTO trpr_tipo_relacion_persona (COD_TRPR, NOMBRE_REPE) VALUES ('3GAF','3º y demas Grados de afinidad');
+INSERT INTO trpr_tipo_relacion_persona (COD_TRPR, NOMBRE_REPE) VALUES ('HERM','Hermanos');
+
+
+SELECT * FROM trpr_tipo_relacion_persona
+
+
+delete FROM pers_persona WHERE id_pers='4637e377-e2f8-40cc-aba9-4e363b90360b'
+
+SELECT * FROM repe_relacion_persona

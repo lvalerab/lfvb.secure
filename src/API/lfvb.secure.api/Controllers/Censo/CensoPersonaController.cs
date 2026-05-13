@@ -12,6 +12,7 @@ using lfvb.secure.aplication.Database.Censo.Queries.GetIdentificadores;
 using lfvb.secure.aplication.Database.Censo.Queries.GetPersona;
 using lfvb.secure.aplication.Database.Censo.Queries.GetRelaciones;
 using lfvb.secure.aplication.Database.Censo.Queries.GetSituaciones;
+using lfvb.secure.aplication.Database.Censo.Queries.LineaTemporalPersona;
 using lfvb.secure.aplication.Database.Censo.Queries.Maestros;
 using lfvb.secure.common.JWT;
 using Microsoft.AspNetCore.Authorization;
@@ -55,6 +56,8 @@ namespace lfvb.secure.api.Controllers.Censo
         private readonly IGetRelacionesPersonaQuery _qryGetRelaciones;
         private readonly IGetSituacionesPersonalesQuery _qryGetSituaciones;
 
+        private readonly ILineaTemporalPersonaQuery _qryLineaTemporalPersona;
+
 
 
         public CensoPersonaController(ILogger<PermisosController> logger,
@@ -75,7 +78,8 @@ namespace lfvb.secure.api.Controllers.Censo
                                         IRelacionarElementoPersonaCommand cmdRelacionarElementoPersona,
                                         IGetIdentificadoresPersonaQuery qryGetIdentificadores,
                                         IGetRelacionesPersonaQuery qryGetRelaciones,
-                                        IGetSituacionesPersonalesQuery qryGetSituaciones
+                                        IGetSituacionesPersonalesQuery qryGetSituaciones,
+                                        ILineaTemporalPersonaQuery qryLineaTemporalPersona
             )
         {
             _logger = logger;
@@ -100,6 +104,8 @@ namespace lfvb.secure.api.Controllers.Censo
             _qryGetIdentificadores = qryGetIdentificadores;
             _qryGetRelaciones = qryGetRelaciones;
             _qryGetSituaciones = qryGetSituaciones;
+
+            _qryLineaTemporalPersona = qryLineaTemporalPersona;
         }
 
         /// <summary>
@@ -146,6 +152,28 @@ namespace lfvb.secure.api.Controllers.Censo
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al obtener las identificaciones de la persona con id {Id}", id);
+                return StatusCode(500, "Error interno del servidor");
+            }
+        }
+
+        /// <summary>
+        /// Obtiene todas las entradas relevantes de la persona a lo largo del tiempo, como cambios en sus situaciones, relaciones o identificaciones. Este endpoint es útil para mostrar una línea temporal de la vida de la persona dentro del censo, permitiendo a los usuarios visualizar cómo ha evolucionado la información de la persona a lo largo del tiempo. Al obtener esta información, los usuarios pueden entender mejor el contexto y la historia de la persona dentro del censo, así como identificar eventos importantes o cambios significativos en su vida.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Authorize]
+        [Route("persona/{id:guid}/linea-temporal")]
+        public async Task<IActionResult> GetLineaTemporalPersona(Guid id)
+        {
+            try
+            {
+                List<EntradaTiempoPersonaModel> resultado = await _qryLineaTemporalPersona.execute(id);
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener la linea temporal de la persona con id {Id}", id);
                 return StatusCode(500, "Error interno del servidor");
             }
         }

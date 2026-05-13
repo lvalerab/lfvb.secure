@@ -80,9 +80,9 @@ namespace lfvb.secure.aplication.Database.Censo.Queries.BuscadorPersonas
                                                       (filtro.Apellido2 == null || pr.Apellido2.ToUpper().Contains(filtro.Apellido2.ToUpper())) &&
                                                       (filtro.Identificaciones.Count == 0 || pr.Identificadores.Any(i => filtro.Identificaciones.Any(fi => fi.Tipo.Codigo == i.TipoIdentificadorPersona.Codigo && 
                                                                                                                                                                         (
-                                                                                                                                                                            (fi.Dato1!= null && fi.Dato1 == i.Dato1) 
+                                                                                                                                                                            (fi.Dato1!= null && i.Dato1.Contains(fi.Dato1)) 
                                                                                                                                                                                 &&
-                                                                                                                                                                            (fi.Dato2 != null && fi.Dato2 == i.Dato2)
+                                                                                                                                                                            (fi.Dato2 != null && i.Dato2.Contains(fi.Dato2))
                                                                                                                                                                         )
                                                                                                                                                      )
                                                                                                                     )

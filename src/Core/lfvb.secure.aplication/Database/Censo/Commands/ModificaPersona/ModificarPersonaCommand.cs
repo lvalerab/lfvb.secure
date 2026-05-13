@@ -1,4 +1,5 @@
 ﻿using lfvb.secure.aplication.Database.Censo.Models;
+using lfvb.secure.aplication.Database.Censo.Queries.GetPersona;
 using lfvb.secure.aplication.Interfaces;
 using lfvb.secure.domain.Entities.Personas;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,12 @@ namespace lfvb.secure.aplication.Database.Censo.Commands.ModificaPersona
     public class ModificarPersonaCommand: IModificarPersonaCommand
     {
         private readonly IDataBaseService _db;
+        private readonly IGetPersonaQuery _getPersonaQuery; 
 
-        public ModificarPersonaCommand(IDataBaseService db)
+        public ModificarPersonaCommand(IDataBaseService db, IGetPersonaQuery getPersonaQuery)
         {
             _db = db;
+            _getPersonaQuery = getPersonaQuery;
         }
 
         public async Task<PersonaModel> execute(PersonaModel persona)
@@ -44,7 +47,7 @@ namespace lfvb.secure.aplication.Database.Censo.Commands.ModificaPersona
                 _db.Personas.Update(pers);
                 await _db.SaveAsync();
             }
-            return persona;
+            return await _getPersonaQuery.execute(persona.Id??Guid.Empty);
         }
     }
 }
