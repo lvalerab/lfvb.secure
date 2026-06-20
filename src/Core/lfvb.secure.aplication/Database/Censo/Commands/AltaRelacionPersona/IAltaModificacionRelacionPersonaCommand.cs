@@ -9,6 +9,6 @@ namespace lfvb.secure.aplication.Database.Censo.Commands.AltaRelacionPersona
 {
     public interface IAltaModificacionRelacionPersonaCommand
     {
-        public Task<RelacionPersonaModel> execute(RelacionPersonaModel model);  
+        public Task<RelacionPersonaModel> execute(AltaModificacionRelacionPersonalModel model);  
     }
 }

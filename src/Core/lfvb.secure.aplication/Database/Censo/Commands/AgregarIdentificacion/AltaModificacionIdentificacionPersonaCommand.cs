@@ -79,6 +79,7 @@ namespace lfvb.secure.aplication.Database.Censo.Commands.AgregarIdentificacion
                     InicioVigencia = identificacion.FechaInicioVigencia ?? DateTime.Now,
                     FinVigencia = identificacion.FechaFinVigencia
                 };
+                _db.IdentificadoresPersona.Add(nueva);
             }
             if (commit)
             {

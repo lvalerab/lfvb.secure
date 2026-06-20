@@ -1,5 +1,6 @@
 ﻿using lfvb.secure.aplication.Database.Censo.Models;
 using lfvb.secure.domain.Entities.Aplicacion;
+using lfvb.secure.domain.Entities.Calendario;
 using lfvb.secure.domain.Entities.Circuitos.Accion;
 using lfvb.secure.domain.Entities.Circuitos.AccionTipoElemento;
 using lfvb.secure.domain.Entities.Circuitos.AccionUsuario;
@@ -23,6 +24,7 @@ using lfvb.secure.domain.Entities.ElementoAplicacion;
 using lfvb.secure.domain.Entities.EstadoEsperadoPaso;
 using lfvb.secure.domain.Entities.GrupoUnidadOrganizativa;
 using lfvb.secure.domain.Entities.GrupoUsuarioAplicacion;
+using lfvb.secure.domain.Entities.Hydra;
 using lfvb.secure.domain.Entities.i18N;
 using lfvb.secure.domain.Entities.NucleoSistema;
 using lfvb.secure.domain.Entities.PasswordCredencial;
@@ -150,6 +152,19 @@ namespace lfvb.secure.aplication.Interfaces
         DbSet<TipoViaEntity> TiposVias { get; set; }
         #endregion
 
+        #region "Clientes hydras"
+        DbSet<HydraEntity> Hydras { get; set; }
+        DbSet<LogHydraEntity> LogsHydra { get; set; }
+        #endregion
+
+        #region "Calendarios"
+        DbSet<EntradaCalendarioEntity> EntradasCalendario { get; set; }
+        DbSet<TipoEntradaCalendarioEntity> TiposEntradasCalendario { get; set; }
+        DbSet<CalendarioUsuarioEntity> CalendariosUsuarios { get; set; }
+        DbSet<CalendarioUsuarioEntradasEntity> CalendariosUsuariosEntradas { get; set; }
+        DbSet<ElementoEntradaCalendarioEntity> ElementosEntradasCalendario { get; set; }
+        DbSet<ParticipantesEntradaCalendarioEntity> ParticipantesEntradasCalendario { get; set; }
+        #endregion
 
         #region "Elementos de vistas"
         DbSet<VWElementoEntity> VistaElementos { get; set; }

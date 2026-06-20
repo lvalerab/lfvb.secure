@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using lfvb.secure.aplication.Configurations;
 using lfvb.secure.aplication.Database;
+using lfvb.secure.aplication.Database.Calendario;
+using lfvb.secure.aplication.Database.Hydra;
 using lfvb.secure.aplication.Database.Usuario.Commands.CreateUsuario;
 using lfvb.secure.aplication.Database.Usuario.Commands.UpdateUsuario;
 using lfvb.secure.aplication.Database.Usuario.Queries.GetAllUsuarios;
@@ -37,6 +39,9 @@ namespace lfvb.secure.aplication
             //Registramos los commands y los querys
             DependecyinjectionCommands.AddCommands(services);
             DependencyInjectionQuerys.AddQuerys(services);
+
+            CalendarioDenpendencyInjection.AddCalendarioServices(services);
+            HydraDenpendencyInjection.AddHydraServices(services);  
 
             //Configuramos el servicio de DataProtection
             //services.AddDataProtection().SetApplicationName("lfvb.secure.api").SetDefaultKeyLifetime(TimeSpan.FromDays(30));

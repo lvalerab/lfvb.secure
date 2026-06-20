@@ -296,7 +296,7 @@ namespace lfvb.secure.api.Controllers.Censo
         [HttpPost]
         [Authorize]
         [Route("persona/relacion")]
-        public async Task<IActionResult> AgregarRelacionPersona([FromBody] RelacionPersonaModel model)
+        public async Task<IActionResult> AgregarRelacionPersona([FromBody] AltaModificacionRelacionPersonalModel model)
         {
             try
             {

@@ -1,7 +1,9 @@
-﻿using lfvb.secure.domain.Entities.Circuitos.EstadoElemento;
+﻿using lfvb.secure.domain.Entities.Calendario;
+using lfvb.secure.domain.Entities.Circuitos.EstadoElemento;
 using lfvb.secure.domain.Entities.Circuitos.EstadoElementoSiguiente;
 using lfvb.secure.domain.Entities.Circuitos.PermisoPasoUsuario;
 using lfvb.secure.domain.Entities.Credencial;
+using lfvb.secure.domain.Entities.Hydra;
 using lfvb.secure.domain.Entities.RelacionUsuarioGrupoUsuarioAplicacion;
 using System;
 using System.Collections.Generic;
@@ -34,6 +36,16 @@ namespace lfvb.secure.domain.Entities.Usuario
         public ICollection<EstadoElementoEntity>? Tramitadores { get; set; } 
 
         public ICollection<EstadoElementoSiguienteEntity>? EnvioEstados { get; set; }
+
+        public ICollection<HydraEntity> HydraPropietario { get; set; }
+
+        public ICollection<HydraEntity> HydraEjecutor { get; set; }
+
+        public ICollection<CalendarioUsuarioEntity> Calendarios { get; set; }
+
+        public ICollection<CalendarioUsuarioEntity> CalendariosEntradas { get; set; }
+
+        public ICollection<EntradaCalendarioEntity> EntradasCalendario { get; set; }    
 
     }
 }

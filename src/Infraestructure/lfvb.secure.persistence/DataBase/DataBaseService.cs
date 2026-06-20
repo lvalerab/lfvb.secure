@@ -1,5 +1,6 @@
 ﻿using lfvb.secure.aplication.Interfaces;
 using lfvb.secure.domain.Entities.Aplicacion;
+using lfvb.secure.domain.Entities.Calendario;
 using lfvb.secure.domain.Entities.Circuitos.Accion;
 using lfvb.secure.domain.Entities.Circuitos.AccionTipoElemento;
 using lfvb.secure.domain.Entities.Circuitos.AccionUsuario;
@@ -23,6 +24,7 @@ using lfvb.secure.domain.Entities.ElementoAplicacion;
 using lfvb.secure.domain.Entities.EstadoEsperadoPaso;
 using lfvb.secure.domain.Entities.GrupoUnidadOrganizativa;
 using lfvb.secure.domain.Entities.GrupoUsuarioAplicacion;
+using lfvb.secure.domain.Entities.Hydra;
 using lfvb.secure.domain.Entities.i18N;
 using lfvb.secure.domain.Entities.NucleoSistema;
 using lfvb.secure.domain.Entities.PasswordCredencial;
@@ -47,8 +49,10 @@ using lfvb.secure.domain.Entities.Usuario;
 using lfvb.secure.domain.Entities.ValorPropiedadElemento;
 using lfvb.secure.domain.Entities.Views.VWElemento;
 using lfvb.secure.persistence.Configuraciones;
+using lfvb.secure.persistence.Configuraciones.Calendario;
 using lfvb.secure.persistence.Configuraciones.Circuitos;
 using lfvb.secure.persistence.Configuraciones.Direcciones;
+using lfvb.secure.persistence.Configuraciones.Hydra;
 using lfvb.secure.persistence.Configuraciones.i18N;
 using lfvb.secure.persistence.Configuraciones.NucleoSistema;
 using lfvb.secure.persistence.Configuraciones.Personas;
@@ -162,6 +166,19 @@ namespace lfvb.secure.persistence.DataBase
         public DbSet<TipoViaEntity> TiposVias { get; set; }
         #endregion
 
+        #region "Clientes HYDRA"
+        public DbSet<HydraEntity> Hydras { get; set; }
+        public DbSet<LogHydraEntity> LogsHydra { get; set; }
+        #endregion
+
+        #region "Calendarios"
+        public DbSet<EntradaCalendarioEntity> EntradasCalendario { get; set; }
+        public DbSet<TipoEntradaCalendarioEntity> TiposEntradasCalendario { get; set; }
+        public DbSet<CalendarioUsuarioEntity> CalendariosUsuarios { get; set; }
+        public DbSet<CalendarioUsuarioEntradasEntity> CalendariosUsuariosEntradas { get; set; }
+        public DbSet<ElementoEntradaCalendarioEntity> ElementosEntradasCalendario { get; set; }
+        public DbSet<ParticipantesEntradaCalendarioEntity> ParticipantesEntradasCalendario { get; set; }
+        #endregion
 
         #region "Elementos de vistas"
         public DbSet<VWElementoEntity> VistaElementos { get; set; }
@@ -267,6 +284,20 @@ namespace lfvb.secure.persistence.DataBase
             new TipoEntidadTerritorialConfiguration(modelBuilder.Entity<TipoEntidadTerritorialEntity>());
             new EntitdadTerritorialConfiguration(modelBuilder.Entity<EntitdadTerritorialEntity>());
             new TipoViaConfiguration(modelBuilder.Entity<TipoViaEntity>());
+            #endregion
+
+            #region "Clientes HYDRA"
+            new HydraConfiguration(modelBuilder.Entity<HydraEntity>());
+            new LogHydraConfiguration(modelBuilder.Entity<LogHydraEntity>());
+            #endregion
+
+            #region "Calendarios"
+            new CalendarioUsuarioConfiguration(modelBuilder.Entity<CalendarioUsuarioEntity>());
+            new CalendarioUsuarioEntradaConfiguration(modelBuilder.Entity<CalendarioUsuarioEntradasEntity>());
+            new ElementoEntradaCalendarioConfiguration(modelBuilder.Entity<ElementoEntradaCalendarioEntity>());
+            new EntradaCalendarioConfiguration(modelBuilder.Entity<EntradaCalendarioEntity>()); 
+            new ParticipanteEntradaCalendarioConfiguration(modelBuilder.Entity<ParticipantesEntradaCalendarioEntity>());    
+            new TipoEntradaCalendarioConfiguration(modelBuilder.Entity<TipoEntradaCalendarioEntity>()); 
             #endregion
 
             new VWElementoConfiguration(modelBuilder.Entity<VWElementoEntity>());

@@ -20,10 +20,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Database\Calendario\Commands\" />
     <Folder Include="Database\Circuitos\AccionesPasos\Commands\" />
     <Folder Include="Database\Circuitos\Acciones\Commands\" />
     <Folder Include="Database\Credencial\Querys\" />
     <Folder Include="Database\Elementos\Querys\" />
+    <Folder Include="Database\Hydra\Commands\" />
+    <Folder Include="Database\Hydra\Models\" />
+    <Folder Include="Database\Hydra\Queries\" />
     <Folder Include="Database\Nucleo\Commands\" />
     <Folder Include="Database\TipoCrendecial\Commands\" />
     <Folder Include="Database\TipoElementoAplicacion\Commands\" />
