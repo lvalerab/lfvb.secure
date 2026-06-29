@@ -172,6 +172,8 @@ namespace lfvb.secure.aplication.Interfaces
 
         Task<bool> SaveAsync();
 
+        Task<bool> CancelAsync();
+
         IQueryable<T> FromSql<T>(string sql, params object?[] parametros) where T : class;   
     }
 }

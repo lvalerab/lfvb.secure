@@ -189,6 +189,26 @@ namespace lfvb.secure.persistence.DataBase
             return await SaveChangesAsync() > 0;
         }
 
+        public async Task<bool> CancelAsync()
+        {
+            foreach (var entry in ChangeTracker.Entries())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Modified:
+                        entry.State = EntityState.Unchanged;
+                        break;
+                    case EntityState.Added:
+                        entry.State = EntityState.Detached;
+                        break;
+                    case EntityState.Deleted:
+                        entry.Reload();
+                        break;
+                }
+            }
+            return await Task.FromResult(true);
+        }
+
         //Para cargar la configuracion de los modelos
 
         private void EntityConfiguration(ModelBuilder modelBuilder)
